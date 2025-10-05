@@ -142,8 +142,8 @@ const ProductTemp = () => {
           {/* VIDEO + DETAILS */}
           <div className="w-full mt-6 md:w-[65%] md:h-full md:ml-auto md:flex md:flex-col md:bg-[#f5f0ed] md:relative">
             <div
-              className={`relative w-full overflow-hidden transition-[height] duration-700 ease-in-out md:relative md:w-full md:overflow-hidden md:transition-[height] md:duration-700 md:ease-in-out ${
-                isVideoPlaying ? "h-64 md:h-full" : "h-48 md:h-1/2"
+              className={`relative w-full overflow-y-scroll transition-[height] duration-700 ease-in-out md:relative md:w-full md:overflow-hidden md:transition-[height] md:duration-700 md:ease-in-out ${
+                isVideoPlaying ? "h-full md:h-full" : "h-64 md:h-1/2"
               }`}
             >
               {!isVideoPlaying ? (
