@@ -37,7 +37,7 @@ const ProductTemp = () => {
                      px-16 space-y-6 text-[#482922]"
         >
           <div className="w-3/4">
-            <p className="text-2xl font-light">
+            <p className="text-2xl font-light mt-4">
               <span className="">₹1,895.00</span>{" "}
               <sup className="line-through">₹2,000.00</sup>
             </p>
