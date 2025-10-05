@@ -29,7 +29,7 @@ const ProductTemp = () => {
   return (
     <div className="min-h-screen bg-[#f5f0ed]">
       <Navbar />
-      <div className="flex h-[85vh] relative overflow-hidden">
+      <div className="flex mt-[10px] h-[85vh] relative overflow-hidden">
         {/* LEFT PANEL */}
         <div
           className="absolute left-0 top-0 w-[50vw] h-full overflow-hidden
