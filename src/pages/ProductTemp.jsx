@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ProductTemp = () => {
   const navigate = useNavigate();
 
+  //
   // States
   const [mainImage, setMainImage] = useState("/imgs/prod1p1.png");
   const [quantity, setQuantity] = useState(1);
