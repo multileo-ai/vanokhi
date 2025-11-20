@@ -1,0 +1,389 @@
+@font-face {
+  font-family: "myMontserrat";
+  src: url(/public/fonts/Montserrat/Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: "VanokhiSerif";
+  /* src: url(/public/fonts/PlayfairDisplay-VariableFont_wght.ttf); */
+  src: url(/public/fonts/Carina.ttf);
+}
+
+:root {
+  --navbar-reserve: 120px; /* adjust if navbar height changes */
+}
+
+/* global overflow fix: prevent unwanted horizontal scroll */
+html,
+body {
+  overflow-x: hidden; /* prevents any accidental horizontal scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* reset / body rules (existing) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #faecd9;
+  font-family: myMontserrat, sans-serif;
+}
+
+/* img safe rule to avoid overflow from large images */
+img,
+picture,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Preserve your UI but reserve space for fixed navbar so it doesn't cover content */
+.app {
+  width: 100%; /* changed from 100vw to 100% to avoid viewport scrollbar issues */
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-x: hidden; /* extra safety */
+  background-color: #faecd9;
+  padding-top: var(--navbar-reserve); /* prevents fixed navbar overlap */
+}
+
+/* one-line addition — reserve exact navbar height so fixed navbar won't cover MiniNav */
+.app {
+  padding-top: 76px;
+} /* set to match .vanokhi-navbar height */
+
+/* Gentle "shrink" on smaller screens rather than layout reflow:
+   This reduces overall paddings and font-size slightly to preserve UI proportions. */
+@media (max-width: 480px) {
+  :root {
+    --navbar-reserve: 64px;
+  }
+
+  /* slightly reduce base font size so components scale down without layout changes */
+  html {
+    font-size: 14px;
+  }
+
+  /* reduce big paddings used across project */
+  .vanokhi-footer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+  .brand-story-box {
+    padding: 28px 10px;
+  }
+  .brand-hero-viewport {
+    min-height: 56vh;
+  } /* keep hero tall but a bit smaller */
+  .nav-logo {
+    font-size: 2.6rem;
+  }
+  .badge-text {
+    font-size: 2rem;
+    padding: 8px 16px;
+  }
+}
+
+/* ---------- FUTURISTIC LUXURY FOOTER ---------- */
+.vanokhi-footer {
+  width: 100%;
+  position: relative; /* keep relative */
+  margin-top: auto; /* pushes footer to bottom if content is small */
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 20%, #d9c5aa40, transparent 70%),
+    linear-gradient(120deg, #1a0000 0%, #4a0000 50%, #9a0002 90%);
+  color: #faecd9;
+  padding: 5rem 3rem 2rem;
+  backdrop-filter: blur(12px);
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  box-shadow: 0 -5px 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease;
+}
+
+.footer-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15),
+    transparent 70%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  animation: slowPulse 8s infinite ease-in-out;
+}
+
+@keyframes slowPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+/* ---- Branding ---- */
+.footer-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  z-index: 2;
+  position: relative;
+}
+
+.vanokhi-logo {
+  font-family: "VanokhiSerif", serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  /* letter-spacing: 4px; */
+  font-weight: 500;
+  background: linear-gradient(90deg, #faecd9, #d9c5aa, #fff8e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+.vanokhi-tagline {
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  color: rgba(250, 236, 217, 0.8);
+  font-style: italic;
+}
+
+/* ---- Columns ---- */
+.footer-sections {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  text-align: center;
+  gap: 3rem;
+  z-index: 2;
+  position: relative;
+}
+
+.footer-column h3 {
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  color: #fceedd;
+  position: relative;
+}
+
+.footer-column h3::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #d9c5aa, transparent);
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.footer-column ul {
+  list-style: none;
+}
+
+.footer-column ul li {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: rgba(250, 236, 217, 0.85);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.footer-column ul li:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* ---- Social Icons ---- */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  opacity: 0.7;
+  filter: grayscale(20%) brightness(0.9);
+  transition: 0.4s;
+}
+
+.social-icons img:hover {
+  opacity: 1;
+  transform: scale(1.2);
+  filter: brightness(1.2);
+}
+
+/* ---- Bottom Line ---- */
+.footer-line {
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d9c5aa, transparent);
+  margin: 3rem auto 1.5rem;
+  opacity: 0.6;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(250, 236, 217, 0.8);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .footer-sections {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .vanokhi-logo {
+    font-size: 3rem;
+  }
+
+  .vanokhi-tagline {
+    font-size: 0.9rem;
+  }
+}
+
+.footer-trail-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20px;
+  height: 220px; /* slightly larger hover area so footer hover reliably triggers */
+  pointer-events: none; /* keep UI interactions working under the trail */
+  overflow: visible; /* allow images to render outside the wrapper bounds (fix clipping) */
+  z-index: 20; /* ensure wrapper sits above footer background but below main UI */
+}
+
+/* ✅ ImageTrail container styles */
+.image-trail-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.image-trail-img {
+  max-width: 180px;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* === LUXURIOUS IMAGE CAROUSEL === */
+
+.lux-carousel {
+  width: 100%;
+  /* max-width: calc(100%-150px); */
+  margin: 50px auto 50px;
+  position: relative;
+  aspect-ratio: 16 / 7; /* Rectangular banner look */
+  border-radius: 18px;
+  overflow: hidden;
+  background: #9a0002;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+/* Each slide */
+.lux-slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+
+/* Active slide fades in */
+.lux-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Subtle overlay for luxury depth */
+.lux-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Dots Navigation */
+.lux-dots {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.7rem;
+  z-index: 3;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(250, 236, 217, 0.4);
+  border: 1px solid #d9c5aa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #faecd9;
+  box-shadow: 0 0 8px #d9c5aa;
+  transform: scale(1.3);
+}
+
+/* Hover glow */
+.lux-carousel:hover .dot {
+  background: rgba(250, 236, 217, 0.6);
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .lux-carousel {
+    aspect-ratio: 16 / 8;
+    margin: 80px auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .lux-carousel {
+    aspect-ratio: 16 / 10;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}

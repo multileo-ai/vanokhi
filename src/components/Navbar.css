@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "VanokhiSerif";
+  src: url(/public/fonts/PlayfairDisplay-VariableFont_wght.ttf);
+}
+
+.vanokhi-navbar {
+  width: 100%;
+  background-color: transparent;
+  color: #9a0002;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 24px; /* reduced top/bottom padding to avoid covering content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 76px; /* set a fixed height so app can reserve same space */
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  font-family: "VanokhiSerif", serif;
+  font-size: 3.2rem; /* kept large for your design, slightly tuned to fit height */
+  /* letter-spacing: 4px; */
+  text-transform: uppercase;
+  color: #7a0001; /* ensure visible text color across browsers */
+  margin: 0;
+  line-height: 1;
+}

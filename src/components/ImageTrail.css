@@ -1,0 +1,36 @@
+/* ...existing code... */
+
+/* container that holds the absolutely positioned imgs */
+.image-trail-content {
+  position: absolute;
+  inset: 0; /* fill the trail-wrapper so coordinates are relative to footer area */
+  pointer-events: none; /* images don't block clicks */
+  overflow: visible; /* don't clip animated images */
+  z-index: 999; /* render above footer content so the trail is visible */
+}
+
+/* each animated image */
+.image-trail-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate3d(0, 0, 0) scale(1); /* ensure GPU compositing and consistent transforms */
+  width: auto;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  filter: saturate(0.95) contrast(0.98);
+  transform-origin: center center;
+}
+
+/* smaller screens */
+@media (max-width: 720px) {
+  .image-trail-img {
+    height: 72px;
+  }
+}
+
+/* ...existing code... */
