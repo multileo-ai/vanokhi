@@ -19,7 +19,7 @@ export default function BrandHero() {
       </div>
 
       {/* brand-story-box now contains ONLY the typing-slider per your request */}
-      <div className="brand-story-box" aria-live="polite">
+      <div id="brand_story" className="brand-story-box" aria-live="polite">
         <div className="brand-story-inner">
           <div className="typing-slider" aria-hidden="false">
             <p>Vanokhi.</p>

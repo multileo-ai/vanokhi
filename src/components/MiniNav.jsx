@@ -39,6 +39,22 @@ const MiniNav = () => {
     setOpen((v) => !v);
   };
 
+  // navigate / scroll handler
+  const handleNavClick = (item) => {
+    // scroll to brand story when "Our Story" clicked
+    if (
+      (item && item.toLowerCase().includes("our story")) ||
+      item.toLowerCase().includes("story")
+    ) {
+      const el = document.getElementById("brand-story");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    // close mobile menu after click
+    setOpen(false);
+  };
+
   return (
     <div className="mini-nav" role="navigation" aria-label="Mini">
       {/* hamburger visible only on small screens via CSS */}
@@ -56,7 +72,17 @@ const MiniNav = () => {
       {/* desktop inline links (hidden on small screens by CSS) */}
       <ul className="mini-links" aria-hidden={open}>
         {menuItems.map((item, index) => (
-          <li key={index} tabIndex={0} className="mini-link-item">
+          <li
+            key={index}
+            tabIndex={0}
+            className="mini-link-item"
+            onClick={() => handleNavClick(item)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") handleNavClick(item);
+            }}
+            role="link"
+            aria-label={item}
+          >
             {item}
           </li>
         ))}
@@ -89,7 +115,10 @@ const MiniNav = () => {
                 key={i}
                 role="menuitem"
                 tabIndex={0}
-                onClick={() => setOpen(false)}
+                onClick={() => handleNavClick(item)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") handleNavClick(item);
+                }}
               >
                 {item}
               </li>
