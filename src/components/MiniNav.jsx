@@ -36,12 +36,6 @@ const MiniNav = () => {
   const handleToggle = (e) => {
     // prevent the global listener from closing immediately
     e.stopPropagation();
-    // demo alert as requested
-    try {
-      alert("hamburger clicked");
-    } catch (err) {
-      /* ignore alert failures in some envs */
-    }
     setOpen((v) => !v);
   };
 
