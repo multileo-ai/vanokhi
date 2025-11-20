@@ -14,7 +14,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 500;
   height: 76px; /* set a fixed height so app can reserve same space */
   box-sizing: border-box;
 }

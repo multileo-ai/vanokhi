@@ -15,23 +15,35 @@ const MiniNav = () => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
-  // close when clicking outside
+  // close when clicking outside (bubble phase)
   useEffect(() => {
     const onDocClick = (e) => {
       if (!open) return;
       const target = e.target;
+      // if click is inside menu or on hamburger, keep open
       if (
-        menuRef.current &&
-        !menuRef.current.contains(target) &&
-        !target.closest?.(".hamburger-btn")
+        (menuRef.current && menuRef.current.contains(target)) ||
+        (target.closest && target.closest(".hamburger-btn"))
       ) {
-        setOpen(false);
+        return;
       }
+      setOpen(false);
     };
-    // attach in bubble phase so React's onClick runs first
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
+
+  const handleToggle = (e) => {
+    // prevent the global listener from closing immediately
+    e.stopPropagation();
+    // demo alert as requested
+    try {
+      alert("hamburger clicked");
+    } catch (err) {
+      /* ignore alert failures in some envs */
+    }
+    setOpen((v) => !v);
+  };
 
   return (
     <div className="mini-nav" role="navigation" aria-label="Mini">
@@ -41,10 +53,7 @@ const MiniNav = () => {
         className="hamburger-btn"
         aria-expanded={open}
         aria-controls="mini-mobile-menu"
-        onClick={(e) => {
-          e.stopPropagation(); // avoid accidental document handlers
-          setOpen((v) => !v);
-        }}
+        onClick={handleToggle}
         aria-label={open ? "Close menu" : "Open menu"}
       >
         <span className="hamburger-lines" />
