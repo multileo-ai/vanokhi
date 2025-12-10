@@ -19,7 +19,7 @@ function App() {
       <MiniNav />
 
       {/* landing hero image and brand story (separate components) */}
-      <img src="/public/banne.png" className="bgbanner" alt="" />
+      <img src="/banner.png" className="bgbanner" alt="" />
       <BrandImage />
       <BrandStory />
 

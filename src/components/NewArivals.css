@@ -17,7 +17,7 @@
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  background-image: url(/public/newarivals.png);
+  background-image: url(/newarivals.png);
   background-repeat: no-repeat;
   /* background-position: center; */
     background-size: cover;
