@@ -12,13 +12,20 @@
 body {
   font-family: "Open Sans", Arial, sans-serif;
   min-height: 100vh;
-  background-color: #fafafa;
   color: #262626;
   padding-bottom: 3rem;
+  background-color: #fafafa;
 }
 
 img {
   display: block;
+}
+.grid-section {
+  background: #fffefd;
+  padding: 80px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
 }
 
 .container {
@@ -217,7 +224,7 @@ img {
 .instagram-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  /* gap: 12px; */
   width: 100%;
   box-sizing: border-box;
 }
@@ -246,7 +253,7 @@ img {
 @media (max-width: 480px) {
   .instagram-grid {
     grid-template-columns: repeat(3, 1fr); /* exactly 3 columns on phones */
-    gap: 8px;
+    /* gap: 8px; */
     grid-auto-rows: 80px; /* keep rows consistent so tiles look uniform */
     align-items: start;
   }
@@ -358,7 +365,7 @@ img {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: repeat(3, auto);
-    grid-column-gap: 3rem;
+    /* grid-column-gap: 3rem; */
     align-items: center;
   }
 
@@ -369,7 +376,7 @@ img {
   .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    grid-gap: 2rem;
+    /* grid-gap: 2rem; */
   }
 
   .profile-image,
@@ -385,7 +392,7 @@ img {
   @media (max-width: 40rem) {
     .profile {
       grid-template-columns: auto 1fr;
-      grid-row-gap: 1.5rem;
+      /* grid-row-gap: 1.5rem; */
     }
 
     .profile-image {
@@ -395,7 +402,7 @@ img {
     .profile-user-settings {
       display: grid;
       grid-template-columns: auto 1fr;
-      grid-gap: 1rem;
+      /* grid-gap: 1rem; */
     }
 
     .profile-edit-btn,

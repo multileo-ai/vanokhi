@@ -8,6 +8,9 @@ import Navbar from "./components/Navbar";
 import { useState, useEffect } from "react";
 import TestimonialsGrid from "./components/TestimonialsGrid";
 import BrandHero from "./components/BrandHero";
+import BrandImage from "./components/BrandImage";
+import BrandStory from "./components/BrandStory";
+import NewArivals from "./components/NewArivals";
 
 function App() {
   return (
@@ -15,12 +18,16 @@ function App() {
       <Navbar />
       <MiniNav />
 
-      {/* landing hero: advert image + brand story (typewriter) */}
-      <BrandHero />
+      {/* landing hero image and brand story (separate components) */}
+      <img src="/public/banne.png" className="bgbanner" alt="" />
+      <BrandImage />
+      <BrandStory />
 
       <Category />
 
       <InstagramGrid />
+
+      <NewArivals />
 
       <TestimonialsGrid />
 
@@ -39,34 +46,43 @@ function App() {
 
         <div className="footer-sections">
           <div className="footer-column">
-            <h3>Explore</h3>
+            <h3>CONTACT US</h3>
             <ul>
-              <li>Home</li>
-              <li>Collections</li>
-              <li>New Arrivals</li>
-              <li>All Products</li>
+              <li>Corporate Office Address: Kharadi Bypass, Pune</li>
+              <li>Email: support@nishorama.com </li>
+              <li>Mob: +91 9511948736</li>
+              <li>Opening Hours: Mon to Sat: 10:30 AM - 6:30 PM</li>
               <li>Most Wanted</li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h3>About</h3>
+            <h3>SUPPORT</h3>
             <ul>
-              <li>Our Story</li>
-              <li>Ethics & Craft</li>
-              <li>Privacy & Policy</li>
-              <li>Contact</li>
+              <li>About Us </li>
+              <li>FAQ'S</li>
+              <li>Return/Exchange My Order</li>
+              <li>Return and Exchnage Policy</li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h3>Connect</h3>
+            <h3>POLICIES</h3>
+            <ul>
+              <li>Privacy Policy </li>
+              <li>Shipping & Delivery Policy </li>
+              <li>Terms of Service </li>
+            </ul>
+          </div>
+
+          {/* <div className="footer-column">
+            <h3>POLICIES</h3>
             <div className="social-icons">
               <img src="/facebook.png" alt="Facebook" />
               <img src="/instagram.png" alt="Instagram" />
               <img src="/linkdin.png" alt="LinkedIn" />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="footer-line"></div>

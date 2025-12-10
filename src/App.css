@@ -5,39 +5,37 @@
 
 @font-face {
   font-family: "VanokhiSerif";
-  /* src: url(/public/fonts/PlayfairDisplay-VariableFont_wght.ttf); */
   src: url(/public/fonts/Carina.ttf);
 }
 
 :root {
-  --navbar-reserve: 120px; /* adjust if navbar height changes */
+  --navbar-reserve: 120px;
 }
 
-/* global overflow fix: prevent unwanted horizontal scroll */
 html,
 body {
-  overflow-x: hidden; /* prevents any accidental horizontal scrolling */
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-/* reset / body rules (existing) */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body,
 html {
   width: 100%;
   height: 100%;
-  background-color: #ffffff; /* base color set to pure white */
+  /* background-color: #ffffff; */
+  background: transparent;
   font-family: myMontserrat, sans-serif;
   margin: 0;
-  padding: 0; /* ensure no padding on body/html */
-  padding-bottom: 0 !important; /* force-remove any stray bottom padding */
+  padding: 0;
+  padding-bottom: 0 !important;
 }
 
-/* img safe rule to avoid overflow from large images */
 img,
 picture,
 video {
@@ -46,49 +44,44 @@ video {
   display: block;
 }
 
-/* Preserve your UI but reserve space for fixed navbar so it doesn't cover content */
 .app {
-  width: 100%; /* changed from 100vw to 100% to avoid viewport scrollbar issues */
+  width: 100%;
   max-width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow-x: hidden; /* extra safety */
-  background-color: #ffffff;
-  padding-top: var(--navbar-reserve); /* prevents fixed navbar overlap */
+  overflow-x: hidden;
+  /* background-color: #ffffff; */
+  background: transparent;
+  padding-top: 76px;
 }
 
-/* one-line addition — reserve exact navbar height so fixed navbar won't cover MiniNav */
-.app {
-  padding-top: 76px;
-} /* set to match .vanokhi-navbar height */
-
-/* Gentle "shrink" on smaller screens rather than layout reflow:
-   This reduces overall paddings and font-size slightly to preserve UI proportions. */
 @media (max-width: 480px) {
   :root {
     --navbar-reserve: 64px;
   }
 
-  /* slightly reduce base font size so components scale down without layout changes */
   html {
     font-size: 14px;
   }
 
-  /* reduce big paddings used across project */
   .vanokhi-footer {
     padding: 3rem 1.5rem 1.5rem;
   }
+
   .brand-story-box {
     padding: 28px 10px;
   }
-  .brand-hero-viewport {
+
+  .brand-image-viewport {
     min-height: 56vh;
-  } /* keep hero tall but a bit smaller */
+  }
+
   .nav-logo {
     font-size: 2.6rem;
   }
+
   .badge-text {
     font-size: 2rem;
     padding: 8px 16px;
@@ -99,19 +92,27 @@ video {
 .vanokhi-footer {
   width: 100%;
   height: 100%;
-  position: relative; /* keep relative */
-  margin-top: auto; /* pushes footer to bottom if content is small */
+  position: relative;
+  margin-top: auto;
   overflow: hidden;
-  background: radial-gradient(circle at 30% 20%, #d9c5aa40, transparent 70%),
-    linear-gradient(120deg, #1a0000 0%, #4a0000 50%, #9a0002 90%);
+  background: #860204;
   color: #faecd9;
-  padding: 5rem 3rem 2rem;
+  padding: 4rem 2.5rem 3rem;
   backdrop-filter: blur(12px);
-  border-top-left-radius: 60px;
-  border-top-right-radius: 60px;
+  /* border-top-left-radius: 60px;
+  border-top-right-radius: 60px; */
   box-shadow: 0 -5px 40px rgba(0, 0, 0, 0.4);
   transition: all 0.5s ease;
-  padding: 4rem 2.5rem 10rem; /* extra bottom padding to accommodate trail */
+}
+
+.bgbanner{
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  top: 0;
+  left: 0;
 }
 
 .footer-glow {
@@ -153,242 +154,240 @@ video {
 
 .vanokhi-logo {
   font-family: "VanokhiSerif", serif;
-  font-size: clamp(3.5rem, 8vw, 6rem);
-  /* letter-spacing: 4px; */
+  font-size: clamp(2.5rem, 7vw, 5rem);
   font-weight: 500;
   background: linear-gradient(90deg, #faecd9, #d9c5aa, #fff8e1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-transform: uppercase;
+  /* letter-spacing: 3px; */
 }
 
 .vanokhi-tagline {
   margin-top: 0.6rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   letter-spacing: 1.5px;
-  color: rgba(250, 236, 217, 0.8);
+  color: rgba(250, 236, 217, 0.9);
   font-style: italic;
+  font-weight: 400;
 }
 
-/* ---- Columns ---- */
+/* ---- Columns (IMPROVED SPACING & FONT) ---- */
 .footer-sections {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  text-align: center;
-  gap: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 5rem 4rem;
   z-index: 2;
   position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.footer-column {
+  text-align: left;
+  padding: 2rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.footer-column:hover {
+  background: rgba(250, 236, 217, 0.1);
+  transform: translateY(-6px);
 }
 
 .footer-column h3 {
-  font-size: 1rem;
-  letter-spacing: 2px;
+  font-size: 1.35rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.8rem;
   color: #fceedd;
   position: relative;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .footer-column h3::after {
   content: "";
   position: absolute;
-  width: 30px;
-  height: 2px;
-  background: linear-gradient(90deg, #d9c5aa, transparent);
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 50px;
+  height: 2.5px;
+  background: linear-gradient(90deg, #faecd9, #d9c5aa);
+  bottom: -10px;
+  left: 0;
+  border-radius: 2px;
 }
 
 .footer-column ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-column ul li {
-  margin: 0.4rem 0;
-  font-size: 0.95rem;
-  color: rgba(250, 236, 217, 0.85);
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(250, 236, 217, 0.95);
   transition: all 0.3s ease;
   cursor: pointer;
+  font-weight: 400;
 }
 
 .footer-column ul li:hover {
-  color: #fff;
-  transform: translateY(-2px);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  color: #fceedd;
+  transform: translateX(6px);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
 }
 
 /* ---- Social Icons ---- */
 .social-icons {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  gap: 2rem;
+  margin-top: 1.2rem;
 }
 
 .social-icons img {
-  width: 26px;
-  height: 26px;
-  opacity: 0.7;
-  filter: grayscale(20%) brightness(0.9);
-  transition: 0.4s;
+  width: 32px;
+  height: 32px;
+  opacity: 0.85;
+  filter: grayscale(10%) brightness(1);
+  transition: all 0.4s ease;
 }
 
 .social-icons img:hover {
   opacity: 1;
-  transform: scale(1.2);
-  filter: brightness(1.2);
+  transform: scale(1.25) translateY(-3px);
+  filter: grayscale(0%) brightness(1.3);
 }
 
-/* ---- Bottom Line ---- */
+/* ---- Footer Bottom ---- */
 .footer-line {
-  width: 80%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #d9c5aa, transparent);
-  margin: 3rem auto 1.5rem;
-  opacity: 0.6;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(217, 197, 170, 0.4),
+    transparent
+  );
+  margin: 2rem 0 0.5rem;
+  z-index: 2;
+  position: relative;
 }
 
 .footer-bottom {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: rgba(250, 236, 217, 0.8);
+  z-index: 2;
+  position: relative;
+  letter-spacing: 0.5px;
+  padding-bottom: 1rem;
+}
+
+/* ---- Footer Trail Wrapper ---- */
+.footer-trail-wrapper {
+  position: relative;
+  z-index: 1;
+  height: 100%;
 }
 
 /* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .footer-sections {
+    gap: 4rem 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .footer-column {
+    padding: 1.8rem;
+  }
+
+  .footer-column h3 {
+    font-size: 1.25rem;
+  }
+
+  .footer-column ul li {
+    font-size: 1.05rem;
+    margin: 0.9rem 0;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-sections {
-    flex-direction: column;
-    gap: 2.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2rem;
+    padding: 0 1.5rem;
+  }
+
+  .footer-column {
+    text-align: left;
+    padding: 1.5rem;
+  }
+
+  .footer-column h3 {
+    font-size: 1.15rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-column h3::after {
+    width: 40px;
+  }
+
+  .footer-column ul li {
+    font-size: 1rem;
+    margin: 0.8rem 0;
+  }
+
+  .social-icons {
+    gap: 1.5rem;
   }
 
   .vanokhi-logo {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
 
   .vanokhi-tagline {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
   }
 }
 
-.footer-trail-wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
-  /* top: -20px; */
-  height: 220px; /* slightly larger hover area so footer hover reliably triggers */
-  pointer-events: none; /* keep UI interactions working under the trail */
-  overflow: visible; /* allow images to render outside the wrapper bounds (fix clipping) */
-  z-index: 20; /* ensure wrapper sits above footer background but below main UI */
-}
-
-/* ✅ ImageTrail container styles */
-.image-trail-content {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 2;
-}
-
-.image-trail-img {
-  max-width: 180px;
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-/* === LUXURIOUS IMAGE CAROUSEL === */
-
-.lux-carousel {
-  width: 100%;
-  /* max-width: calc(100%-150px); */
-  margin: 50px auto 50px;
-  position: relative;
-  aspect-ratio: 16 / 7; /* Rectangular banner look */
-  border-radius: 18px;
-  overflow: hidden;
-  background: #9a0002;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
-
-/* Each slide */
-.lux-slide {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
-}
-
-/* Active slide fades in */
-.lux-slide.active {
-  opacity: 1;
-  z-index: 2;
-}
-
-/* Subtle overlay for luxury depth */
-.lux-slide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-/* Dots Navigation */
-.lux-dots {
-  position: absolute;
-  bottom: 1.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.7rem;
-  z-index: 3;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(250, 236, 217, 0.4);
-  border: 1px solid #d9c5aa;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #faecd9;
-  box-shadow: 0 0 8px #d9c5aa;
-  transform: scale(1.3);
-}
-
-/* Hover glow */
-.lux-carousel:hover .dot {
-  background: rgba(250, 236, 217, 0.6);
-}
-
-/* Responsiveness */
-@media (max-width: 992px) {
-  .lux-carousel {
-    aspect-ratio: 16 / 8;
-    margin: 80px auto;
+@media (max-width: 480px) {
+  .footer-sections {
+    grid-template-columns: 1fr;
+    gap: 2rem 0;
+    padding: 0 1rem;
   }
-}
 
-@media (max-width: 600px) {
-  .lux-carousel {
-    aspect-ratio: 16 / 10;
+  .footer-column {
+    padding: 1.2rem 0;
   }
-  .dot {
-    width: 10px;
-    height: 10px;
+
+  .footer-column h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-column ul li {
+    font-size: 0.95rem;
+    margin: 0.7rem 0;
+  }
+
+  .social-icons {
+    gap: 1.2rem;
+  }
+
+  .vanokhi-logo {
+    font-size: 2.2rem;
+  }
+
+  .vanokhi-tagline {
+    font-size: 1rem;
+  }
+
+  .vanokhi-footer {
+    padding: 3rem 1.5rem 2rem;
   }
 }

@@ -1,0 +1,132 @@
+/* BrandStory: red band + typing slider */
+
+.brand-story-box {
+  width: 100%;
+  background: #9a0002; /* accent */
+  color: #faecd9;
+  padding: 48px 12px;
+  box-sizing: border-box;
+  border-top: 6px solid rgba(217, 197, 170, 0.12);
+  transform: translateZ(0);
+}
+
+.brand-story-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Typing slider — center each slide absolutely so revealed text stays centered */
+.typing-slider {
+  position: relative;
+  font-family: Consolas, monospace;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  min-height: 3.2rem;
+  height: 3.2rem;
+}
+
+/* center each paragraph horizontally and vertically inside the typing-slider */
+.typing-slider p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  font-size: 0;
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0;
+  padding: 0 6px;
+  animation: slide 15s step-start infinite;
+  white-space: nowrap;
+}
+
+/* cursor / typing mask lives in ::after */
+.typing-slider p::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-left: 3px solid #d9c5aa;
+  background-color: #9a0002;
+  animation: typing 5s infinite, cursor 1s infinite;
+  box-sizing: border-box;
+}
+
+/* per-slide delays & steps (character counts) */
+.typing-slider p:nth-child(1) {
+  animation-delay: 0s;
+}
+.typing-slider p:nth-child(1)::after {
+  animation-delay: 0s;
+  animation-timing-function: steps(16, end);
+}
+
+.typing-slider p:nth-child(2) {
+  animation-delay: 5s;
+}
+.typing-slider p:nth-child(2)::after {
+  animation-delay: 5s;
+  animation-timing-function: steps(23, end);
+}
+
+.typing-slider p:nth-child(3) {
+  animation-delay: 10s;
+}
+.typing-slider p:nth-child(3)::after {
+  animation-delay: 10s;
+  animation-timing-function: steps(12, end);
+}
+
+/* keyframes */
+@keyframes slide {
+  33.3333333333% {
+    font-size: 1.35rem;
+    letter-spacing: 3px;
+  }
+  to {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 100%;
+  }
+  90%,
+  to {
+    width: 0;
+  }
+}
+
+@keyframes cursor {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #d9c5aa;
+  }
+}
+
+/* responsive */
+@media (max-width: 920px) {
+  .typing-slider p {
+    font-size: 0;
+  }
+  .typing-slider p:nth-child(1),
+  .typing-slider p:nth-child(2),
+  .typing-slider p:nth-child(3) {
+    animation-duration: 15s;
+  }
+  .brand-story-box {
+    padding: 32px 12px;
+  }
+}

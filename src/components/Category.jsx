@@ -18,7 +18,7 @@ const Category = () => {
 
   return (
     <section className="category-section">
-      <h2 className="category-heading">Shop the Look</h2>
+      {/* <h2 className="category-heading">Shop the Look</h2> */}
 
       <div className="category-wrapper">
         <div className="track">

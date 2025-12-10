@@ -73,85 +73,85 @@ export default function InstagramGrid() {
 
   return (
     <>
-      {/* Instagram Header */}
-      <header>
-        <div className="container">
-          <div className="profile">
-            {/* Profile Image */}
-            <div className="profile-image">
-              <img src="/logobg.png" alt="Vanokhi Logo" />
-            </div>
-
-            {/* Profile Settings */}
-            <div className="profile-user-settings">
-              <h1 className="profile-user-name">Vanokhi</h1>
-
-              
-            </div>
-
-            {/* Stats */}
-            <div className="profile-stats">
-              <ul>
-                <li>
-                  <span className="profile-stat-count">164</span> posts
-                </li>
-                <li>
-                  <span className="profile-stat-count">188</span> followers
-                </li>
-                <li>
-                  <span className="profile-stat-count">206</span> following
-                </li>
-              </ul>
-            </div>
-
-            {/* Bio */}
-            <div className="profile-bio">
-              <p>
-                Each collection reflects a new perspective — where Indian
-                identity meets modern expression.{" "}
-                <span className="profile-real-name">Vaanokhi</span> is for those
-                who don’t follow trends, but set their own rhythm.
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Gallery */}
-      <main>
-        <div className="container">
-          <div className="gallery">
-            {galleryItems.map((item, i) => (
-              <div className="gallery-item" tabIndex="0" key={i}>
-                <img src={item.img} className="gallery-image" alt="" />
-
-                {/* Badges */}
-                {item.type && (
-                  <div className="gallery-item-type">
-                    <i
-                      className={`fas fa-${
-                        item.type === "video" ? "video" : "clone"
-                      }`}
-                    ></i>
-                  </div>
-                )}
-
-                {/* Likes + Comments */}
-                <div className="gallery-item-info">
-                  <ul>
-                    <li className="gallery-item-likes">
-                      <i className="fas fa-heart"></i> {item.likes}
-                    </li>
-                    <li className="gallery-item-comments">
-                      <i className="fas fa-comment"></i> {item.comments}
-                    </li>
-                  </ul>
-                </div>
+      <section className="grid-section">
+        {/* Instagram Header */}
+        <header>
+          <div className="container">
+            <div className="profile">
+              {/* Profile Image */}
+              <div className="profile-image">
+                <img src="/logobg.png" alt="Vanokhi Logo" />
               </div>
-            ))}
+
+              {/* Profile Settings */}
+              <div className="profile-user-settings">
+                <h1 className="profile-user-name">Vanokhi</h1>
+              </div>
+
+              {/* Stats */}
+              <div className="profile-stats">
+                <ul>
+                  <li>
+                    <span className="profile-stat-count">164</span> posts
+                  </li>
+                  <li>
+                    <span className="profile-stat-count">188</span> followers
+                  </li>
+                  <li>
+                    <span className="profile-stat-count">206</span> following
+                  </li>
+                </ul>
+              </div>
+
+              {/* Bio */}
+              <div className="profile-bio">
+                <p>
+                  Each collection reflects a new perspective — where Indian
+                  identity meets modern expression.{" "}
+                  <span className="profile-real-name">Vaanokhi</span> is for
+                  those who don’t follow trends, but set their own rhythm.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </main>
+        </header>
+
+        {/* Gallery */}
+        <main>
+          <div className="container">
+            <div className="gallery">
+              {galleryItems.map((item, i) => (
+                <div className="gallery-item" tabIndex="0" key={i}>
+                  <img src={item.img} className="gallery-image" alt="" />
+
+                  {/* Badges */}
+                  {item.type && (
+                    <div className="gallery-item-type">
+                      <i
+                        className={`fas fa-${
+                          item.type === "video" ? "video" : "clone"
+                        }`}
+                      ></i>
+                    </div>
+                  )}
+
+                  {/* Likes + Comments */}
+                  <div className="gallery-item-info">
+                    <ul>
+                      <li className="gallery-item-likes">
+                        <i className="fas fa-heart"></i> {item.likes}
+                      </li>
+                      <li className="gallery-item-comments">
+                        <i className="fas fa-comment"></i> {item.comments}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+      </section>
     </>
   );
 }
