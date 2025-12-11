@@ -11,6 +11,7 @@ import BrandHero from "./components/BrandHero";
 import BrandImage from "./components/BrandImage";
 import BrandStory from "./components/BrandStory";
 import NewArivals from "./components/NewArivals";
+import BrandStoryPage from "./components/BrandStoryPage";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
       <img src="/banner.png" className="bgbanner" alt="" />
       <BrandImage />
       <BrandStory />
-
+      <BrandStoryPage largeImage="/Rectangle 3.png" smallImage="/image 2.png" />
       <Category />
 
       <InstagramGrid />

@@ -8,6 +8,7 @@
   box-sizing: border-box;
   border-top: 6px solid rgba(217, 197, 170, 0.12);
   transform: translateZ(0);
+  border: 0.5px solid #ffffffc7;
 }
 
 .brand-story-inner {
