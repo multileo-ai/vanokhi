@@ -52,12 +52,12 @@
   margin: 0;
   padding: 0 10px;
   white-space: nowrap;
-  
+
   /* Text Styling */
   font-size: var(--bs-font-size);
   letter-spacing: 2px;
   opacity: 0; /* Hidden by default */
-  
+
   /* Slide Animation: Controls visibility of the entire word */
   animation: slide 15s linear infinite;
 }
@@ -72,7 +72,7 @@
   width: 100%; /* Starts covering the text */
   border-left: 3px solid #d9c5aa;
   background-color: #9a0002;
-  
+
   /* Typing Animation: Controls the reveal (wipe) effect */
   animation: typing 5s ease-in-out infinite;
   box-sizing: border-box;
@@ -151,11 +151,11 @@
   .brand-story-box {
     padding: 40px 12px;
   }
-  
+
   .typing-slider p {
     font-size: var(--bs-mobile-font-size);
   }
-  
+
   .typing-slider {
     min-height: 2.5rem;
     height: 2.5rem;
