@@ -11,7 +11,7 @@
 /* Section wrapper */
 .testimonials-section {
   background: #fffefd;
-  padding: 80px 0;
+  padding: 100px 0;
   overflow: hidden;
   text-align: center;
   position: relative;
@@ -60,8 +60,8 @@
   --t-gap: 48px;
   --t-speed: 14s; /* base speed (fast but smooth) */
   --t-radius: 36px;
-  --shadow-soft: 0 16px 40px rgba(0,0,0,0.14);
-  --shadow-inset: inset 0 4px 14px rgba(255,255,255,0.36);
+  --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.14);
+  --shadow-inset: inset 0 4px 14px rgba(255, 255, 255, 0.36);
 }
 
 /* Track - uses duplicated items in JSX for seamless loop */
@@ -76,8 +76,12 @@
 
 /* Keyframes - move exactly 50% because items are duplicated in markup */
 @keyframes t-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Pause entire track when hovering anywhere inside wrapper */
@@ -91,7 +95,7 @@
   flex: 0 0 auto;
   width: var(--t-card-w);
   height: var(--t-card-h);
-  background: rgba(255,255,255,0.28);
+  background: rgba(255, 255, 255, 0.28);
   border-radius: var(--t-radius);
   padding: 22px;
   display: flex;
@@ -108,7 +112,8 @@
 /* Hover lift with medium-soft shadow */
 .testimonial-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 22px 48px rgba(0,0,0,0.18), inset 0 6px 18px rgba(255,255,255,0.44);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.18),
+    inset 0 6px 18px rgba(255, 255, 255, 0.44);
 }
 
 /* Avatar container */
@@ -118,8 +123,8 @@
   border-radius: 50%;
   overflow: hidden;
   margin-top: 2px;
-  border: 3px solid rgba(255,255,255,0.45);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
   flex-shrink: 0;
   background: #fff;
 }
@@ -163,7 +168,7 @@
 /* Accessibility: keyboard focus */
 .testimonial-card:focus-within,
 .testimonial-card:focus {
-  outline: 3px solid rgba(154,0,2,0.12);
+  outline: 3px solid rgba(154, 0, 2, 0.12);
   transform: translateY(-8px);
 }
 
@@ -176,7 +181,10 @@
     --t-speed: 12s;
   }
 
-  .t-img-box { width: 88px; height: 88px; }
+  .t-img-box {
+    width: 88px;
+    height: 88px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -191,8 +199,13 @@
     padding-bottom: 46px;
   }
 
-  .t-img-box { width: 80px; height: 80px; }
-  .t-review { font-size: 0.98rem; }
+  .t-img-box {
+    width: 80px;
+    height: 80px;
+  }
+  .t-review {
+    font-size: 0.98rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -203,11 +216,24 @@
     --t-speed: 10.5s;
   }
 
-  .testimonials-track { gap: var(--t-gap); }
-  .testimonial-card { width: var(--t-card-w); height: var(--t-card-h); }
-  .t-img-box { width: 72px; height: 72px; }
-  .t-review { font-size: 0.95rem; padding: 0 8px; }
-  .testimonials-wrapper { padding-bottom: 36px; }
+  .testimonials-track {
+    gap: var(--t-gap);
+  }
+  .testimonial-card {
+    width: var(--t-card-w);
+    height: var(--t-card-h);
+  }
+  .t-img-box {
+    width: 72px;
+    height: 72px;
+  }
+  .t-review {
+    font-size: 0.95rem;
+    padding: 0 8px;
+  }
+  .testimonials-wrapper {
+    padding-bottom: 36px;
+  }
 }
 
 @media (max-width: 550px) {
@@ -218,13 +244,33 @@
     --t-speed: 9.5s;
   }
 
-  .testimonials-heading { font-size: 1.7rem; margin-bottom: 28px; }
-  .testimonial-card { width: var(--t-card-w); height: var(--t-card-h); padding: 16px; border-radius: 20px; }
-  .t-img-box { width: 64px; height: 64px; }
-  .t-review { font-size: 0.88rem; margin: 14px 0; }
-  .t-name { font-size: 1rem; }
-  .t-role { font-size: 0.85rem; }
-  .testimonials-wrapper { padding-bottom: 28px; }
+  .testimonials-heading {
+    font-size: 1.7rem;
+    margin-bottom: 28px;
+  }
+  .testimonial-card {
+    width: var(--t-card-w);
+    height: var(--t-card-h);
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .t-img-box {
+    width: 64px;
+    height: 64px;
+  }
+  .t-review {
+    font-size: 0.88rem;
+    margin: 14px 0;
+  }
+  .t-name {
+    font-size: 1rem;
+  }
+  .t-role {
+    font-size: 0.85rem;
+  }
+  .testimonials-wrapper {
+    padding-bottom: 28px;
+  }
 }
 
 /* Safety: if track contains only 1 set (no duplication) ensure no blank space */

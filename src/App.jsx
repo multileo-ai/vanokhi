@@ -20,14 +20,14 @@ function App() {
   // Refs to track specific sections
   const whiteSectionRef = useRef(null); // Ref for BrandStoryPage
   const hideSectionRef = useRef(null); // Ref for Testimonials
+  const categoryRef = useRef(null); // Ref for Category Section
+
+  const scrollToCategory = () => {
+    categoryRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     // 1. Observer for WHITE LOGO
-    // This creates a detection zone at the very top of the viewport (where the logo lives).
-    // rootMargin explanation:
-    // - Top: "-10px" (Starts slightly below the top edge)
-    // - Bottom: "-90%" (Ignores the bottom 90% of the screen)
-    // This ensures the event triggers strictly when the element is behind the navbar area.
     const whiteObserverOptions = {
       root: null,
       rootMargin: "-10px 0px -90% 0px",
@@ -72,11 +72,10 @@ function App() {
 
       <img src="/banner.png" className="bgbanner" alt="" />
 
-      {/* <BrandHero /> */}
-      <BrandImage />
+      {/* Passed scrollToCategory prop here */}
+      <BrandImage scrollToCategory={scrollToCategory} />
       <BrandStory />
 
-      {/* CHANGED: The ref is now here, wrapping BrandStoryPage */}
       <div ref={whiteSectionRef}>
         <BrandStoryPage
           largeImage="/Rectangle 3.png"
@@ -84,14 +83,14 @@ function App() {
         />
       </div>
 
-      <Category />
+      <div ref={categoryRef}>
+        <Category />
+      </div>
       
       <NewArivals />
 
       <InstagramGrid />
 
-
-      {/* Navbar hides when scrolling here */}
       <div ref={hideSectionRef}>
         <TestimonialsGrid />
       </div>
@@ -105,7 +104,13 @@ function App() {
 
         <div className="footer-header">
           <h1 className="vanokhi-logo">Vanokhi</h1>
-          <p className="vanokhi-tagline">— “ द वाह मोमेंट ” —</p>
+          <p 
+            className="vanokhi-tagline" 
+            onClick={scrollToCategory}
+            style={{ cursor: "pointer" }}
+          >
+            — “ द वाह मोमेंट ” —
+          </p>
         </div>
 
         <div className="footer-sections">

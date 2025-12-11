@@ -2,7 +2,6 @@ import React from "react";
 import "./InstagramGrid.css";
 
 export default function InstagramGrid() {
-  // Updated to contain only the 6 items you requested
   const galleryItems = [
     {
       img: "https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop",
@@ -43,12 +42,12 @@ export default function InstagramGrid() {
     <>
       <section className="grid-section">
         {/* Instagram Header */}
+        <h2 className="instagram-heading">Our Story</h2>
 
         {/* Gallery */}
         <main>
           <div className="gallery-full-width">
             <div className="gallery">
-              {/* No need to slice anymore, we only have 6 items */}
               {galleryItems.map((item, i) => (
                 <div className="gallery-item" tabIndex="0" key={i}>
                   <img src={item.img} className="gallery-image" alt="" />
