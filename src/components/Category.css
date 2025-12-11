@@ -3,7 +3,9 @@
   position: relative;
   z-index: 5;
   background: #ffffff;
-  padding-top: 80px;
+  padding-top: 150px;
+  padding-bottom: 150px;
+
   /* padding-bottom: 220px; */
   overflow: hidden;
 }
@@ -132,6 +134,7 @@
   background: linear-gradient(135deg, #9a0002, #b00003);
   color: #faecd9;
   border: none;
+  margin-top: 100px;
   padding: 0.7rem 1.6rem;
   border-radius: 25px;
   font-size: 0.9rem;

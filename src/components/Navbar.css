@@ -10,30 +10,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 24px; /* reduced top/bottom padding to avoid covering content */
+  padding: 8px 24px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 500;
-  height: 76px; /* set a fixed height so app can reserve same space */
+  height: 76px;
   box-sizing: border-box;
+
+  /* Smooth transition for hiding/showing */
+  transition: transform 0.4s ease-in-out;
+}
+
+/* Hides the navbar by moving it up */
+.vanokhi-navbar.nav-hidden {
+  transform: translateY(-100%);
 }
 
 .nav-logo {
   font-family: "VanokhiSerif", serif;
-  font-size: clamp(
-    3.5rem,
-    8vw,
-    5rem
-  ); /* kept large for your design, slightly tuned to fit height */
-  /* letter-spacing: 4px; */
+  font-size: clamp(3.5rem, 8vw, 5rem);
   text-transform: uppercase;
-  color: #7a0001; /* ensure visible text color across browsers */
+  color: #7a0001;
   margin-top: 20px;
   line-height: 1;
-
-  font-family: "VanokhiSerif", serif;
-
-  /* letter-spacing: 4px; */
   font-weight: 500;
+
+  /* Smooth color transition */
+  transition: color 0.3s ease;
+}
+
+/* Forces white color when the prop is active */
+.vanokhi-navbar.nav-white .nav-logo {
+  color: #ffffff !important;
 }
