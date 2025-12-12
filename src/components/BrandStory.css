@@ -2,7 +2,7 @@
 
 :root {
   /* Variables for easy adjustment */
-  --bs-font-size: 2.8rem;
+  --bs-font-size: 2.5rem;
   --bs-mobile-font-size: 1.6rem;
   --bs-slider-height: 4rem;
   --bs-padding: 60px 0; /* Increased padding for more height */

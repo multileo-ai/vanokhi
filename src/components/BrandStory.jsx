@@ -6,9 +6,9 @@ export default function BrandStory() {
     <div id="brand-story" className="brand-story-box" aria-live="polite">
       <div className="brand-story-inner">
         <div className="typing-slider" aria-hidden="false">
-          <p>Vanokhi.</p>
-          <p>Culture Reimagined</p>
-          <p>Distinct Identity</p>
+          <p>Distinct in identity,</p>
+          <p>culture reimagined</p>
+          <p>Distinct in identity, rooted in culture reimagined — that's Vaanokhi.</p>
         </div>
       </div>
     </div>
