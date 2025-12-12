@@ -11,7 +11,7 @@
 /* Section wrapper */
 .testimonials-section {
   background: #fffefd;
-  padding: 100px 0;
+  padding: 150px 0;
   overflow: hidden;
   text-align: center;
   position: relative;
@@ -24,7 +24,7 @@
   font-size: 2.3rem;
   color: #7a0001;
   letter-spacing: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 40px;
   text-transform: uppercase;
 }
 
