@@ -174,7 +174,7 @@
 .mini-link-item:hover,
 .mini-link-item:focus {
   color: #9a0002;
-  transform: translateY(-2px);
+  transform: scale(1.05);
   outline: none;
 }
 

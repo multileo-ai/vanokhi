@@ -47,8 +47,8 @@ export default function TestimonialsGrid() {
 
               <p className="t-review">“{t.review}”</p>
 
-              <h3 className="t-name">{t.name}</h3>
-              <h4 className="t-role">{t.role}</h4>
+              <p className="t-name">{t.name}</p>
+              <p className="t-role">{t.role}</p>
             </div>
           ))}
         </div>

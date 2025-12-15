@@ -10,7 +10,6 @@
 }
 
 body {
-  font-family: "Open Sans", Arial, sans-serif;
   min-height: 100vh;
   color: #262626;
   padding-bottom: 3rem;
@@ -31,8 +30,7 @@ img {
 
 /* Added Header Style matched to Testimonials */
 .instagram-heading {
-  font-family: "VanokhiSerif", serif;
-  font-size: 2.3rem;
+  font-size: 3.3rem;
   color: #7a0001;
   letter-spacing: 2px;
   margin-bottom: 60px; /* Added spacing between header and grid */

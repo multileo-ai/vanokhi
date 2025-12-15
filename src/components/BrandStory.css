@@ -33,7 +33,6 @@
 /* Typing slider */
 .typing-slider {
   position: relative;
-  font-family: Consolas, monospace;
   font-weight: bold;
   text-align: center;
   white-space: nowrap;

@@ -30,7 +30,6 @@
 }
 
 .brand-title {
-  font-family: 'Playfair Display', serif; /* Elegant serif font used for titles */
   font-size: 4rem;
   font-weight: 500;
   margin-bottom: 30px;
@@ -38,7 +37,6 @@
 }
 
 .brand-body-text {
-  font-family: 'Montserrat', sans-serif; /* Clean sans-serif for readability */
   font-size: 1.2rem;
   line-height: 1.8; /* Loose line height for elegance */
   font-weight: 300;

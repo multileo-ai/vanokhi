@@ -36,7 +36,6 @@
   transform: translateY(6px);
 }
 .badge-text {
-  font-family: "VanokhiSerif", serif;
   font-size: 2.6rem;
   color: #9a0002;
   letter-spacing: 2px;
@@ -63,7 +62,6 @@
 /* Typing slider — center each slide absolutely so revealed text stays centered */
 .typing-slider {
   position: relative;
-  font-family: Consolas, monospace;
   font-weight: bold;
   text-align: center;
   white-space: nowrap;
