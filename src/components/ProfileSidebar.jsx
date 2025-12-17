@@ -1,11 +1,33 @@
 import React, { useState } from "react";
 import "./ProfileSidebar.css";
-import { X, Package, Heart, Settings, LogOut, User } from "lucide-react";
+import { X, Package, Heart, Settings, LogOut, User, AlertCircle, CheckCircle } from "lucide-react";
 import LoginPage from "./LoginPage";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProfileSidebar({ isOpen, onClose }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Toggle to test views
+  const { currentUser, logout, verifyEmail } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleVerify = async () => {
+    if (currentUser) {
+      try {
+        await verifyEmail(currentUser);
+        setVerificationSent(true);
+      } catch (error) {
+        console.error("Verification failed", error);
+        alert("Failed to send verification email. Try again later.");
+      }
+    }
+  };
 
   return (
     <>
@@ -22,12 +44,35 @@ export default function ProfileSidebar({ isOpen, onClose }) {
           </button>
         </div>
 
-        {isLoggedIn ? (
+        {currentUser ? (
+          // LOGGED IN VIEW
           <div className="profile-content">
             <div className="user-info">
-              <div className="avatar-circle">SJ</div>
-              <h3>Sneha Jain</h3>
-              <p>sneha.jain@example.com</p>
+              <div className="avatar-circle">
+                {currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : "U"}
+              </div>
+              <h3>{currentUser.displayName || "User"}</h3>
+              <p>{currentUser.email}</p>
+
+              {/* EMAIL VERIFICATION SECTION */}
+              {!currentUser.emailVerified && (
+                <div className="verification-warning">
+                  {verificationSent ? (
+                    <div className="verify-success">
+                      <CheckCircle size={14} /> Email sent! Check inbox.
+                    </div>
+                  ) : (
+                    <>
+                      <div className="verify-alert">
+                        <AlertCircle size={14} /> Email not verified
+                      </div>
+                      <button onClick={handleVerify} className="verify-btn">
+                        Verify Now
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             <nav className="profile-menu">
@@ -42,11 +87,12 @@ export default function ProfileSidebar({ isOpen, onClose }) {
               </a>
             </nav>
 
-            <button className="logout-btn" onClick={() => setIsLoggedIn(false)}>
+            <button className="logout-btn" onClick={handleLogout}>
               <LogOut size={18} /> Logout
             </button>
           </div>
         ) : (
+          // GUEST VIEW
           <div className="guest-view">
             <div className="guest-icon">
               <User size={48} strokeWidth={1} />
@@ -63,7 +109,7 @@ export default function ProfileSidebar({ isOpen, onClose }) {
         )}
       </div>
 
-      {/* Login Modal Integration */}
+      {/* Login Modal */}
       {showLoginModal && (
         <LoginPage onClose={() => setShowLoginModal(false)} />
       )}
