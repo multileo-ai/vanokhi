@@ -1,26 +1,49 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./MiniNav.css";
-import { User, ShoppingCart, Search } from "lucide-react";
+import { User, ShoppingCart, Search, X } from "lucide-react"; // Added X icon
+import CartSidebar from "./CartSidebar";
+import ProfileSidebar from "./ProfileSidebar";
 
 const MiniNav = () => {
   const menuItems = [
     "Collections",
     "All Products",
-    "Raise Return & Exchange",
+    "Return & Exchange", // Shortened slightly for space
     "New Arrivals",
     "Most Wanted",
     "Our Story",
   ];
 
   const [open, setOpen] = useState(false);
-  const menuRef = useRef(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false); // Separate state for mobile
+  const [cartOpen, setCartOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // close when clicking outside (bubble phase)
+  const menuRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const mobileInputRef = useRef(null);
+
+  // Focus Desktop Input
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  // Focus Mobile Input
+  useEffect(() => {
+    if (mobileSearchOpen && mobileInputRef.current) {
+      mobileInputRef.current.focus();
+    }
+  }, [mobileSearchOpen]);
+
+  // Close menus on click outside
   useEffect(() => {
     const onDocClick = (e) => {
       if (!open) return;
       const target = e.target;
-      // if click is inside menu or on hamburger, keep open
       if (
         (menuRef.current && menuRef.current.contains(target)) ||
         (target.closest && target.closest(".hamburger-btn"))
@@ -28,116 +51,158 @@ const MiniNav = () => {
         return;
       }
       setOpen(false);
+      setMobileSearchOpen(false);
     };
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
   const handleToggle = (e) => {
-    // prevent the global listener from closing immediately
     e.stopPropagation();
     setOpen((v) => !v);
+    setMobileSearchOpen(false); // Reset mobile search on toggle
   };
 
-  // navigate / scroll handler
   const handleNavClick = (item) => {
-    // scroll to brand story when "Our Story" clicked
-    if (
-      (item && item.toLowerCase().includes("our story")) ||
-      item.toLowerCase().includes("story")
-    ) {
+    if (item.toLowerCase().includes("our story")) {
       const el = document.getElementById("brand-story");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    // close mobile menu after click
     setOpen(false);
   };
 
   return (
-    <div className="mini-nav" role="navigation" aria-label="Mini">
-      {/* hamburger visible only on small screens via CSS */}
-      <button
-        type="button"
-        className="hamburger-btn"
-        aria-expanded={open}
-        aria-controls="mini-mobile-menu"
-        onClick={handleToggle}
-        aria-label={open ? "Close menu" : "Open menu"}
-      >
-        <span className="hamburger-lines" />
-      </button>
-
-      {/* desktop inline links (hidden on small screens by CSS) */}
-      <ul className="mini-links" aria-hidden={open}>
-        {menuItems.map((item, index) => (
-          <li
-            key={index}
-            tabIndex={0}
-            className="mini-link-item"
-            onClick={() => handleNavClick(item)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") handleNavClick(item);
-            }}
-            role="link"
-            aria-label={item}
-          >
-            {item}
-          </li>
-        ))}
-
-        <li className="mini-icons" aria-hidden="false" tabIndex={-1}>
-          <button className="icon-btn" aria-label="Account">
-            <User className="mini-icon" strokeWidth={1.3} />
-          </button>
-          <button className="icon-btn" aria-label="Search">
-            <Search className="mini-icon" strokeWidth={1.3} />
-          </button>
-          <button className="icon-btn" aria-label="Cart">
-            <ShoppingCart className="mini-icon" strokeWidth={1.3} />
-          </button>
-        </li>
-      </ul>
-
-      {/* mobile overlay/menu (only rendered when open) */}
-      {open && (
-        <div
-          id="mini-mobile-menu"
-          ref={menuRef}
-          className="mini-mobile-menu"
-          role="menu"
-          aria-label="Mini mobile menu"
+    <>
+      <div className="mini-nav" role="navigation" aria-label="Mini">
+        {/* Mobile Hamburger */}
+        <button
+          type="button"
+          className="hamburger-btn"
+          aria-expanded={open}
+          onClick={handleToggle}
+          aria-label={open ? "Close menu" : "Open menu"}
         >
-          <ul>
-            {menuItems.map((item, i) => (
+          <span className="hamburger-lines" />
+        </button>
+
+        {/* --- DESKTOP LAYOUT (Grid System) --- */}
+        <div className="mini-desktop-nav" aria-hidden={open}>
+          {/* 1. Left Spacer (for grid balance) */}
+          <div className="desktop-spacer" />
+
+          {/* 2. Center Links */}
+          <ul className="desktop-links">
+            {menuItems.map((item, index) => (
               <li
-                key={i}
-                role="menuitem"
+                key={index}
                 tabIndex={0}
+                className="mini-link-item"
                 onClick={() => handleNavClick(item)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") handleNavClick(item);
-                }}
               >
                 {item}
               </li>
             ))}
-            <li className="mobile-icons">
-              <button className="icon-btn" aria-label="Account">
-                <User className="mini-icon" strokeWidth={1.3} />
-              </button>
-              <button className="icon-btn" aria-label="Search">
+          </ul>
+
+          {/* 3. Right Icons */}
+          <div className="desktop-icons">
+            {/* Desktop Search Bar */}
+            <div className={`search-wrapper ${searchOpen ? "active" : ""}`}>
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="search-input"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onBlur={() => !searchQuery && setSearchOpen(false)}
+              />
+              <button
+                className="icon-btn"
+                aria-label="Search"
+                onClick={() => setSearchOpen(!searchOpen)}
+              >
                 <Search className="mini-icon" strokeWidth={1.3} />
               </button>
-              <button className="icon-btn" aria-label="Cart">
+            </div>
+
+            <button className="icon-btn" onClick={() => setProfileOpen(true)}>
+              <User className="mini-icon" strokeWidth={1.3} />
+            </button>
+
+            <button className="icon-btn" onClick={() => setCartOpen(true)}>
+              <div className="cart-badge-container">
                 <ShoppingCart className="mini-icon" strokeWidth={1.3} />
-              </button>
-            </li>
-          </ul>
+                <span className="cart-count">2</span>
+              </div>
+            </button>
+          </div>
         </div>
-      )}
-    </div>
+
+        {/* --- MOBILE MENU OVERLAY --- */}
+        {open && (
+          <div id="mini-mobile-menu" ref={menuRef} className="mini-mobile-menu">
+            {/* Mobile Search Bar (Only visible if toggled) */}
+            {mobileSearchOpen ? (
+              <div className="mobile-search-row">
+                <Search size={18} className="mobile-search-icon-static" />
+                <input
+                  ref={mobileInputRef}
+                  type="text"
+                  placeholder="Search products..."
+                  className="mobile-search-input"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button
+                  className="close-search-btn"
+                  onClick={() => setMobileSearchOpen(false)}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            ) : (
+              // If Search NOT open, show standard links
+              <ul>
+                {menuItems.map((item, i) => (
+                  <li key={i} onClick={() => handleNavClick(item)}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* Mobile Bottom Icons */}
+            <div className="mobile-icons">
+              {/* Toggle Search View */}
+              <button
+                className={`icon-btn ${mobileSearchOpen ? "active-btn" : ""}`}
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              >
+                <Search className="mini-icon" strokeWidth={1.3} />
+              </button>
+
+              <button className="icon-btn" onClick={() => setProfileOpen(true)}>
+                <User className="mini-icon" strokeWidth={1.3} />
+              </button>
+
+              <button className="icon-btn" onClick={() => setCartOpen(true)}>
+                <div className="cart-badge-container">
+                  <ShoppingCart className="mini-icon" strokeWidth={1.3} />
+                  <span className="cart-count">2</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <ProfileSidebar
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+      />
+    </>
   );
 };
 
