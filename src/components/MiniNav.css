@@ -11,7 +11,6 @@
   pointer-events: auto;
   background: transparent;
   position: relative;
-  
 }
 
 /* hamburger (hidden on desktop) */
@@ -26,8 +25,8 @@
 }
 .hamburger-lines {
   display: inline-block;
-  width: 22px;
-  height: 2px;
+  width: 12px;
+  height: 1px;
   background: #4a2b1f;
   position: relative;
 }
@@ -36,8 +35,8 @@
   content: "";
   position: absolute;
   left: 0;
-  width: 22px;
-  height: 2px;
+  width: 12px;
+  height: 1px;
   background: inherit;
 }
 .hamburger-lines::before {
@@ -106,6 +105,7 @@
   padding-top: 6px;
 }
 
+
 /* responsive: switch to hamburger on small screens */
 @media (max-width: 768px) {
   /* show hamburger on small screens and move it to top-left as a square button */
@@ -114,8 +114,8 @@
     position: fixed;
     left: 12px;
     top: 12px;
-    width: 48px;
-    height: 48px;
+    width: 30px;
+    height: 30px;
     padding: 0;
     align-items: center;
     justify-content: center;
@@ -129,19 +129,20 @@
 
   /* center the three lines inside the square and keep sizes consistent */
   .hamburger-lines {
-    width: 22px;
-    height: 2px;
+    width: 20px;
     background: #4a2b1f;
     position: relative;
     display: inline-block;
+    background-color: red !important;
+    height: 1px !important; /* Make lines slightly thinner if needed */
   }
   .hamburger-lines::before,
   .hamburger-lines::after {
     content: "";
     position: absolute;
     left: 0;
-    width: 22px;
-    height: 2px;
+    width: 15px;
+    height: 1px;
     background: inherit;
   }
   .hamburger-lines::before {
@@ -191,7 +192,6 @@
   right: 2px; /* distance from the right edge of the nav */
   top: 50%;
   transform: translateY(-50%); /* vertically center inside .mini-links */
-  
 }
 
 .icon-btn {

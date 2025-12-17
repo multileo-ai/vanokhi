@@ -175,3 +175,23 @@
     padding: 32px 12px;
   }
 }
+
+/* FIX 4: "The Vah Moment" visibility */
+@media (max-width: 768px) {
+  .brand-hero-section,
+  .vah-moment-container {
+    /* Ensure height is not fixed to 0 or hidden */
+    height: auto !important;
+    min-height: 400px; /* Give it space */
+    overflow: visible !important;
+  }
+
+  .vah-moment-btn,
+  .hero-cta {
+    display: block !important; /* Force visibility */
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-top: 20px; /* Add spacing if it was overlapping */
+    z-index: 10; /* Bring to front */
+  }
+}

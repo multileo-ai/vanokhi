@@ -1,4 +1,3 @@
-
 /* Section wrapper */
 .testimonials-section {
   background: #fffefd;
@@ -235,7 +234,8 @@
   }
 
   .testimonials-heading {
-    font-size: 1.7rem;
+    /* Increased for better legibility on small devices */
+    font-size: 2.5rem;
     margin-bottom: 28px;
   }
   .testimonial-card {

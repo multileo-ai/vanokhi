@@ -61,6 +61,27 @@ p {
   opacity: 0.9; /* Soften the black slightly */
 }
 
+/* Existing line class (example name: .divider-line or hr) */
+hr, .divider-line {
+  border: none;
+  border-bottom: 1px solid #000; /* Original black line */
+}
+
+/* FIX 1 & 2: Handle Dark Mode and Reduce Stroke */
+@media (prefers-color-scheme: dark) {
+  hr, .divider-line {
+    /* Change black to a light gray or white for visibility */
+    border-bottom-color: rgba(255, 255, 255, 0.3) !important; 
+  }
+}
+
+/* FIX 2: Reduce stroke width specifically on mobile if needed */
+@media (max-width: 768px) {
+  hr, .divider-line {
+    border-bottom-width: 0.5px !important; /* Thinner line "stroke kam kro" */
+  }
+} 
+
 :root {
   --navbar-reserve: 120px;
 }
@@ -260,7 +281,7 @@ video {
   content: "";
   position: absolute;
   width: 50px;
-  height: 2.5px;
+  height: 1.5px;
   background: linear-gradient(90deg, #faecd9, #d9c5aa);
   bottom: -10px;
   left: 0;
