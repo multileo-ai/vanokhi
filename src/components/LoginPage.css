@@ -153,7 +153,7 @@
 .input-group label {
   display: block;
   font-family: "myMontserrat", sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #9a0002;
   margin-bottom: 6px;
@@ -165,7 +165,7 @@
   border: 1px solid #e0e0e0;
   background: #fff;
   font-family: "myMontserrat", sans-serif;
-  font-size: 1rem;
+  font-size: 1.7rem;
   border-radius: 4px;
 }
 .input-group input:focus {

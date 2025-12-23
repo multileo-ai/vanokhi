@@ -190,7 +190,7 @@ export default function LoginPage({ onClose }) {
                 )}
 
                 <button type="submit" className="submit-btn" disabled={loading}>
-                  {loading ? "PROCESSING..." : (activeTab === "login" ? "SIGN IN" : "CREATE ACCOUNT")}
+                  {loading ? "PROCESSING..." : (activeTab === "login" ? "LOGIN" : "CREATE ACCOUNT")}
                 </button>
               </form>
 
