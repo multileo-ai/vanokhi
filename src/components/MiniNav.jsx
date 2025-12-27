@@ -112,6 +112,7 @@ const MiniNav = () => {
                 <li key={i}>
                   <Link
                     to={item === "Collections" ? "/collections" : "/"}
+                    className="mini-link-nav" // New class
                     onClick={() => setOpen(false)}
                   >
                     {item}

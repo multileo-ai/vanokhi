@@ -3,6 +3,12 @@
   src: url(/public/fonts/PlayfairDisplay-VariableFont_wght.ttf);
 }
 
+.nav-logo-link {
+  text-decoration: none !important;
+  color: inherit !important; /* Inherits the red/white you had */
+  display: block;
+}
+
 .vanokhi-navbar {
   width: 100%;
   background-color: transparent;

@@ -1,118 +1,155 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight, ShoppingBag } from "lucide-react";
+import { X, ShoppingBag, MoveDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import "./CollectionPage.css";
+import Navbar from "./Navbar";
 
 const COLLECTIONS = [
   {
     id: "01",
-    name: "Ethereal Silk",
-    tagline: "The Poetry of Motion",
-    image: "/banner.png",
-    accent: "#f5f5f5",
-    products: [
-      { id: 1, name: "Ivory Wrap Dress", price: "₹8,900", img: "/trail-images/01.jpg" },
-      { id: 2, name: "Midnight Slip", price: "₹6,400", img: "/trail-images/02.jpg" },
-      { id: 3, name: "Petal Gown", price: "₹12,500", img: "/trail-images/03.jpg" },
-      { id: 4, name: "Aura Set", price: "₹9,200", img: "/trail-images/04.jpg" },
+    title: "VANOKHI ORIGINS",
+    subtitle: "Classic Silhouettes",
+    img: "/banner.png",
+    items: [
+      {
+        id: 1,
+        name: "Ivory Silk Gown",
+        price: "₹12,000",
+        img: "/trail-images/01.jpg",
+      },
+      {
+        id: 2,
+        name: "Classic Wrap",
+        price: "₹8,500",
+        img: "/trail-images/02.jpg",
+      },
+      {
+        id: 3,
+        name: "Ethereal Veil",
+        price: "₹4,200",
+        img: "/trail-images/03.jpg",
+      },
     ],
   },
   {
     id: "02",
-    name: "Modern Heritage",
-    tagline: "Classic Craft, Modern Soul",
-    image: "/brand-ad.jpg",
-    accent: "#e8e8e8",
-    products: [
-      { id: 5, name: "Heritage Blazer", price: "₹15,000", img: "/trail-images/05.jpg" },
-      { id: 6, name: "Veda Trousers", price: "₹7,800", img: "/trail-images/06.jpg" },
-      { id: 7, name: "Sculpt Top", price: "₹4,500", img: "/trail-images/07.jpg" },
+    title: "VELVET NIGHTS",
+    subtitle: "Evening Couture",
+    img: "/brand-ad.jpg",
+    items: [
+      {
+        id: 4,
+        name: "Midnight Blazer",
+        price: "₹15,000",
+        img: "/trail-images/04.jpg",
+      },
+      {
+        id: 5,
+        name: "Noir Slit Dress",
+        price: "₹11,000",
+        img: "/trail-images/05.jpg",
+      },
     ],
   },
 ];
 
 const CollectionPage = () => {
-  const [selected, setSelected] = useState(null);
+  const [expanded, setExpanded] = useState(null);
 
   return (
-    <div className="collection-main">
+    <div className="cp-viewport">
+      {/* Branding fix: Show logo even on this page */}
+      <Navbar isWhite={false} isHidden={false} />
+
       <AnimatePresence mode="wait">
-        {!selected ? (
-          <motion.div 
-            key="list" 
-            className="vertical-banner-container"
+        {!expanded ? (
+          <motion.div
+            className="cp-snap-container"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0 }}
           >
-            {COLLECTIONS.map((col) => (
-              <motion.section 
-                key={col.id} 
-                className="collection-section"
-                layoutId={`container-${col.id}`}
-                onClick={() => setSelected(col)}
+            {COLLECTIONS.map((col, index) => (
+              <section
+                key={col.id}
+                className="cp-section"
+                onClick={() => setExpanded(col)}
               >
-                <motion.div className="banner-visual">
-                  <motion.img 
-                    layoutId={`img-${col.id}`} 
-                    src={col.image} 
-                    alt={col.name} 
-                  />
-                  <div className="banner-overlay-soft" />
+                <motion.div
+                  className="cp-bg-wrapper"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <img src={col.img} alt="" />
                 </motion.div>
-                
-                <motion.div className="banner-content" layoutId={`content-${col.id}`}>
-                  <span className="col-number">{col.id}</span>
-                  <h2 className="col-title">{col.name}</h2>
-                  <p className="col-tagline">{col.tagline}</p>
-                  <motion.div className="explore-btn">
-                    EXPLORE <ArrowRight size={18} />
-                  </motion.div>
-                </motion.div>
-              </motion.section>
+
+                <div className="cp-content">
+                  <motion.span
+                    initial={{ y: 30, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    className="cp-number"
+                  >
+                    {col.id}
+                  </motion.span>
+                  <motion.h2
+                    initial={{ clipPath: "inset(100% 0 0 0)" }}
+                    whileInView={{ clipPath: "inset(0% 0 0 0)" }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                  >
+                    {col.title}
+                  </motion.h2>
+                  <p>{col.subtitle}</p>
+                </div>
+
+                {index === 0 && (
+                  <div className="cp-scroll-hint">
+                    <p>Scroll</p>
+                    <MoveDown size={20} />
+                  </div>
+                )}
+              </section>
             ))}
           </motion.div>
         ) : (
-          <motion.div key="detail" className="detail-canvas">
-            {/* Header / Shrunk Banner */}
-            <motion.div 
-              className="detail-header" 
-              layoutId={`container-${selected.id}`}
+          <motion.div
+            className="cp-expanded-view"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {/* Shrinking Banner */}
+            <motion.div
+              layoutId={`banner-${expanded.id}`}
+              className="cp-shrunk-header"
             >
-              <motion.img 
-                layoutId={`img-${selected.id}`} 
-                src={selected.image} 
-                className="header-bg"
-              />
-              <motion.div className="header-text-box" layoutId={`content-${selected.id}`}>
-                <h1>{selected.name}</h1>
-                <button className="close-canvas" onClick={() => setSelected(null)}>
-                   <X size={30} />
+              <img src={expanded.img} alt="" />
+              <div className="cp-header-overlay">
+                <h1>{expanded.title}</h1>
+                <button className="cp-close" onClick={() => setExpanded(null)}>
+                  <X size={30} />
                 </button>
-              </motion.div>
+              </div>
             </motion.div>
 
-            {/* Product Reveal */}
-            <motion.div 
-              className="reveal-grid-container"
-              initial={{ y: 100, opacity: 0 }}
+            {/* Product Grid Reveal */}
+            <motion.div
+              className="cp-grid"
+              initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8, ease: "circOut" }}
+              transition={{ delay: 0.4 }}
             >
-              <div className="reveal-grid">
-                {selected.products.map((p) => (
-                  <motion.div key={p.id} className="modern-product-card" whileHover={{ y: -10 }}>
-                    <div className="product-visual">
-                      <img src={p.img} alt={p.name} />
-                      <div className="quick-add"><ShoppingBag size={20} /></div>
-                    </div>
-                    <div className="product-meta">
-                      <h3>{p.name}</h3>
-                      <p>{p.price}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {expanded.items.map((item) => (
+                <div key={item.id} className="cp-product-card">
+                  <div className="cp-img-container">
+                    <img src={item.img} alt="" />
+                    <button className="cp-add">
+                      <ShoppingBag size={20} />
+                    </button>
+                  </div>
+                  <h3>{item.name}</h3>
+                  <p>{item.price}</p>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         )}

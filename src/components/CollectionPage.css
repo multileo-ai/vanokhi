@@ -1,181 +1,200 @@
-.collection-main {
-  width: 100%;
+.cp-viewport {
+  width: 100vw;
   height: 100vh;
-  background: #fff;
+  background: #dd8512;
+  position: relative;
   overflow: hidden;
 }
 
-/* Vertical Snap Banners */
-.vertical-banner-container {
+.cp-floating-logo {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.cp-floating-logo h1 {
+  font-family: "Bodoni Moda", serif;
+  color: white;
+  letter-spacing: 8px;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Snap Scrolling */
+.cp-snap-container {
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
 }
-.vertical-banner-container::-webkit-scrollbar {
+.cp-snap-container::-webkit-scrollbar {
   display: none;
 }
 
-.collection-section {
-  width: 100vw;
+.cp-section {
   height: 100vh;
+  width: 100vw;
   scroll-snap-align: start;
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.banner-visual {
-  width: 100%;
-  height: 100%;
-}
-
-.banner-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.collection-section:hover .banner-visual img {
-  transform: scale(1.08);
-}
-
-.banner-content {
+.cp-bg-wrapper {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 8%;
-  color: white;
-  z-index: 2;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 1;
 }
 
-.col-number {
-  font-family: "Poppins";
-  font-size: 1rem;
-  opacity: 0.8;
-  letter-spacing: 4px;
-}
-.col-title {
-  font-family: "Bodoni Moda";
-  font-size: clamp(3rem, 10vw, 7rem);
-  margin: 10px 0;
-}
-.col-tagline {
-  font-family: "Lora";
-  font-style: italic;
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-/* Detail View / Shrink Animation */
-.detail-canvas {
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  overflow-y: auto;
-}
-
-.detail-header {
-  width: 100%;
-  height: 40vh; /* Banner shrinks to 40% height */
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-bg {
+.cp-bg-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: brightness(0.7);
 }
 
-.header-text-box {
-  position: absolute;
+.cp-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
   color: white;
 }
-.header-text-box h1 {
+
+.cp-number {
+  font-family: "Poppins";
+  font-size: 1rem;
+  letter-spacing: 5px;
+  opacity: 0.6;
+}
+.cp-content h2 {
   font-family: "Bodoni Moda";
-  font-size: 4rem;
+  font-size: 7vw;
+  margin: 10px 0;
+  text-transform: uppercase;
+}
+.cp-content p {
+  font-family: "Lora";
+  font-style: italic;
+  font-size: 1.5rem;
 }
 
-.close-canvas {
-  position: fixed;
+/* Hint */
+.cp-scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  color: white;
+  text-align: center;
+  animation: bounce 2s infinite;
+}
+
+/* Shrunk View */
+.cp-shrunk-header {
+  height: 35vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-shrunk-header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5);
+}
+
+.cp-header-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.cp-header-overlay h1 {
+  font-family: "Bodoni Moda";
+  font-size: 3rem;
+  letter-spacing: 4px;
+}
+
+.cp-close {
+  position: absolute;
   top: 30px;
   right: 30px;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
-  z-index: 100;
 }
 
-/* Modern Shopping Grid */
-.reveal-grid-container {
-  padding: 80px 5%;
+/* Product Grid */
+.cp-expanded-view {
+  height: 100vh;
+  overflow-y: auto;
   background: #fff;
 }
 
-.reveal-grid {
+.cp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  padding: 60px 10%;
 }
 
-.modern-product-card .product-visual {
+.cp-product-card {
+  text-align: center;
+}
+.cp-img-container {
   aspect-ratio: 3/4;
   overflow: hidden;
   position: relative;
-  background: #f9f9f9;
+  margin-bottom: 20px;
+  background: #f4f4f4;
 }
-
-.modern-product-card img {
+.cp-img-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.6s;
+  transition: 0.5s ease;
 }
-.modern-product-card:hover img {
+.cp-product-card:hover img {
   transform: scale(1.05);
-  filter: grayscale(1);
 }
 
-.quick-add {
+.cp-add {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: #fff;
+  background: white;
   padding: 12px;
   border-radius: 50%;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: 0.3s;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-.modern-product-card:hover .quick-add {
-  opacity: 1;
-  transform: translateY(0);
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-/* Mobile Optimization */
 @media (max-width: 768px) {
-  .col-title {
+  .cp-content h2 {
     font-size: 3.5rem;
   }
-  .reveal-grid {
+  .cp-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-  .detail-header {
-    height: 30vh;
-  }
-  .header-text-box h1 {
-    font-size: 2rem;
+    padding: 30px 5%;
+    gap: 20px;
   }
 }
