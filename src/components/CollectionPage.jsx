@@ -1,7 +1,9 @@
+// src/components/CollectionPage.jsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, MoveDown, ArrowLeft, Heart, Star } from "lucide-react";
+import { X, ShoppingBag, ArrowLeft, Heart, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./CollectionPage.css";
 
 const COLLECTIONS = [
@@ -35,22 +37,6 @@ const COLLECTIONS = [
         rating: 4.9,
         colors: ["#FFFFFF"],
       },
-      {
-        id: 4,
-        name: "Gardenia Dress",
-        price: "₹9,800",
-        img: "/trail-images/04.jpg",
-        rating: 4.7,
-        colors: ["#FFF5EE"],
-      },
-      {
-        id: 5,
-        name: "Petal Maxi",
-        price: "₹11,200",
-        img: "/trail-images/05.jpg",
-        rating: 4.6,
-        colors: ["#FFC0CB"],
-      },
     ],
   },
   {
@@ -68,14 +54,6 @@ const COLLECTIONS = [
         colors: ["#191970", "#000000"],
       },
       {
-        id: 7,
-        name: "Noir Slit Dress",
-        price: "₹11,000",
-        img: "/trail-images/07.jpg",
-        rating: 4.8,
-        colors: ["#000000"],
-      },
-      {
         id: 8,
         name: "Crimson Gown",
         price: "₹18,500",
@@ -83,36 +61,25 @@ const COLLECTIONS = [
         rating: 4.9,
         colors: ["#8B0000"],
       },
-      {
-        id: 9,
-        name: "Velvet Bodysuit",
-        price: "₹5,600",
-        img: "/trail-images/09.jpg",
-        rating: 4.4,
-        colors: ["#4B0082"],
-      },
-      {
-        id: 10,
-        name: "Onyx Cape",
-        price: "₹7,200",
-        img: "/trail-images/10.jpg",
-        rating: 4.7,
-        colors: ["#000000"],
-      },
     ],
   },
 ];
 
 const CollectionPage = () => {
   const [expanded, setExpanded] = useState(null);
+  const [selectedColors, setSelectedColors] = useState({}); // Track selection per item
+  const { addToCart, addToWishlist } = useAuth();
   const navigate = useNavigate();
+
+  const handleColorSelect = (itemId, color) => {
+    setSelectedColors((prev) => ({ ...prev, [itemId]: color }));
+  };
 
   return (
     <div className="cp-viewport">
       {!expanded && (
         <button className="cp-back-home" onClick={() => navigate("/")}>
-          <ArrowLeft size={24} />
-          <span>Home</span>
+          <ArrowLeft size={24} /> <span>Home</span>
         </button>
       )}
 
@@ -125,7 +92,7 @@ const CollectionPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {COLLECTIONS.map((col, index) => (
+            {COLLECTIONS.map((col) => (
               <section
                 key={col.id}
                 className="cp-section"
@@ -154,7 +121,7 @@ const CollectionPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="cp-shrunk-header mobile-16-9">
+            <div className="cp-shrunk-header">
               <motion.div
                 layoutId={`bg-${expanded.id}`}
                 className="cp-shrunk-bg"
@@ -175,22 +142,29 @@ const CollectionPage = () => {
               className="cp-grid"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
             >
-              {expanded.items.map((item, idx) => (
-                <motion.div key={item.id} className="cp-product-card">
+              {expanded.items.map((item) => (
+                <div key={item.id} className="cp-product-card">
                   <div className="cp-img-container">
                     <img src={item.img} alt={item.name} />
                     <div className="cp-product-actions">
-                      <button className="action-btn wishlist">
+                      <button
+                        className="action-btn wishlist"
+                        onClick={() => addToWishlist(item)}
+                      >
                         <Heart size={18} />
                       </button>
-                      <button className="action-btn cart">
-                        <ShoppingBag size={18} /> Add to Cart
+                      <button
+                        className="action-btn cart"
+                        onClick={() =>
+                          addToCart(
+                            item,
+                            selectedColors[item.id] || item.colors[0]
+                          )
+                        }
+                      >
+                        <ShoppingBag size={18} /> Add to Bag
                       </button>
-                    </div>
-                    <div className="cp-rating-tag">
-                      <Star size={12} fill="currentColor" /> {item.rating}
                     </div>
                   </div>
                   <div className="cp-product-info">
@@ -202,13 +176,16 @@ const CollectionPage = () => {
                       {item.colors?.map((c, i) => (
                         <span
                           key={i}
-                          className="swatch"
+                          className={`swatch ${
+                            selectedColors[item.id] === c ? "active" : ""
+                          }`}
                           style={{ backgroundColor: c }}
+                          onClick={() => handleColorSelect(item.id, c)}
                         />
                       ))}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           </motion.div>

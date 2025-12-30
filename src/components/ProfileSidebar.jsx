@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Add this
 import "./ProfileSidebar.css";
 import {
   X,
@@ -16,27 +17,6 @@ import { useAuth } from "../context/AuthContext";
 export default function ProfileSidebar({ isOpen, onClose }) {
   const { currentUser, logout, verifyEmail } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [verificationSent, setVerificationSent] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleVerify = async () => {
-    if (currentUser) {
-      try {
-        await verifyEmail(currentUser);
-        setVerificationSent(true);
-      } catch (error) {
-        console.error("Verification failed", error);
-        alert("Failed to send verification email. Try again later.");
-      }
-    }
-  };
 
   return (
     <>
@@ -44,7 +24,6 @@ export default function ProfileSidebar({ isOpen, onClose }) {
         className={`sidebar-overlay ${isOpen ? "open" : ""}`}
         onClick={onClose}
       />
-
       <div className={`profile-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h2>Account</h2>
@@ -54,7 +33,6 @@ export default function ProfileSidebar({ isOpen, onClose }) {
         </div>
 
         {currentUser ? (
-          // LOGGED IN VIEW
           <div className="profile-content">
             <div className="user-info">
               <div className="avatar-circle">
@@ -64,46 +42,25 @@ export default function ProfileSidebar({ isOpen, onClose }) {
               </div>
               <h3>{currentUser.displayName || "User"}</h3>
               <p>{currentUser.email}</p>
-
-              {/* EMAIL VERIFICATION SECTION */}
-              {!currentUser.emailVerified && (
-                <div className="verification-warning">
-                  {verificationSent ? (
-                    <div className="verify-success">
-                      <CheckCircle size={14} /> Email sent! Check inbox.
-                    </div>
-                  ) : (
-                    <>
-                      <div className="verify-alert">
-                        <AlertCircle size={14} /> Email not verified
-                      </div>
-                      <button onClick={handleVerify} className="verify-btn">
-                        Verify Now
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
             </div>
 
             <nav className="profile-menu">
-              <a href="#orders" className="menu-item">
+              <Link to="/orders" className="menu-item" onClick={onClose}>
                 <Package size={20} /> My Orders
-              </a>
-              <a href="#wishlist" className="menu-item">
+              </Link>
+              <Link to="/wishlist" className="menu-item" onClick={onClose}>
                 <Heart size={20} /> Wishlist
-              </a>
-              <a href="#settings" className="menu-item">
+              </Link>
+              <Link to="/settings" className="menu-item" onClick={onClose}>
                 <Settings size={20} /> Settings
-              </a>
+              </Link>
             </nav>
 
-            <button className="logout-btn" onClick={handleLogout}>
+            <button className="logout-btn" onClick={logout}>
               <LogOut size={18} /> Logout
             </button>
           </div>
         ) : (
-          // GUEST VIEW
           <div className="guest-view">
             <div className="guest-icon">
               <User size={48} strokeWidth={1} />
@@ -119,8 +76,6 @@ export default function ProfileSidebar({ isOpen, onClose }) {
           </div>
         )}
       </div>
-
-      {/* Login Modal */}
       {showLoginModal && <LoginPage onClose={() => setShowLoginModal(false)} />}
     </>
   );

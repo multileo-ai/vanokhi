@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom"; // Added missing import
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Import real data
 import "./MiniNav.css";
 import { User, ShoppingCart, Search, X } from "lucide-react";
 import CartSidebar from "./CartSidebar";
 import ProfileSidebar from "./ProfileSidebar";
 
 const MiniNav = () => {
+  const { userData } = useAuth(); // Access global state
   const menuItems = [
     "Collections",
     "All Products",
@@ -17,23 +19,19 @@ const MiniNav = () => {
 
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
-  const mobileInputRef = useRef(null);
+
+  // Sync real cart count
+  const cartItemCount = userData.cart.reduce((acc, item) => acc + item.qty, 0);
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) searchInputRef.current.focus();
   }, [searchOpen]);
-
-  useEffect(() => {
-    if (mobileSearchOpen && mobileInputRef.current)
-      mobileInputRef.current.focus();
-  }, [mobileSearchOpen]);
 
   useEffect(() => {
     const onDocClick = (e) => {
@@ -46,6 +44,48 @@ const MiniNav = () => {
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
+  // Reusable Icon Component to maintain UI consistency
+  const ActionIcons = () => (
+    <div className="nav-action-group">
+      <div className={`search-wrapper ${searchOpen ? "active" : ""}`}>
+        <input
+          ref={searchInputRef}
+          type="text"
+          className="search-input"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button className="icon-btn" onClick={() => setSearchOpen(!searchOpen)}>
+          <Search className="mini-icon" strokeWidth={1.3} />
+        </button>
+      </div>
+      <button
+        className="icon-btn"
+        onClick={() => {
+          setProfileOpen(true);
+          setOpen(false);
+        }}
+      >
+        <User className="mini-icon" strokeWidth={1.3} />
+      </button>
+      <button
+        className="icon-btn"
+        onClick={() => {
+          setCartOpen(true);
+          setOpen(false);
+        }}
+      >
+        <div className="cart-badge-container">
+          <ShoppingCart className="mini-icon" strokeWidth={1.3} />
+          {cartItemCount > 0 && (
+            <span className="cart-count">{cartItemCount}</span>
+          )}
+        </div>
+      </button>
+    </div>
+  );
+
   return (
     <>
       <div className="mini-nav" role="navigation">
@@ -56,15 +96,15 @@ const MiniNav = () => {
             setOpen(!open);
           }}
         >
-          <span className="hamburger-lines" />
+          {open ? <X color="#4a2b1f" /> : <span className="hamburger-lines" />}
         </button>
 
+        {/* Desktop View */}
         <div className="mini-desktop-nav">
           <div className="desktop-spacer" />
           <ul className="desktop-links">
             {menuItems.map((item, index) => (
               <li key={index} className="mini-link-item">
-                {/* Fixed the ReferenceError by importing Link above */}
                 <Link
                   to={item === "Collections" ? "/collections" : "/"}
                   className="nav-route-link"
@@ -74,37 +114,12 @@ const MiniNav = () => {
               </li>
             ))}
           </ul>
-
           <div className="desktop-icons">
-            <div className={`search-wrapper ${searchOpen ? "active" : ""}`}>
-              <input
-                ref={searchInputRef}
-                type="text"
-                className="search-input"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button
-                className="icon-btn"
-                onClick={() => setSearchOpen(!searchOpen)}
-              >
-                <Search className="mini-icon" strokeWidth={1.3} />
-              </button>
-            </div>
-            <button className="icon-btn" onClick={() => setProfileOpen(true)}>
-              <User className="mini-icon" strokeWidth={1.3} />
-            </button>
-            <button className="icon-btn" onClick={() => setCartOpen(true)}>
-              <div className="cart-badge-container">
-                <ShoppingCart className="mini-icon" strokeWidth={1.3} />
-                <span className="cart-count">2</span>
-              </div>
-            </button>
+            <ActionIcons />
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Content */}
         {open && (
           <div ref={menuRef} className="mini-mobile-menu">
             <ul>
@@ -112,7 +127,7 @@ const MiniNav = () => {
                 <li key={i}>
                   <Link
                     to={item === "Collections" ? "/collections" : "/"}
-                    className="mini-link-nav" // New class
+                    className="mini-link-nav"
                     onClick={() => setOpen(false)}
                   >
                     {item}
@@ -120,6 +135,10 @@ const MiniNav = () => {
                 </li>
               ))}
             </ul>
+            {/* Action icons placed in a single line inside the menu */}
+            <div className="mobile-menu-icons">
+              <ActionIcons />
+            </div>
           </div>
         )}
       </div>

@@ -1,27 +1,17 @@
+// src/components/CartSidebar.jsx
 import React from "react";
+import { useAuth } from "../context/AuthContext";
+import { X, Trash2, Plus, Minus, Heart } from "lucide-react";
 import "./CartSidebar.css";
-import { X, Trash2, Plus, Minus } from "lucide-react";
 
 export default function CartSidebar({ isOpen, onClose }) {
-  // Mock Data - In real app, this comes from Context/Redux
-  const cartItems = [
-    {
-      id: 1,
-      name: "The Royal Silk Saree",
-      variant: "Crimson Red / M",
-      price: 12500,
-      image: "/Rectangle 3.png", // Ensure this path exists in public/
-      qty: 1,
-    },
-    {
-      id: 2,
-      name: "Vanokhi Gold Blouse",
-      variant: "Size S",
-      price: 3400,
-      image: "/image 2.png",
-      qty: 2,
-    },
-  ];
+  const { userData, updateCartQty, removeFromCart, moveToWishlistFromCart } =
+    useAuth();
+
+  const subtotal = userData.cart.reduce((acc, item) => {
+    const priceNum = parseInt(item.price.replace(/[^0-9]/g, ""));
+    return acc + priceNum * item.qty;
+  }, 0);
 
   return (
     <>
@@ -31,49 +21,81 @@ export default function CartSidebar({ isOpen, onClose }) {
       />
       <div className={`cart-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <h2>Your Bag ({cartItems.length})</h2>
+          <h2>Your Bag ({userData.cart.length})</h2>
           <button onClick={onClose} className="close-btn">
             <X size={24} />
           </button>
         </div>
 
         <div className="cart-items">
-          {cartItems.map((item) => (
-            <div key={item.id} className="cart-item">
-              <img src={item.image} alt={item.name} className="item-img" />
+          {userData.cart.map((item, idx) => (
+            <div key={`${item.id}-${item.color}`} className="cart-item">
+              <img
+                src={item.img || item.image}
+                alt={item.name}
+                className="item-img"
+              />
               <div className="item-details">
-                <div>
+                <div className="item-info-top">
                   <h4 className="item-name">{item.name}</h4>
-                  <p className="item-variant">{item.variant}</p>
+                  <div className="item-meta">
+                    {item.color && (
+                      <span
+                        className="color-indicator"
+                        style={{ backgroundColor: item.color }}
+                      />
+                    )}
+                    <button
+                      onClick={() => moveToWishlistFromCart(item)}
+                      className="move-wish-btn"
+                    >
+                      <Heart size={14} /> Move to Wishlist
+                    </button>
+                  </div>
                 </div>
-                <div className="item-price">₹{item.price.toLocaleString()}</div>
+
+                <div className="item-price">{item.price}</div>
 
                 <div className="item-actions">
                   <div className="qty-selector">
-                    <button>
+                    <button
+                      onClick={() => updateCartQty(item.id, item.color, -1)}
+                    >
                       <Minus size={14} />
                     </button>
                     <span>{item.qty}</span>
-                    <button>
+                    <button
+                      onClick={() => updateCartQty(item.id, item.color, 1)}
+                    >
                       <Plus size={14} />
                     </button>
                   </div>
-                  <button className="remove-btn">
+                  <button
+                    className="remove-btn"
+                    onClick={() => removeFromCart(item.id, item.color)}
+                  >
                     <Trash2 size={16} />
                   </button>
                 </div>
               </div>
             </div>
           ))}
+          {userData.cart.length === 0 && (
+            <p className="empty-cart">Your bag is empty.</p>
+          )}
         </div>
 
         <div className="sidebar-footer">
           <div className="subtotal">
             <span>Subtotal</span>
-            <span className="amount">₹19,300</span>
+            <span className="amount">₹{subtotal.toLocaleString()}</span>
           </div>
-          <p className="tax-note">Shipping & taxes calculated at checkout.</p>
-          <button className="checkout-btn">CHECKOUT</button>
+          <button
+            className="checkout-btn"
+            disabled={userData.cart.length === 0}
+          >
+            CHECKOUT
+          </button>
         </div>
       </div>
     </>

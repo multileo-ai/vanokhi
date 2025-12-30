@@ -1,8 +1,9 @@
+// src/components/SettingsPage.jsx
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { ArrowLeft, User, MapPin, Phone, Save } from "lucide-react";
+import { doc, updateDoc } from "firebase/firestore";
+import { ArrowLeft, User, MapPin, Phone, Save, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "./SettingsPage.css";
@@ -16,70 +17,79 @@ export default function SettingsPage() {
     e.preventDefault();
     try {
       await updateDoc(doc(db, "users", currentUser.uid), { profile });
-      toast.success("Profile updated successfully");
+      toast.success("Profile Updated");
     } catch (err) {
-      toast.error("Failed to update profile");
+      toast.error("Update Failed");
     }
   };
 
   return (
-    <div className="settings-container">
-      <div className="settings-card">
+    <div className="settings-wrapper">
+      <div className="settings-glass-card">
         <header className="settings-header">
-          <button onClick={() => navigate(-1)} className="back-btn">
+          <button onClick={() => navigate(-1)} className="back-circle">
             <ArrowLeft />
           </button>
-          <h1>Profile Settings</h1>
+          <div>
+            <h1>Account Settings</h1>
+            <p className="subtitle">Manage your profile and shipping details</p>
+          </div>
         </header>
 
-        <form onSubmit={handleSave} className="settings-form">
-          <section className="settings-section">
-            <h2>
-              <User size={18} /> Basic Information
-            </h2>
-            <div className="form-grid">
-              <div className="input-group">
-                <label>First Name</label>
-                <input
-                  type="text"
-                  value={profile.firstName}
-                  onChange={(e) =>
-                    setProfile({ ...profile, firstName: e.target.value })
-                  }
-                />
+        <form onSubmit={handleSave} className="modern-form">
+          <div className="form-sections-grid">
+            <section className="form-card">
+              <h3>
+                <User size={20} /> Personal Details
+              </h3>
+              <div className="input-row">
+                <div className="field">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    value={profile.firstName}
+                    onChange={(e) =>
+                      setProfile({ ...profile, firstName: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="field">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    value={profile.lastName}
+                    onChange={(e) =>
+                      setProfile({ ...profile, lastName: e.target.value })
+                    }
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  value={profile.lastName}
-                  onChange={(e) =>
-                    setProfile({ ...profile, lastName: e.target.value })
-                  }
-                />
-              </div>
-              <div className="input-group full-width">
+              <div className="field">
                 <label>
                   <Phone size={14} /> Phone Number
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   value={profile.phone}
                   onChange={(e) =>
                     setProfile({ ...profile, phone: e.target.value })
                   }
                 />
               </div>
-            </div>
-          </section>
+              <div className="field disabled">
+                <label>
+                  <Mail size={14} /> Registered Email
+                </label>
+                <input type="text" value={currentUser?.email} disabled />
+              </div>
+            </section>
 
-          <section className="settings-section">
-            <h2>
-              <MapPin size={18} /> Shipping Address
-            </h2>
-            <div className="form-grid">
-              <div className="input-group full-width">
-                <label>Address Line 1</label>
+            <section className="form-card">
+              <h3>
+                <MapPin size={20} /> Shipping Destination
+              </h3>
+              <div className="field">
+                <label>Address Line 1 (House No, Street)</label>
                 <input
                   type="text"
                   value={profile.addressLine1}
@@ -88,8 +98,8 @@ export default function SettingsPage() {
                   }
                 />
               </div>
-              <div className="input-group full-width">
-                <label>Address Line 2 / Landmark</label>
+              <div className="field">
+                <label>Address Line 2 (Area, Locality)</label>
                 <input
                   type="text"
                   value={profile.addressLine2}
@@ -98,40 +108,54 @@ export default function SettingsPage() {
                   }
                 />
               </div>
-              <div className="input-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  value={profile.city}
-                  onChange={(e) =>
-                    setProfile({ ...profile, city: e.target.value })
-                  }
-                />
+              <div className="input-row">
+                <div className="field">
+                  <label>Landmark</label>
+                  <input
+                    type="text"
+                    value={profile.landmark}
+                    onChange={(e) =>
+                      setProfile({ ...profile, landmark: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="field">
+                  <label>Pin Code</label>
+                  <input
+                    type="text"
+                    value={profile.pinCode}
+                    onChange={(e) =>
+                      setProfile({ ...profile, pinCode: e.target.value })
+                    }
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <label>State</label>
-                <input
-                  type="text"
-                  value={profile.state}
-                  onChange={(e) =>
-                    setProfile({ ...profile, state: e.target.value })
-                  }
-                />
+              <div className="input-row">
+                <div className="field">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    value={profile.city}
+                    onChange={(e) =>
+                      setProfile({ ...profile, city: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="field">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    value={profile.state}
+                    onChange={(e) =>
+                      setProfile({ ...profile, state: e.target.value })
+                    }
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <label>Pin Code</label>
-                <input
-                  type="text"
-                  value={profile.pinCode}
-                  onChange={(e) =>
-                    setProfile({ ...profile, pinCode: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
-          <button type="submit" className="save-settings-btn">
+          <button type="submit" className="save-btn-modern">
             <Save size={18} /> SAVE ALL CHANGES
           </button>
         </form>

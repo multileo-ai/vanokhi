@@ -19,6 +19,9 @@ import InstagramGrid from "./components/InstagramGrid";
 import TestimonialsGrid from "./components/TestimonialsGrid";
 import ImageTrail from "./components/ImageTrail";
 import CollectionPage from "./components/CollectionPage";
+import { Toaster } from "react-hot-toast"; // For the right-side notifications
+import WishlistPage from "./components/WishlistPage";
+import SettingsPage from "./components/SettingsPage";
 
 const HomePage = ({
   whiteSectionRef,
@@ -57,16 +60,14 @@ function AppContent() {
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
-      {/* Hide Navbar and MiniNav on Collection Page 
-          This ensures the Collection Page is completely immersive
-      */}
+      <Toaster position="top-right" reverseOrder={false} />{" "}
+      {/* Notification Container */}
       {!isCollectionPage && (
         <>
           <Navbar isWhite={false} isHidden={false} />
           <MiniNav />
         </>
       )}
-
       <Routes>
         <Route
           path="/"
@@ -80,8 +81,9 @@ function AppContent() {
           }
         />
         <Route path="/collections" element={<CollectionPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
-
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
           <div className="footer-trail-wrapper">
