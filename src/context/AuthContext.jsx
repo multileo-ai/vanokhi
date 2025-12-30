@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
-import { auth, googleProvider } from "../firebase"; 
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
+import { auth, googleProvider } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
   updateProfile,
   signInWithPopup,
   sendPasswordResetEmail,
-  sendEmailVerification
+  sendEmailVerification,
 } from "firebase/auth";
 
 const AuthContext = React.createContext();
@@ -23,10 +23,14 @@ export function AuthProvider({ children }) {
 
   // 1. Signup
   async function signup(email, password, fullName) {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     await updateProfile(userCredential.user, { displayName: fullName });
     // Optional: Send verification email immediately upon signup
-    await sendEmailVerification(userCredential.user); 
+    await sendEmailVerification(userCredential.user);
     return userCredential;
   }
 
@@ -70,7 +74,7 @@ export function AuthProvider({ children }) {
     googleLogin,
     logout,
     resetPassword,
-    verifyEmail
+    verifyEmail,
   };
 
   return (

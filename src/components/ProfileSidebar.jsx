@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import "./ProfileSidebar.css";
-import { X, Package, Heart, Settings, LogOut, User, AlertCircle, CheckCircle } from "lucide-react";
+import {
+  X,
+  Package,
+  Heart,
+  Settings,
+  LogOut,
+  User,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
 import LoginPage from "./LoginPage";
 import { useAuth } from "../context/AuthContext";
 
@@ -31,11 +40,11 @@ export default function ProfileSidebar({ isOpen, onClose }) {
 
   return (
     <>
-      <div 
-        className={`sidebar-overlay ${isOpen ? "open" : ""}`} 
-        onClick={onClose} 
+      <div
+        className={`sidebar-overlay ${isOpen ? "open" : ""}`}
+        onClick={onClose}
       />
-      
+
       <div className={`profile-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h2>Account</h2>
@@ -49,7 +58,9 @@ export default function ProfileSidebar({ isOpen, onClose }) {
           <div className="profile-content">
             <div className="user-info">
               <div className="avatar-circle">
-                {currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : "U"}
+                {currentUser.displayName
+                  ? currentUser.displayName.charAt(0).toUpperCase()
+                  : "U"}
               </div>
               <h3>{currentUser.displayName || "User"}</h3>
               <p>{currentUser.email}</p>
@@ -99,8 +110,8 @@ export default function ProfileSidebar({ isOpen, onClose }) {
             </div>
             <h3>Welcome to Vanokhi</h3>
             <p>Log in to access your orders, wishlist and more.</p>
-            <button 
-              className="login-trigger-btn" 
+            <button
+              className="login-trigger-btn"
               onClick={() => setShowLoginModal(true)}
             >
               LOGIN / SIGNUP
@@ -110,9 +121,7 @@ export default function ProfileSidebar({ isOpen, onClose }) {
       </div>
 
       {/* Login Modal */}
-      {showLoginModal && (
-        <LoginPage onClose={() => setShowLoginModal(false)} />
-      )}
+      {showLoginModal && <LoginPage onClose={() => setShowLoginModal(false)} />}
     </>
   );
 }

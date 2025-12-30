@@ -5,15 +5,15 @@ import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage({ onClose }) {
   const { login, signup, googleLogin, resetPassword } = useAuth();
-  
+
   // Tabs: 'login', 'signup', 'forgot'
-  const [activeTab, setActiveTab] = useState("login"); 
-  
+  const [activeTab, setActiveTab] = useState("login");
+
   // Form States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  
+
   const [error, setError] = useState("");
   const [message, setMessage] = useState(""); // For success messages
   const [loading, setLoading] = useState(false);
@@ -31,10 +31,12 @@ export default function LoginPage({ onClose }) {
       } else if (activeTab === "signup") {
         await signup(email, password, fullName);
         // Don't close immediately, let them know verification was sent
-        setActiveTab("login"); 
-        setMessage("Account created! Please check your email to verify your account.");
+        setActiveTab("login");
+        setMessage(
+          "Account created! Please check your email to verify your account."
+        );
         setLoading(false);
-        return; 
+        return;
       }
     } catch (err) {
       handleError(err);
@@ -69,10 +71,14 @@ export default function LoginPage({ onClose }) {
 
   function handleError(err) {
     console.error(err);
-    if (err.code === "auth/invalid-credential") setError("Incorrect email or password.");
-    else if (err.code === "auth/email-already-in-use") setError("Email is already registered.");
-    else if (err.code === "auth/user-not-found") setError("No account found with this email.");
-    else if (err.code === "auth/weak-password") setError("Password must be at least 6 characters.");
+    if (err.code === "auth/invalid-credential")
+      setError("Incorrect email or password.");
+    else if (err.code === "auth/email-already-in-use")
+      setError("Email is already registered.");
+    else if (err.code === "auth/user-not-found")
+      setError("No account found with this email.");
+    else if (err.code === "auth/weak-password")
+      setError("Password must be at least 6 characters.");
     else setError("Request failed. Please try again.");
   }
 
@@ -82,7 +88,7 @@ export default function LoginPage({ onClose }) {
         <button className="modal-close-btn" onClick={onClose}>
           <X size={24} />
         </button>
-        
+
         {/* Left Side */}
         <div className="login-left-panel">
           <div className="panel-content">
@@ -90,24 +96,25 @@ export default function LoginPage({ onClose }) {
             <p className="brand-quote">" द वाह मोमेंट "</p>
           </div>
           <div className="panel-overlay"></div>
-          <img src="/Rectangle 3.png" alt="Fashion" className="panel-bg" /> 
+          <img src="/Rectangle 3.png" alt="Fashion" className="panel-bg" />
         </div>
 
         {/* Right Side */}
         <div className="login-right-panel">
-          
           {/* Header */}
           <div className="auth-header">
-             <h2>
-               {activeTab === "login" && "Welcome Back"}
-               {activeTab === "signup" && "Create Account"}
-               {activeTab === "forgot" && "Reset Password"}
-             </h2>
-             <p>
-               {activeTab === "login" && "Please enter your details."}
-               {activeTab === "signup" && "Join the world of sustainable luxury."}
-               {activeTab === "forgot" && "Enter your email to receive a reset link."}
-             </p>
+            <h2>
+              {activeTab === "login" && "Welcome Back"}
+              {activeTab === "signup" && "Create Account"}
+              {activeTab === "forgot" && "Reset Password"}
+            </h2>
+            <p>
+              {activeTab === "login" && "Please enter your details."}
+              {activeTab === "signup" &&
+                "Join the world of sustainable luxury."}
+              {activeTab === "forgot" &&
+                "Enter your email to receive a reset link."}
+            </p>
           </div>
 
           {/* Success / Error Messages */}
@@ -119,10 +126,10 @@ export default function LoginPage({ onClose }) {
             <form className="auth-form" onSubmit={handleResetPassword}>
               <div className="input-group">
                 <label>Email Address</label>
-                <input 
-                  type="email" 
-                  placeholder="john@example.com" 
-                  required 
+                <input
+                  type="email"
+                  placeholder="john@example.com"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -130,27 +137,42 @@ export default function LoginPage({ onClose }) {
               <button type="submit" className="submit-btn" disabled={loading}>
                 {loading ? "SENDING..." : "SEND RESET LINK"}
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="back-link"
-                onClick={() => { setActiveTab("login"); setError(""); setMessage(""); }}
+                onClick={() => {
+                  setActiveTab("login");
+                  setError("");
+                  setMessage("");
+                }}
               >
-                <ArrowLeft size={14} style={{marginRight: '5px'}}/> Back to Login
+                <ArrowLeft size={14} style={{ marginRight: "5px" }} /> Back to
+                Login
               </button>
             </form>
           ) : (
             /* --- LOGIN / SIGNUP VIEW --- */
             <>
               <div className="auth-tabs">
-                <button 
+                <button
                   className={`tab-btn ${activeTab === "login" ? "active" : ""}`}
-                  onClick={() => { setActiveTab("login"); setError(""); setMessage(""); }}
+                  onClick={() => {
+                    setActiveTab("login");
+                    setError("");
+                    setMessage("");
+                  }}
                 >
                   Log In
                 </button>
-                <button 
-                  className={`tab-btn ${activeTab === "signup" ? "active" : ""}`}
-                  onClick={() => { setActiveTab("signup"); setError(""); setMessage(""); }}
+                <button
+                  className={`tab-btn ${
+                    activeTab === "signup" ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setActiveTab("signup");
+                    setError("");
+                    setMessage("");
+                  }}
                 >
                   Sign Up
                 </button>
@@ -160,18 +182,36 @@ export default function LoginPage({ onClose }) {
                 {activeTab === "signup" && (
                   <div className="input-group">
                     <label>Full Name</label>
-                    <input type="text" placeholder="John Doe" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                    <input
+                      type="text"
+                      placeholder="John Doe"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
                   </div>
                 )}
 
                 <div className="input-group">
                   <label>Email Address</label>
-                  <input type="email" placeholder="john@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <input
+                    type="email"
+                    placeholder="john@example.com"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
-                
+
                 <div className="input-group">
                   <label>Password</label>
-                  <input type="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
 
                 {activeTab === "login" && (
@@ -179,8 +219,8 @@ export default function LoginPage({ onClose }) {
                     <label className="checkbox-label">
                       <input type="checkbox" /> Remember me
                     </label>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       className="forgot-link-btn"
                       onClick={() => setActiveTab("forgot")}
                     >
@@ -190,13 +230,22 @@ export default function LoginPage({ onClose }) {
                 )}
 
                 <button type="submit" className="submit-btn" disabled={loading}>
-                  {loading ? "PROCESSING..." : (activeTab === "login" ? "LOGIN" : "CREATE ACCOUNT")}
+                  {loading
+                    ? "PROCESSING..."
+                    : activeTab === "login"
+                    ? "LOGIN"
+                    : "CREATE ACCOUNT"}
                 </button>
               </form>
 
-              <div className="divider"><span>OR</span></div>
+              <div className="divider">
+                <span>OR</span>
+              </div>
               <button className="google-btn" onClick={handleGoogleLogin}>
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt="Google"
+                />
                 Continue with Google
               </button>
             </>

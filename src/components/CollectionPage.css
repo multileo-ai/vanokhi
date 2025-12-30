@@ -22,7 +22,7 @@
   width: 100vw;
   height: 100vh;
   /* background: #FAECD9; */
-  background: #D9C5AA;
+  background: #d9c5aa;
   position: relative;
   overflow: hidden;
 }
@@ -319,20 +319,20 @@
   /* MOBILE OVERRIDES */
 
   .cp-back-home {
-    top: 20px;            /* Moved closer to the edge */
-    left: 20px;           /* Moved closer to the edge */
-    padding: 6px 14px;    /* Shrunk padding */
-    gap: 6px;             /* Reduced gap between icon and text */
+    top: 20px; /* Moved closer to the edge */
+    left: 20px; /* Moved closer to the edge */
+    padding: 6px 14px; /* Shrunk padding */
+    gap: 6px; /* Reduced gap between icon and text */
   }
 
   .cp-back-home span {
-    font-size: 0.75rem;   /* Smaller text */
+    font-size: 0.75rem; /* Smaller text */
     letter-spacing: 1px;
   }
 
   /* Target the Lucide icon specifically if needed */
   .cp-back-home svg {
-    width: 18px;          /* Smaller icon */
+    width: 18px; /* Smaller icon */
     height: 18px;
   }
 
