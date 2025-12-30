@@ -1,64 +1,123 @@
 .wishlist-page {
-  padding: 120px 5% 60px;
+  padding: 140px 5% 80px;
+  background-color: #fffcf7;
   min-height: 100vh;
 }
 
-.wishlist-page h1 {
+.wishlist-header h1 {
   font-family: "Bodoni Moda", serif;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
+  font-size: 2.8rem;
   text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
 .wishlist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
 }
 
 .wishlist-card {
-  position: relative;
   background: #fff;
-  transition: transform 0.3s;
+  border: 1px solid #eee;
+  transition: transform 0.4s ease;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.wishlist-img-container {
+  position: relative;
+  overflow: hidden;
 }
 
 .wishlist-card img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
+  display: block;
+}
+
+.remove-wish-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
+  transition: all 0.3s;
+}
+
+.remove-wish-overlay:hover {
+  background: #9a0002;
+  color: white;
+  opacity: 1;
 }
 
 .wish-info {
-  padding: 15px 0;
+  padding: 20px;
   text-align: center;
 }
 
 .wish-info h3 {
   font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
-.wish-info button {
-  margin-top: 10px;
+.wish-price {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 600;
+  color: #9a0002;
+  font-size: 1.1rem;
+}
+
+.move-to-bag-btn {
+  margin-top: 15px;
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: transparent;
-  border: 1px solid #000;
+  border: 1px solid #1a1a1a;
   font-family: "Work Sans", sans-serif;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
 }
 
-.wish-info button:hover {
-  background: #000;
+.move-to-bag-btn:hover {
+  background: #1a1a1a;
   color: #fff;
 }
 
-.empty-msg {
-  grid-column: 1 / -1;
+.empty-state {
   text-align: center;
-  font-family: "Work Sans", sans-serif;
+  padding: 100px 0;
   color: #888;
-  margin-top: 100px;
+}
+
+.explore-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: #9a0002;
+  color: white;
+  border: none;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
 }

@@ -1,7 +1,6 @@
-// src/components/WishlistPage.jsx
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { ShoppingBag, Trash2 } from "lucide-react";
+import { ShoppingBag, Trash2, Heart } from "lucide-react";
 import "./WishlistPage.css";
 
 export default function WishlistPage() {
@@ -15,7 +14,10 @@ export default function WishlistPage() {
   return (
     <div className="wishlist-page">
       <header className="wishlist-header">
-        <h1>My Wishlist ({userData.wishlist.length})</h1>
+        <h1>
+          <Heart className="header-icon" /> My Wishlist (
+          {userData.wishlist.length})
+        </h1>
       </header>
 
       <div className="wishlist-grid">
@@ -26,8 +28,9 @@ export default function WishlistPage() {
               <button
                 className="remove-wish-overlay"
                 onClick={() => removeFromWishlist(item.id)}
+                title="Remove from wishlist"
               >
-                <Trash2 size={18} />
+                <Trash2 size={20} />
               </button>
             </div>
             <div className="wish-info">
@@ -37,21 +40,25 @@ export default function WishlistPage() {
                 className="move-to-bag-btn"
                 onClick={() => moveWishlistToCart(item)}
               >
-                <ShoppingBag size={16} /> Move to Bag
+                <ShoppingBag size={18} /> MOVE TO BAG
               </button>
             </div>
           </div>
         ))}
-
-        {userData.wishlist.length === 0 && (
-          <div className="empty-wishlist">
-            <p>Your wishlist is empty.</p>
-            <button onClick={() => (window.location.href = "/collections")}>
-              Explore Collections
-            </button>
-          </div>
-        )}
       </div>
+
+      {userData.wishlist.length === 0 && (
+        <div className="empty-state">
+          <Heart size={48} strokeWidth={1} />
+          <p>Your wishlist is waiting to be filled.</p>
+          <button
+            className="explore-btn"
+            onClick={() => (window.location.href = "/collections")}
+          >
+            Explore Collections
+          </button>
+        </div>
+      )}
     </div>
   );
 }

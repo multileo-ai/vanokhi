@@ -121,7 +121,9 @@ const CollectionPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="cp-shrunk-header">
+            <div className="cp-shrunk-header mobile-16-9">
+              {" "}
+              {/* Added mobile-16-9 class */}
               <motion.div
                 layoutId={`bg-${expanded.id}`}
                 className="cp-shrunk-bg"

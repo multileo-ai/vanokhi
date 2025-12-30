@@ -360,14 +360,22 @@
 
   /* Expanded View Adjustments */
   .cp-shrunk-header.mobile-16-9 {
-    height: auto;
+    height: auto !important; /* Overrides the 45vh set in desktop */
     width: 100vw;
-    aspect-ratio: 16 / 9; /* No shrinking - keep the 16:9 beauty */
+    aspect-ratio: 16 / 9;
+    min-height: auto;
   }
 
+  /* Ensure the background image covers the ratio correctly */
+  .cp-shrunk-header.mobile-16-9 .cp-shrunk-bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Optional: Adjust title size slightly to fit the 16:9 box better */
   .cp-header-overlay h1 {
     font-size: 1.8rem;
-    letter-spacing: 0px !important;
+    padding: 0 20px;
   }
 
   .cp-close {
