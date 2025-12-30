@@ -48,7 +48,6 @@ function AppContent() {
   const location = useLocation();
   const isCollectionPage = location.pathname === "/collections";
 
-  // Existing Refs
   const whiteSectionRef = useRef(null);
   const categoryRef = useRef(null);
   const hideSectionRef = useRef(null);
@@ -58,11 +57,15 @@ function AppContent() {
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
-      {/* Hide Navbar on Collection Page */}
-      {!isCollectionPage && <Navbar isWhite={false} isHidden={false} />}
-
-      {/* Keep MiniNav for navigation, but we fix its colors in its own file */}
-      <MiniNav />
+      {/* Hide Navbar and MiniNav on Collection Page 
+          This ensures the Collection Page is completely immersive
+      */}
+      {!isCollectionPage && (
+        <>
+          <Navbar isWhite={false} isHidden={false} />
+          <MiniNav />
+        </>
+      )}
 
       <Routes>
         <Route
@@ -79,7 +82,6 @@ function AppContent() {
         <Route path="/collections" element={<CollectionPage />} />
       </Routes>
 
-      {/* Hide Footer on Collection Page */}
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
           <div className="footer-trail-wrapper">

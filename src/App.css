@@ -16,6 +16,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "myMontserrat";
+  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900; /* Supports all weights */
+}
+
 /* 2. Apply it to all Headings */
 h1,
 h2,
@@ -31,12 +38,6 @@ h6,
 }
 
 /* 1. Ensure the Font is Defined (You likely already have this) */
-@font-face {
-  font-family: "myMontserrat";
-  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* Supports all weights */
-}
 
 /* 2. Apply Montserrat to Body Text Elements */
 body,
@@ -62,25 +63,28 @@ p {
 }
 
 /* Existing line class (example name: .divider-line or hr) */
-hr, .divider-line {
+hr,
+.divider-line {
   border: none;
   border-bottom: 1px solid #000; /* Original black line */
 }
 
 /* FIX 1 & 2: Handle Dark Mode and Reduce Stroke */
 @media (prefers-color-scheme: dark) {
-  hr, .divider-line {
+  hr,
+  .divider-line {
     /* Change black to a light gray or white for visibility */
-    border-bottom-color: rgba(255, 255, 255, 0.3) !important; 
+    border-bottom-color: rgba(255, 255, 255, 0.3) !important;
   }
 }
 
 /* FIX 2: Reduce stroke width specifically on mobile if needed */
 @media (max-width: 768px) {
-  hr, .divider-line {
+  hr,
+  .divider-line {
     border-bottom-width: 0.5px !important; /* Thinner line "stroke kam kro" */
   }
-} 
+}
 
 :root {
   --navbar-reserve: 120px;
@@ -128,6 +132,10 @@ video {
   /* background-color: #ffffff; */
   background: transparent;
   padding-top: 76px;
+}
+
+.no-scroll {
+  padding-top: 0 !important;
 }
 
 @media (max-width: 480px) {
