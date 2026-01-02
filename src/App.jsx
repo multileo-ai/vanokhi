@@ -91,11 +91,52 @@ function AppContent() {
           <div className="footer-trail-wrapper">
             <ImageTrail />
           </div>
+          <div className="footer-glow" />
           <div className="footer-header">
             <h1 className="vanokhi-logo">Vanokhi</h1>
+            <p
+              className="vanokhi-tagline"
+              onClick={scrollToCategory}
+              style={{ cursor: "pointer" }}
+            >
+              — “ द वाह मोमेंट ” —
+            </p>
+          </div>
+          <div className="footer-sections">
+            <div className="footer-column">
+              <h3>CONTACT US</h3>
+              <ul>
+                <li>Corporate Office Address: Kharadi Bypass, Pune</li>
+                <li>Email: support@nishorama.com</li>
+                <li>Mob: +91 9511948736</li>
+                <li>Opening Hours: Mon to Sat: 10:30 AM - 6:30 PM</li>
+                <li>Most Wanted</li>
+              </ul>
+            </div>
+
+            {/* SUPPORT Section */}
+            <div className="footer-column">
+              <h3>SUPPORT</h3>
+              <ul>
+                <li>About Us</li>
+                <li>FAQ'S</li>
+                <li>Return/Exchange My Order</li>
+                <li>Return and Exchnage Policy</li>
+              </ul>
+            </div>
+
+            {/* POLICIES Section */}
+            <div className="footer-column">
+              <h3>POLICIES</h3>
+              <ul>
+                <li>Privacy Policy</li>
+                <li>Shipping & Delivery Policy</li>
+                <li>Terms of Service</li>
+              </ul>
+            </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2025 Vanokhi</p>
+            <p>© 2025 Vanokhi | Crafted with Passion</p>
           </div>
         </footer>
       )}
