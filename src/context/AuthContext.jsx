@@ -118,20 +118,44 @@ export function AuthProvider({ children }) {
     toast.error("Removed from Bag");
   };
 
+  // const addToWishlist = async (product) => {
+  //   if (!currentUser) {
+  //     toast.error("Please login to save to wishlist");
+  //     return;
+  //   }
+
+  //   if (userData.wishlist.some((item) => item.id === product.id)) {
+  //     toast.error("Already in Wishlist");
+  //     return;
+  //   }
+
+  //   const newWishlist = [...userData.wishlist, product];
+  //   await updateFirebase({ wishlist: newWishlist });
+  //   toast.success("Added to Wishlist");
+  // };
+
   const addToWishlist = async (product) => {
     if (!currentUser) {
       toast.error("Please login to save to wishlist");
       return;
     }
 
-    if (userData.wishlist.some((item) => item.id === product.id)) {
-      toast.error("Already in Wishlist");
-      return;
-    }
+    const isAlreadyInWishlist = userData.wishlist.some(
+      (item) => item.id === product.id
+    );
 
-    const newWishlist = [...userData.wishlist, product];
-    await updateFirebase({ wishlist: newWishlist });
-    toast.success("Added to Wishlist");
+    let newWishlist;
+    if (isAlreadyInWishlist) {
+      // Logic for TOGGLE OFF: Remove from wishlist
+      newWishlist = userData.wishlist.filter((item) => item.id !== product.id);
+      await updateFirebase({ wishlist: newWishlist });
+      toast.error("Removed from Wishlist"); // Feedback for removal
+    } else {
+      // Logic for TOGGLE ON: Add to wishlist
+      newWishlist = [...userData.wishlist, product];
+      await updateFirebase({ wishlist: newWishlist });
+      toast.success("Added to Wishlist");
+    }
   };
 
   const moveWishlistToCart = async (item) => {
@@ -183,9 +207,10 @@ export function AuthProvider({ children }) {
     addToCart,
     updateCartQty,
     removeFromCart,
-    addToWishlist,
+    addToWishlist, 
     moveWishlistToCart,
     moveToWishlistFromCart,
+    updateFirebase, 
   };
 
   return (

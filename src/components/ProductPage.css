@@ -7,11 +7,10 @@
   width: 100vw !important;
   overflow: hidden !important;
   background: #fff;
-  /* padding-top: 70px; */
   font-family: "Montserrat", sans-serif !important;
 }
 
-/* 1. LEFT RAIL (Fixed & Centered Sizes) */
+/* 1. LEFT RAIL */
 .pdp-left-rail {
   width: 120px;
   height: 100%;
@@ -24,7 +23,6 @@
 }
 
 .pdp-back-btn {
-  /* margin-top: 30px; */
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -35,6 +33,7 @@
   align-items: center;
   justify-content: center;
   transition: 0.3s ease;
+  margin-top: 20px;
 }
 .pdp-back-btn:hover {
   background: #860204;
@@ -43,7 +42,7 @@
 }
 
 .pdp-rail-center-group {
-  margin: auto 0; /* Centers the sizes vertically in the rail */
+  margin: auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,7 +82,7 @@
   transform: scale(1.1);
 }
 
-/* 2. CENTER INFO (Not Scrollable, but Reviews are) */
+/* 2. CENTER INFO */
 .pdp-center-info {
   flex: 1 !important;
   background: #fdf8f2;
@@ -103,7 +102,7 @@
   font-size: 3rem;
   margin: 10px 0;
   color: #1a1a1a;
-  line-height: 1;
+  line-height: 1.1;
 }
 .pdp-price {
   font-size: 1.6rem;
@@ -112,6 +111,7 @@
   margin-bottom: 20px;
 }
 
+/* --- TABS SYSTEM IMPROVEMENTS --- */
 .pdp-tabs-system {
   background: #fff;
   border: 1px solid #eef2ff;
@@ -126,40 +126,138 @@
 
 .tabs-header {
   display: flex;
-  background: #f9fbff;
+  background: #fdfdfd;
   border-bottom: 1px solid #eef2ff;
+  gap: 20px;
+  padding: 0 20px;
 }
+
 .tabs-header button {
-  flex: 1;
-  padding: 20px;
+  position: relative;
+  padding: 20px 10px;
   border: none;
   background: none;
-  font-family: "Montserrat";
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   cursor: pointer;
-  opacity: 0.4;
+  color: #aaa;
   transition: 0.3s;
 }
+
 .tabs-header button.active {
-  opacity: 1;
   color: #860204;
-  background: #fff;
+}
+
+.tabs-header button::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2.5px;
+  background: #860204;
+  transition: width 0.3s ease;
+}
+
+.tabs-header button.active::after {
+  width: 100%;
 }
 
 .tabs-pane {
-  padding: 30px;
+  padding: 25px;
   flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
+
+.tab-content-scroll {
+  overflow-y: auto;
+  height: 100%;
+  padding-right: 10px;
+}
+
+.tab-content-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.tab-content-scroll::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+
+/* --- DATA CONTENT STYLING --- */
 .pdp-text-content {
   line-height: 1.8;
   color: #555;
   font-size: 0.95rem;
+}
+
+.pre-wrap {
+  white-space: pre-wrap; /* Maintains line breaks from data.js */
+}
+
+.info-section {
+  margin-bottom: 30px;
+}
+
+.info-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.details-list {
+  padding-left: 18px;
+  list-style: none;
+}
+
+.details-list li {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.details-list li::before {
+  content: "•";
+  position: absolute;
+  left: -15px;
+  color: #860204;
+  font-weight: bold;
+}
+
+.info-card {
+  display: flex;
+  gap: 15px;
+  background: #f9fbff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #f1f5f9;
+}
+
+.info-icon {
+  color: #860204;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }
 
 /* REVIEWS TAB SPECIFIC SCROLLING */
@@ -248,6 +346,9 @@
   border-radius: 50%;
   object-fit: cover;
   background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .rev-name {
   font-weight: 700;
@@ -266,7 +367,7 @@
   margin-top: 8px;
 }
 
-/* 3. RIGHT GALLERY (Vertical layout) */
+/* 3. RIGHT GALLERY */
 .pdp-right-gallery {
   flex: 1.2 !important;
   padding: 40px;
@@ -334,6 +435,10 @@
   font-family: "Montserrat";
   letter-spacing: 2px;
   cursor: pointer;
+  transition: 0.3s;
+}
+.luxe-add-btn:hover {
+  background: #1a1a1a;
 }
 .luxe-wish-btn {
   width: 70px;
@@ -343,4 +448,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 0.3s;
+}
+.luxe-wish-btn.active {
+  background: #fff5f5;
+  border-color: #ff0000;
 }

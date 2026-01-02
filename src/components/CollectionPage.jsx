@@ -27,7 +27,7 @@ const COLLECTIONS = [
 
 const CollectionPage = () => {
   const [expanded, setExpanded] = useState(null);
-  const { addToCart, addToWishlist } = useAuth();
+  const { addToCart, addToWishlist, userData } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -76,19 +76,27 @@ const CollectionPage = () => {
               {expanded.productIds.map((pid) => {
                 const item = ALL_PRODUCTS.find((p) => p.id === pid);
                 if (!item) return null;
+                const isInWishlist = userData.wishlist.some(
+                  (w) => w.id === item.id
+                );
                 return (
                   <div key={item.id} className="cp-product-card">
                     <div className="cp-img-container">
-                      {/* WRAPPING IMAGE IN LINK */}
                       <Link to={`/product/${item.id}`}>
                         <img src={item.img} alt={item.name} />
                       </Link>
                       <div className="cp-product-actions">
                         <button
-                          className="action-btn wishlist"
+                          className={`action-btn wishlist ${
+                            isInWishlist ? "active" : ""
+                          }`}
                           onClick={() => addToWishlist(item)}
                         >
-                          <Heart size={18} />
+                          <Heart
+                            size={18}
+                            fill={isInWishlist ? "#ff0000" : "none"}
+                            color={isInWishlist ? "#ff0000" : "currentColor"}
+                          />
                         </button>
                         <button
                           className="action-btn cart"

@@ -1,4 +1,3 @@
-// src/components/ProductPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,6 +9,9 @@ import {
   Send,
   Loader2,
   User,
+  Truck,
+  ShieldCheck,
+  Factory,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
@@ -27,8 +29,7 @@ import "./ProductPage.css";
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  // We use both 'user' and 'currentUser' to ensure detection across different AuthContext versions
-  const { addToCart, addToWishlist, user, currentUser } = useAuth();
+  const { addToCart, addToWishlist, user, currentUser, userData } = useAuth();
   const activeUser = user || currentUser;
 
   const [product, setProduct] = useState(null);
@@ -40,6 +41,8 @@ export default function ProductPage() {
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const isInWishlist = userData?.wishlist.some((w) => w.id === product?.id);
 
   useEffect(() => {
     const found = ALL_PRODUCTS.find((p) => p.id === parseInt(id));
@@ -77,7 +80,7 @@ export default function ProductPage() {
       setNewRating(5);
     } catch (err) {
       console.error("Firebase Error:", err);
-      alert("Error posting review. Check your Firebase Rules.");
+      alert("Error posting review.");
     } finally {
       setSubmitting(false);
     }
@@ -88,7 +91,7 @@ export default function ProductPage() {
 
   return (
     <div className="pdp-master-wrapper">
-      {/* 1. LEFT RAIL: VERTICAL SIZES (Centered & Large) */}
+      {/* 1. LEFT RAIL */}
       <div className="pdp-left-rail">
         <button className="pdp-back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
@@ -99,9 +102,7 @@ export default function ProductPage() {
             {product.sizes.map((s) => (
               <button
                 key={s}
-                className={`rail-size-btn ${
-                  selectedSize === s ? "active" : ""
-                }`}
+                className={`rail-size-btn ${selectedSize === s ? "active" : ""}`}
                 onClick={() => setSelectedSize(s)}
               >
                 {s}
@@ -111,7 +112,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* 2. CENTER: PRODUCT INFO */}
+      {/* 2. CENTER INFO */}
       <div className="pdp-center-info">
         <div className="pdp-static-header">
           <span className="pdp-brand">VANOKHI • LUXE</span>
@@ -128,10 +129,16 @@ export default function ProductPage() {
               Description
             </button>
             <button
-              className={activeTab === "process" ? "active" : ""}
-              onClick={() => setActiveTab("process")}
+              className={activeTab === "shipping" ? "active" : ""}
+              onClick={() => setActiveTab("shipping")}
             >
-              Process
+              Shipping
+            </button>
+            <button
+              className={activeTab === "manufacturing" ? "active" : ""}
+              onClick={() => setActiveTab("manufacturing")}
+            >
+              Manufacturing
             </button>
             <button
               className={activeTab === "reviews" ? "active" : ""}
@@ -146,32 +153,68 @@ export default function ProductPage() {
               {activeTab === "description" && (
                 <motion.div
                   key="desc"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="tab-content-scroll"
                 >
-                  <p className="pdp-text-content">{product.description}</p>
-                  <ul className="details-list">
-                    {product.details.map((d, i) => (
-                      <li key={i}>{d}</li>
-                    ))}
-                  </ul>
+                  <div className="info-section">
+                    <h4 className="info-title">Product Description</h4>
+                    <p className="pdp-text-content pre-wrap">{product.description}</p>
+                  </div>
+                  {product.details && (
+                    <div className="info-section">
+                      <h4 className="info-title">Key Details</h4>
+                      <ul className="details-list">
+                        {product.details.map((d, i) => (
+                          <li key={i}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
-              {activeTab === "process" && (
+              {activeTab === "shipping" && (
                 <motion.div
-                  key="proc"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  key="ship"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="tab-content-scroll"
                 >
-                  <p className="pdp-text-content">
-                    Each Vanokhi piece undergoes a 48-hour hand-tailoring
-                    process. We utilize traditional Indian looms and non-toxic,
-                    botanical dyes to ensure the finest finish for your skin and
-                    the environment.
-                  </p>
+                  <div className="info-card">
+                    <Truck size={20} className="info-icon" />
+                    <div>
+                      <h4 className="info-title">Shipping & Exchange</h4>
+                      <p className="pdp-text-content pre-wrap">{product.shippingInfo}</p>
+                    </div>
+                  </div>
+                  <div className="info-card">
+                    <ShieldCheck size={20} className="info-icon" />
+                    <div>
+                      <h4 className="info-title">Returns Policy</h4>
+                      <p className="pdp-text-content pre-wrap">{product.returnPolicy}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "manufacturing" && (
+                <motion.div
+                  key="manuf"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="tab-content-scroll"
+                >
+                  <div className="info-card">
+                    <Factory size={20} className="info-icon" />
+                    <div>
+                      <h4 className="info-title">Manufacturing Excellence</h4>
+                      <p className="pdp-text-content pre-wrap">{product.manufacturing}</p>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 
@@ -183,7 +226,6 @@ export default function ProductPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  {/* FORM AT TOP */}
                   <div className="modern-post-review">
                     <div className="star-rating-row">
                       {[1, 2, 3, 4, 5].map((n) => (
@@ -217,7 +259,6 @@ export default function ProductPage() {
                     </div>
                   </div>
 
-                  {/* INDIVIDUAL SCROLLABLE REVIEW LIST */}
                   <div className="modern-review-list">
                     {reviews.length > 0 ? (
                       reviews.map((r) => (
@@ -246,8 +287,7 @@ export default function ProductPage() {
                           </div>
                           <p className="rev-msg-body">{r.comment}</p>
                           <span className="rev-msg-date">
-                            {r.createdAt?.toDate().toLocaleDateString() ||
-                              "Recently"}
+                            {r.createdAt?.toDate().toLocaleDateString() || "Recently"}
                           </span>
                         </div>
                       ))
@@ -271,15 +311,19 @@ export default function ProductPage() {
             ADD TO BAG
           </button>
           <button
-            className="luxe-wish-btn"
+            className={`luxe-wish-btn ${isInWishlist ? "active" : ""}`}
             onClick={() => addToWishlist(product)}
           >
-            <Heart size={22} />
+            <Heart
+              size={22}
+              fill={isInWishlist ? "#ff0000" : "none"}
+              color={isInWishlist ? "#ff0000" : "currentColor"}
+            />
           </button>
         </div>
       </div>
 
-      {/* 3. RIGHT: GALLERY */}
+      {/* 3. RIGHT GALLERY */}
       <div className="pdp-right-gallery">
         <div className="gallery-layout-horizontal">
           <div className="main-display-box">
@@ -298,9 +342,7 @@ export default function ProductPage() {
             {product.gallery?.map((img, i) => (
               <div
                 key={i}
-                className={`thumb-card-modern ${
-                  mainImg === img ? "active" : ""
-                }`}
+                className={`thumb-card-modern ${mainImg === img ? "active" : ""}`}
                 onClick={() => setMainImg(img)}
               >
                 <img src={img} alt="thumb" />
