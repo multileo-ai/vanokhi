@@ -1,0 +1,235 @@
+/* src/components/ProductPage.css */
+
+.vanokhi-pdp-container {
+  background-color: #fff;
+  padding-top: 80px; /* Navbar space */
+}
+
+.pdp-fixed-back {
+  position: fixed;
+  left: 40px;
+  top: 110px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: 0.3s;
+}
+.pdp-fixed-back:hover {
+  background: #860204;
+  color: white;
+}
+
+.pdp-layout-grid {
+  display: flex;
+  align-items: flex-start; /* CRITICAL FOR STICKY */
+}
+
+/* LEFT & CENTER PINNED WRAPPER */
+.pdp-pinned-content {
+  flex: 1; /* Takes up 50% roughly */
+  position: sticky;
+  top: 80px; /* Aligns with Navbar */
+  height: calc(100vh - 80px);
+  overflow: hidden;
+  background-color: #fdf8f2; /* Creamish background */
+}
+
+.pdp-sticky-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+/* SIZE SIDEBAR */
+.pdp-size-sidebar {
+  width: 100px;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-label {
+  font-family: "myMontserrat";
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: #888;
+  transform: rotate(-90deg);
+  margin-bottom: 60px;
+  white-space: nowrap;
+}
+
+.size-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.v-size-btn {
+  width: 45px;
+  height: 45px;
+  border: 1px solid transparent;
+  background: none;
+  font-family: "myMontserrat";
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.v-size-btn.active {
+  background: #1a1a1a;
+  color: white;
+}
+
+/* CENTER MAIN INFO */
+.pdp-info-center {
+  flex: 1;
+  padding: 8% 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pdp-brand {
+  font-family: "myMontserrat";
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: #860204;
+}
+.pdp-title {
+  font-family: "Fragor";
+  font-size: 3.5rem;
+  margin: 10px 0;
+  line-height: 1;
+}
+.pdp-price {
+  font-family: "myMontserrat";
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* BLUE TABS UI */
+.pdp-blue-tabs {
+  margin: 40px 0;
+  border: 1px solid #dbeafe; /* Light blue border */
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.tabs-nav {
+  display: flex;
+  background: #f0f7ff;
+  border-bottom: 1px solid #dbeafe;
+}
+.tabs-nav button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: none;
+  font-family: "myMontserrat";
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.4;
+}
+.tabs-nav button.active {
+  opacity: 1;
+  background: white;
+  color: #860204;
+  font-weight: 700;
+}
+
+.tabs-body {
+  padding: 25px;
+  min-height: 160px;
+}
+.tab-content p,
+.tab-content li {
+  font-family: "myMontserrat";
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #555;
+}
+
+.pdp-button-group {
+  display: flex;
+  gap: 15px;
+}
+.pdp-btn-primary {
+  flex: 1;
+  background: #860204;
+  color: white;
+  border: none;
+  padding: 22px;
+  font-family: "myMontserrat";
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.pdp-btn-wish {
+  width: 70px;
+  border: 1px solid #eee;
+  background: white;
+  cursor: pointer;
+}
+
+/* SCROLLING GALLERY (RIGHT) */
+.pdp-scroll-gallery {
+  flex: 1.2;
+  padding: 20px 40px;
+}
+
+.image-stack-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stack-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.scroll-spacer {
+  height: 100px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1024px) {
+  .pdp-layout-grid {
+    flex-direction: column;
+  }
+  .pdp-pinned-content {
+    position: relative;
+    height: auto;
+    top: 0;
+  }
+  .pdp-sticky-wrapper {
+    flex-direction: column;
+  }
+  .pdp-size-sidebar {
+    width: 100%;
+    border: none;
+    padding: 20px;
+    flex-direction: row;
+  }
+  .size-vertical-list {
+    flex-direction: row;
+  }
+  .sidebar-label {
+    transform: none;
+    margin: 0 20px 0 0;
+  }
+  .pdp-scroll-gallery {
+    padding: 20px;
+  }
+}

@@ -22,6 +22,7 @@ import CollectionPage from "./components/CollectionPage";
 import { Toaster } from "react-hot-toast"; // For the right-side notifications
 import WishlistPage from "./components/WishlistPage";
 import SettingsPage from "./components/SettingsPage";
+import ProductPage from "./components/ProductPage";
 
 const HomePage = ({
   whiteSectionRef,
@@ -83,6 +84,7 @@ function AppContent() {
         <Route path="/collections" element={<CollectionPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
       </Routes>
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
