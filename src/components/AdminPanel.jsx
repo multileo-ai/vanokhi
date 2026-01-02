@@ -1,3 +1,4 @@
+// src/components/AdminPanel.jsx
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
@@ -5,136 +6,195 @@ import {
   collection,
   addDoc,
   doc,
-  updateDoc,
   deleteDoc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
-import { Trash2, Plus, Edit3, Package } from "lucide-react";
+import { Plus, Trash2, Package, Layers } from "lucide-react";
 import "./AdminPanel.css";
 
 export default function AdminPanel() {
-  const { userData, liveProducts } = useAuth();
-  const [formData, setFormData] = useState({
+  const { userData, liveProducts, liveCollections } = useAuth();
+
+  // State for new Collection
+  const [newColl, setNewColl] = useState({ title: "", subtitle: "", img: "" });
+
+  // State for new Product
+  const [newProd, setNewProd] = useState({
     name: "",
     price: "",
     img: "",
-    category: "",
-    description: "",
+    collectionId: "",
     stock: 0,
-    sizes: "S,M,L,XL",
-    colors: "#860204,#000000",
+    description: "",
+    sizes: "XS,S,M,L,XL",
+    colors: "#860204,#000000,#ffffff",
+    shippingInfo: "",
+    returnPolicy: "",
+    manufacturing: "",
+    details: "",
   });
 
   if (!userData?.isAdmin)
-    return (
-      <div className="admin-denied">Access Restricted to Administrators.</div>
-    );
+    return <div className="admin-denied">Admin Access Required.</div>;
 
-  const handleSubmit = async (e) => {
+  const handleCreateCollection = async (e) => {
+    e.preventDefault();
+    await addDoc(collection(db, "collections"), { ...newColl, productIds: [] });
+    alert("Collection Created!");
+    setNewColl({ title: "", subtitle: "", img: "" });
+  };
+
+  const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, "products"), {
-        ...formData,
-        price: `₹${formData.price}`,
-        sizes: formData.sizes.split(","),
-        colors: formData.colors.split(","),
-        stock: parseInt(formData.stock),
-        details: [formData.description.substring(0, 30)], // Default detail
-        gallery: [formData.img], // Default gallery
+      // 1. Add Product to 'products' collection
+      const prodRef = await addDoc(collection(db, "products"), {
+        ...newProd,
+        price: `₹${newProd.price}`,
+        sizes: newProd.sizes.split(","),
+        colors: newProd.colors.split(","),
+        details: newProd.details.split("\n"),
+        stock: parseInt(newProd.stock),
+        gallery: [newProd.img],
       });
-      alert("Product Published!");
+
+      // 2. Link Product to the selected Collection
+      const collRef = doc(db, "collections", newProd.collectionId);
+      await updateDoc(collRef, {
+        productIds: arrayUnion(prodRef.id),
+      });
+
+      alert("Product Published and Added to Collection!");
     } catch (err) {
       alert(err.message);
     }
   };
 
-  const updateStock = async (id, delta) => {
-    const prod = liveProducts.find((p) => p.id === id);
-    await updateDoc(doc(db, "products", id), {
-      stock: (prod.stock || 0) + delta,
-    });
-  };
-
   return (
     <div className="admin-page">
-      <header className="admin-header">
-        <h1>
-          <Package /> Inventory Control
-        </h1>
-      </header>
+      <h1>Admin Portal</h1>
 
       <div className="admin-grid">
-        {/* ADD PRODUCT FORM */}
-        <form className="admin-form-card" onSubmit={handleSubmit}>
-          <h3>Add New Item</h3>
-          <input
-            placeholder="Product Name"
-            required
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          <input
-            placeholder="Price (Numeric only: 1499)"
-            required
-            onChange={(e) =>
-              setFormData({ ...formData, price: e.target.value })
-            }
-          />
-          <input
-            placeholder="Category (e.g. Corsets)"
-            required
-            onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
-            }
-          />
-          <input
-            placeholder="Main Image URL"
-            required
-            onChange={(e) => setFormData({ ...formData, img: e.target.value })}
-          />
-          <input
-            placeholder="Stock Amount"
-            type="number"
-            required
-            onChange={(e) =>
-              setFormData({ ...formData, stock: e.target.value })
-            }
-          />
-          <textarea
-            placeholder="Full Description"
-            required
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
-          <button type="submit">
-            <Plus size={18} /> Publish to Store
-          </button>
-        </form>
+        {/* SECTION 1: CREATE COLLECTION */}
+        <div className="admin-card">
+          <h2>
+            <Layers /> New Collection
+          </h2>
+          <form onSubmit={handleCreateCollection}>
+            <input
+              placeholder="Title (e.g. VELVET NIGHTS)"
+              required
+              value={newColl.title}
+              onChange={(e) =>
+                setNewColl({ ...newColl, title: e.target.value })
+              }
+            />
+            <input
+              placeholder="Subtitle"
+              value={newColl.subtitle}
+              onChange={(e) =>
+                setNewColl({ ...newColl, subtitle: e.target.value })
+              }
+            />
+            <input
+              placeholder="Cover Image URL"
+              required
+              value={newColl.img}
+              onChange={(e) => setNewColl({ ...newColl, img: e.target.value })}
+            />
+            <button type="submit" className="admin-btn">
+              Create Collection
+            </button>
+          </form>
+        </div>
 
-        {/* LIVE LIST */}
-        <div className="admin-inventory-list">
-          <h3>Manage Live Products ({liveProducts.length})</h3>
-          {liveProducts.map((p) => (
-            <div key={p.id} className="inventory-item">
-              <img src={p.img} alt="" />
-              <div className="item-details">
-                <h4>{p.name}</h4>
-                <p>
-                  {p.category} | {p.price}
-                </p>
-                <div className="stock-ctrl">
-                  <span>Stock: {p.stock}</span>
-                  <button onClick={() => updateStock(p.id, 1)}>+</button>
-                  <button onClick={() => updateStock(p.id, -1)}>-</button>
-                </div>
-              </div>
-              <button
-                className="del-btn"
-                onClick={() => deleteDoc(doc(db, "products", p.id))}
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-          ))}
+        {/* SECTION 2: ADD PRODUCT */}
+        <div className="admin-card">
+          <h2>
+            <Package /> New Product
+          </h2>
+          <form onSubmit={handleAddProduct}>
+            <select
+              required
+              onChange={(e) =>
+                setNewProd({ ...newProd, collectionId: e.target.value })
+              }
+            >
+              <option value="">Select Collection</option>
+              {liveCollections.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+            <input
+              placeholder="Product Name"
+              required
+              onChange={(e) => setNewProd({ ...newProd, name: e.target.value })}
+            />
+            <input
+              placeholder="Price (Numeric: 1395)"
+              required
+              onChange={(e) =>
+                setNewProd({ ...newProd, price: e.target.value })
+              }
+            />
+            <input
+              placeholder="Main Image URL"
+              required
+              onChange={(e) => setNewProd({ ...newProd, img: e.target.value })}
+            />
+            <input
+              placeholder="Stock"
+              type="number"
+              required
+              onChange={(e) =>
+                setNewProd({ ...newProd, stock: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Description"
+              required
+              onChange={(e) =>
+                setNewProd({ ...newProd, description: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Sizes (comma separated)"
+              defaultValue="XS,S,M,L,XL"
+              onChange={(e) =>
+                setNewProd({ ...newProd, sizes: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Shipping Info"
+              onChange={(e) =>
+                setNewProd({ ...newProd, shippingInfo: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Return Policy"
+              onChange={(e) =>
+                setNewProd({ ...newProd, returnPolicy: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Manufacturing"
+              onChange={(e) =>
+                setNewProd({ ...newProd, manufacturing: e.target.value })
+              }
+            />
+            <textarea
+              placeholder="Details (one per line)"
+              onChange={(e) =>
+                setNewProd({ ...newProd, details: e.target.value })
+              }
+            />
+            <button type="submit" className="admin-btn publish">
+              Publish Product
+            </button>
+          </form>
         </div>
       </div>
     </div>

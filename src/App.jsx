@@ -62,7 +62,20 @@ function AppContent() {
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
-      <Toaster position="top-right" reverseOrder={false} />{" "}
+      
+      <Toaster
+        position="top-right" 
+        reverseOrder={false}
+        containerStyle={{
+          zIndex: 999999,  
+        }}
+        toastOptions={{
+         
+          style: {
+            zIndex: 999999,
+          },
+        }}
+      />
       {/* Notification Container */}
       {!isCollectionPage && (
         <>

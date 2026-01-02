@@ -171,9 +171,16 @@
 
 /* PRODUCT GRID STYLES */
 .cp-expanded-view {
-  height: 100vh;
-  overflow-y: auto;
+  position: fixed;
+  inset: 0;
   background: #fff;
+  z-index: 9999; /* Highest Z-index */
+  overflow-y: auto;
+}
+
+.cp-prod-link {
+  text-decoration: none;
+  color: #1a1a1a;
 }
 
 .cp-grid {
@@ -259,7 +266,7 @@
 }
 .action-btn.cart {
   flex: 1;
-  background: #000;
+  background: #860204; /* Restored Vanokhi Red */
   color: white;
   gap: 8px;
 }

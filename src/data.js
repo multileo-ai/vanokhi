@@ -128,4 +128,5 @@ Manufactured and Marketed by - VANOKHI, 1143, Rustomjee Eaze Zone Mall, Mumbai M
     manufacturing: "Country of Origin: India. Manufactured by VANOKHI.",
     details: ["Organic Cotton"],
   },
+  
 ];

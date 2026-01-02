@@ -25,32 +25,41 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [liveProducts, setLiveProducts] = useState([]); // Real-time products from Firebase
+  const [liveProducts, setLiveProducts] = useState([]);
+  const [liveCollections, setLiveCollections] = useState([]);
   const [userData, setUserData] = useState({
     cart: [],
     wishlist: [],
     profile: {},
-    isAdmin: false, // Default false
+    isAdmin: false,
   });
   const [loading, setLoading] = useState(true);
 
-  // 1. Sync Products and Auth in Real-time
+  // 1. Sync Products, Collections, and Auth in Real-time
   useEffect(() => {
-    // Listen to Products Collection
+    // Real-time listener for Products
     const unsubProds = onSnapshot(collection(db, "products"), (snapshot) => {
       const prods = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setLiveProducts(prods);
     });
 
-    // Listen to Auth State
+    // Real-time listener for Collections
+    const unsubColls = onSnapshot(collection(db, "collections"), (snapshot) => {
+      const colls = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setLiveCollections(colls);
+    });
+
+    // Listener for Auth State and User Profile
     const unsubAuth = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
+        // Sync user profile, cart, wishlist, and admin status
         onSnapshot(userDocRef, (docSnap) => {
           if (docSnap.exists()) {
             setUserData(docSnap.data());
           } else {
+            // Initialize new user document in Firestore if it doesn't exist
             const initialData = {
               cart: [],
               wishlist: [],
@@ -70,11 +79,12 @@ export function AuthProvider({ children }) {
 
     return () => {
       unsubProds();
+      unsubColls();
       unsubAuth();
     };
   }, []);
 
-  // Generic helper for updating database
+  // Generic helper for updating the current user's document
   const updateFirebase = async (newData) => {
     if (!currentUser) return;
     try {
@@ -93,7 +103,7 @@ export function AuthProvider({ children }) {
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
   const logout = () => signOut(auth);
 
-  // --- Cart Actions ---
+  // --- Cart Logic (Toggle & Increment) ---
   const addToCart = async (product, selectedColor = null) => {
     if (!currentUser) {
       toast.error("Please login to add items to your bag");
@@ -138,7 +148,7 @@ export function AuthProvider({ children }) {
     toast.error("Removed from Bag");
   };
 
-  // --- Wishlist Actions ---
+  // --- Wishlist Logic (Toggles Heart Red/Empty) ---
   const addToWishlist = async (product) => {
     if (!currentUser) {
       toast.error("Please login to save to wishlist");
@@ -183,25 +193,11 @@ export function AuthProvider({ children }) {
     toast.success("Moved to Bag");
   };
 
-  const moveToWishlistFromCart = async (item) => {
-    if (!currentUser) return;
-    const newCart = userData.cart.filter(
-      (c) => !(c.id === item.id && c.color === item.color)
-    );
-
-    let newWishlist = [...(userData.wishlist || [])];
-    if (!newWishlist.some((w) => w.id === item.id)) {
-      newWishlist.push(item);
-    }
-
-    await updateFirebase({ cart: newCart, wishlist: newWishlist });
-    toast.success("Moved to Wishlist");
-  };
-
   const value = {
     currentUser,
     userData,
-    liveProducts, // Real-time data from database
+    liveProducts,
+    liveCollections,
     login,
     signup,
     googleLogin,
@@ -212,7 +208,6 @@ export function AuthProvider({ children }) {
     removeFromCart,
     addToWishlist,
     moveWishlistToCart,
-    moveToWishlistFromCart,
     updateFirebase,
   };
 

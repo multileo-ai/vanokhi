@@ -24,13 +24,19 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { ALL_PRODUCTS } from "../data";
 import "./ProductPage.css";
 
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, addToWishlist, user, currentUser, userData } = useAuth();
+  const {
+    addToCart,
+    addToWishlist,
+    user,
+    currentUser,
+    userData,
+    liveProducts,
+  } = useAuth();
   const activeUser = user || currentUser;
 
   const [product, setProduct] = useState(null);
@@ -43,24 +49,30 @@ export default function ProductPage() {
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const isInWishlist = userData?.wishlist.some((w) => w.id === product?.id);
+  const isInWishlist = userData?.wishlist?.some((w) => w.id === product?.id);
 
   useEffect(() => {
-    const found = ALL_PRODUCTS.find((p) => p.id === parseInt(id));
-    if (found) {
-      setProduct(found);
-      setMainImg(found.img);
+    // 1. Wait for liveProducts to load from Firebase
+    if (liveProducts.length > 0) {
+      const found = liveProducts.find((p) => p.id === id);
+      if (found) {
+        setProduct(found);
+        setMainImg(found.img);
 
-      const q = query(
-        collection(db, `products/${id}/reviews`),
-        orderBy("createdAt", "desc")
-      );
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        setReviews(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-      });
-      return () => unsubscribe();
+        // 2. Fetch Reviews for this specific product string ID
+        const q = query(
+          collection(db, `products/${id}/reviews`),
+          orderBy("createdAt", "desc")
+        );
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          setReviews(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          );
+        });
+        return () => unsubscribe();
+      }
     }
-  }, [id]);
+  }, [id, liveProducts]);
 
   const handlePostReview = async (e) => {
     e.preventDefault();
@@ -80,6 +92,7 @@ export default function ProductPage() {
       setNewComment("");
       setNewRating(5);
     } catch (err) {
+      console.error("Firebase Error:", err);
       alert("Error posting review.");
     } finally {
       setSubmitting(false);
@@ -91,7 +104,7 @@ export default function ProductPage() {
 
   return (
     <div className="pdp-master-wrapper">
-      {/* 1. LEFT RAIL: Size selection */}
+      {/* 1. LEFT RAIL: VERTICAL SIZES */}
       <div className="pdp-left-rail">
         <button className="pdp-back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
@@ -99,7 +112,7 @@ export default function ProductPage() {
         <div className="pdp-rail-center-group">
           <span className="pdp-rail-label">SELECT SIZE</span>
           <div className="pdp-vertical-sizes">
-            {product.sizes.map((s) => (
+            {product.sizes?.map((s) => (
               <button
                 key={s}
                 className={`rail-size-btn ${
@@ -114,7 +127,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* 2. CENTER: Info & Tabs */}
+      {/* 2. CENTER: PRODUCT INFO */}
       <div className="pdp-center-info">
         <div className="pdp-static-header">
           <span className="pdp-brand">VANOKHI • LUXE</span>
@@ -158,7 +171,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="pdp-scroll-pane"
+                  className="tab-content-scroll"
                 >
                   <p className="pdp-text-content pre-wrap">
                     {product.description}
@@ -179,7 +192,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="pdp-scroll-pane"
+                  className="tab-content-scroll"
                 >
                   <div className="info-card">
                     <Truck size={18} />{" "}
@@ -198,7 +211,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="pdp-scroll-pane"
+                  className="tab-content-scroll"
                 >
                   <div className="info-card">
                     <Factory size={18} />{" "}
@@ -224,6 +237,7 @@ export default function ProductPage() {
                           fill={n <= newRating ? "#860204" : "none"}
                           color={n <= newRating ? "#860204" : "#ddd"}
                           onClick={() => setNewRating(n)}
+                          style={{ cursor: "pointer" }}
                         />
                       ))}
                     </div>
@@ -258,7 +272,7 @@ export default function ProductPage() {
                                 <User size={12} />
                               </div>
                             )}{" "}
-                            <span>{r.userName}</span>
+                            <span className="rev-name">{r.userName}</span>
                           </div>
                           <div className="rev-rating-stars">
                             {[...Array(5)].map((_, i) => (
