@@ -1,6 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { auth, db, googleProvider } from "../firebase"; // Ensure googleProvider is exported from firebase.js
-import { doc, setDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { auth, db, googleProvider } from "../firebase";
+import {
+  doc,
+  setDoc,
+  onSnapshot,
+  updateDoc,
+  collection,
+} from "firebase/firestore";
 import {
   onAuthStateChanged,
   signOut,
@@ -19,27 +25,37 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [liveProducts, setLiveProducts] = useState([]); // Real-time products from Firebase
   const [userData, setUserData] = useState({
     cart: [],
     wishlist: [],
     profile: {},
+    isAdmin: false, // Default false
   });
   const [loading, setLoading] = useState(true);
 
-  // Sync with Firestore in real-time
+  // 1. Sync Products and Auth in Real-time
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    // Listen to Products Collection
+    const unsubProds = onSnapshot(collection(db, "products"), (snapshot) => {
+      const prods = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setLiveProducts(prods);
+    });
+
+    // Listen to Auth State
+    const unsubAuth = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
-        onSnapshot(userDocRef, (doc) => {
-          if (doc.exists()) {
-            setUserData(doc.data());
+        onSnapshot(userDocRef, (docSnap) => {
+          if (docSnap.exists()) {
+            setUserData(docSnap.data());
           } else {
             const initialData = {
               cart: [],
               wishlist: [],
               profile: { firstName: "", lastName: "", phone: "" },
+              isAdmin: false,
             };
             setDoc(userDocRef, initialData);
             setUserData(initialData);
@@ -47,11 +63,15 @@ export function AuthProvider({ children }) {
         });
       } else {
         // Reset local data on logout
-        setUserData({ cart: [], wishlist: [], profile: {} });
+        setUserData({ cart: [], wishlist: [], profile: {}, isAdmin: false });
       }
       setLoading(false);
     });
-    return unsubscribe;
+
+    return () => {
+      unsubProds();
+      unsubAuth();
+    };
   }, []);
 
   // Generic helper for updating database
@@ -73,14 +93,14 @@ export function AuthProvider({ children }) {
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
   const logout = () => signOut(auth);
 
-  // --- Database Actions with Toast logic ---
+  // --- Cart Actions ---
   const addToCart = async (product, selectedColor = null) => {
     if (!currentUser) {
       toast.error("Please login to add items to your bag");
       return;
     }
 
-    let newCart = [...userData.cart];
+    let newCart = [...(userData.cart || [])];
     const existingIndex = newCart.findIndex(
       (item) => item.id === product.id && item.color === selectedColor
     );
@@ -118,41 +138,24 @@ export function AuthProvider({ children }) {
     toast.error("Removed from Bag");
   };
 
-  // const addToWishlist = async (product) => {
-  //   if (!currentUser) {
-  //     toast.error("Please login to save to wishlist");
-  //     return;
-  //   }
-
-  //   if (userData.wishlist.some((item) => item.id === product.id)) {
-  //     toast.error("Already in Wishlist");
-  //     return;
-  //   }
-
-  //   const newWishlist = [...userData.wishlist, product];
-  //   await updateFirebase({ wishlist: newWishlist });
-  //   toast.success("Added to Wishlist");
-  // };
-
+  // --- Wishlist Actions ---
   const addToWishlist = async (product) => {
     if (!currentUser) {
       toast.error("Please login to save to wishlist");
       return;
     }
 
-    const isAlreadyInWishlist = userData.wishlist.some(
+    const isAlreadyInWishlist = (userData.wishlist || []).some(
       (item) => item.id === product.id
     );
 
     let newWishlist;
     if (isAlreadyInWishlist) {
-      // Logic for TOGGLE OFF: Remove from wishlist
       newWishlist = userData.wishlist.filter((item) => item.id !== product.id);
       await updateFirebase({ wishlist: newWishlist });
-      toast.error("Removed from Wishlist"); // Feedback for removal
+      toast.error("Removed from Wishlist");
     } else {
-      // Logic for TOGGLE ON: Add to wishlist
-      newWishlist = [...userData.wishlist, product];
+      newWishlist = [...(userData.wishlist || []), product];
       await updateFirebase({ wishlist: newWishlist });
       toast.success("Added to Wishlist");
     }
@@ -186,8 +189,7 @@ export function AuthProvider({ children }) {
       (c) => !(c.id === item.id && c.color === item.color)
     );
 
-    // Only add if not already in wishlist
-    let newWishlist = [...userData.wishlist];
+    let newWishlist = [...(userData.wishlist || [])];
     if (!newWishlist.some((w) => w.id === item.id)) {
       newWishlist.push(item);
     }
@@ -199,6 +201,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     userData,
+    liveProducts, // Real-time data from database
     login,
     signup,
     googleLogin,
@@ -207,10 +210,10 @@ export function AuthProvider({ children }) {
     addToCart,
     updateCartQty,
     removeFromCart,
-    addToWishlist, 
+    addToWishlist,
     moveWishlistToCart,
     moveToWishlistFromCart,
-    updateFirebase, 
+    updateFirebase,
   };
 
   return (

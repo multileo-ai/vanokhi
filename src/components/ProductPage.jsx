@@ -1,3 +1,4 @@
+// src/components/ProductPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -79,7 +80,6 @@ export default function ProductPage() {
       setNewComment("");
       setNewRating(5);
     } catch (err) {
-      console.error("Firebase Error:", err);
       alert("Error posting review.");
     } finally {
       setSubmitting(false);
@@ -91,7 +91,7 @@ export default function ProductPage() {
 
   return (
     <div className="pdp-master-wrapper">
-      {/* 1. LEFT RAIL */}
+      {/* 1. LEFT RAIL: Size selection */}
       <div className="pdp-left-rail">
         <button className="pdp-back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
@@ -102,7 +102,9 @@ export default function ProductPage() {
             {product.sizes.map((s) => (
               <button
                 key={s}
-                className={`rail-size-btn ${selectedSize === s ? "active" : ""}`}
+                className={`rail-size-btn ${
+                  selectedSize === s ? "active" : ""
+                }`}
                 onClick={() => setSelectedSize(s)}
               >
                 {s}
@@ -112,7 +114,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* 2. CENTER INFO */}
+      {/* 2. CENTER: Info & Tabs */}
       <div className="pdp-center-info">
         <div className="pdp-static-header">
           <span className="pdp-brand">VANOKHI • LUXE</span>
@@ -153,24 +155,20 @@ export default function ProductPage() {
               {activeTab === "description" && (
                 <motion.div
                   key="desc"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="tab-content-scroll"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="pdp-scroll-pane"
                 >
-                  <div className="info-section">
-                    <h4 className="info-title">Product Description</h4>
-                    <p className="pdp-text-content pre-wrap">{product.description}</p>
-                  </div>
+                  <p className="pdp-text-content pre-wrap">
+                    {product.description}
+                  </p>
                   {product.details && (
-                    <div className="info-section">
-                      <h4 className="info-title">Key Details</h4>
-                      <ul className="details-list">
-                        {product.details.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="details-list">
+                      {product.details.map((d, i) => (
+                        <li key={i}>{d}</li>
+                      ))}
+                    </ul>
                   )}
                 </motion.div>
               )}
@@ -178,24 +176,18 @@ export default function ProductPage() {
               {activeTab === "shipping" && (
                 <motion.div
                   key="ship"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="tab-content-scroll"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="pdp-scroll-pane"
                 >
                   <div className="info-card">
-                    <Truck size={20} className="info-icon" />
-                    <div>
-                      <h4 className="info-title">Shipping & Exchange</h4>
-                      <p className="pdp-text-content pre-wrap">{product.shippingInfo}</p>
-                    </div>
+                    <Truck size={18} />{" "}
+                    <p className="pre-wrap">{product.shippingInfo}</p>
                   </div>
                   <div className="info-card">
-                    <ShieldCheck size={20} className="info-icon" />
-                    <div>
-                      <h4 className="info-title">Returns Policy</h4>
-                      <p className="pdp-text-content pre-wrap">{product.returnPolicy}</p>
-                    </div>
+                    <ShieldCheck size={18} />{" "}
+                    <p className="pre-wrap">{product.returnPolicy}</p>
                   </div>
                 </motion.div>
               )}
@@ -203,17 +195,14 @@ export default function ProductPage() {
               {activeTab === "manufacturing" && (
                 <motion.div
                   key="manuf"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="tab-content-scroll"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="pdp-scroll-pane"
                 >
                   <div className="info-card">
-                    <Factory size={20} className="info-icon" />
-                    <div>
-                      <h4 className="info-title">Manufacturing Excellence</h4>
-                      <p className="pdp-text-content pre-wrap">{product.manufacturing}</p>
-                    </div>
+                    <Factory size={18} />{" "}
+                    <p className="pre-wrap">{product.manufacturing}</p>
                   </div>
                 </motion.div>
               )}
@@ -235,13 +224,12 @@ export default function ProductPage() {
                           fill={n <= newRating ? "#860204" : "none"}
                           color={n <= newRating ? "#860204" : "#ddd"}
                           onClick={() => setNewRating(n)}
-                          style={{ cursor: "pointer" }}
                         />
                       ))}
                     </div>
                     <div className="input-with-send">
                       <textarea
-                        placeholder="Your feedback matters..."
+                        placeholder="Feedback..."
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                       />
@@ -258,44 +246,34 @@ export default function ProductPage() {
                       </button>
                     </div>
                   </div>
-
                   <div className="modern-review-list">
-                    {reviews.length > 0 ? (
-                      reviews.map((r) => (
-                        <div key={r.id} className="modern-review-msg">
-                          <div className="rev-msg-header">
-                            <div className="rev-user-meta">
-                              {r.userPhoto ? (
-                                <img src={r.userPhoto} alt="u" />
-                              ) : (
-                                <div className="user-icon-alt">
-                                  <User size={12} />
-                                </div>
-                              )}
-                              <span className="rev-name">{r.userName}</span>
-                            </div>
-                            <div className="rev-rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  size={10}
-                                  fill={i < r.rating ? "#860204" : "none"}
-                                  color={i < r.rating ? "#860204" : "#ddd"}
-                                />
-                              ))}
-                            </div>
+                    {reviews.map((r) => (
+                      <div key={r.id} className="modern-review-msg">
+                        <div className="rev-msg-header">
+                          <div className="rev-user-meta">
+                            {r.userPhoto ? (
+                              <img src={r.userPhoto} alt="u" />
+                            ) : (
+                              <div className="user-icon-alt">
+                                <User size={12} />
+                              </div>
+                            )}{" "}
+                            <span>{r.userName}</span>
                           </div>
-                          <p className="rev-msg-body">{r.comment}</p>
-                          <span className="rev-msg-date">
-                            {r.createdAt?.toDate().toLocaleDateString() || "Recently"}
-                          </span>
+                          <div className="rev-rating-stars">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={10}
+                                fill={i < r.rating ? "#860204" : "none"}
+                                color={i < r.rating ? "#860204" : "#ddd"}
+                              />
+                            ))}
+                          </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="empty-reviews">
-                        No reviews yet. Share your thoughts!
+                        <p className="rev-msg-body">{r.comment}</p>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </motion.div>
               )}
@@ -323,7 +301,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* 3. RIGHT GALLERY */}
+      {/* 3. RIGHT: GALLERY */}
       <div className="pdp-right-gallery">
         <div className="gallery-layout-horizontal">
           <div className="main-display-box">
@@ -342,7 +320,9 @@ export default function ProductPage() {
             {product.gallery?.map((img, i) => (
               <div
                 key={i}
-                className={`thumb-card-modern ${mainImg === img ? "active" : ""}`}
+                className={`thumb-card-modern ${
+                  mainImg === img ? "active" : ""
+                }`}
                 onClick={() => setMainImg(img)}
               >
                 <img src={img} alt="thumb" />
