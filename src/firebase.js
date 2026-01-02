@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore"; // Import Firestore for database
 import { getAnalytics } from "firebase/analytics"; // Ensure this is imported
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBG-MnVch2qmwHEqJ5bTya_jy2eAgfoGBg",
@@ -23,3 +24,4 @@ export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app); // Export the database for your cart/wishlist
 export const analytics =
   typeof window !== "undefined" ? getAnalytics(app) : null;
+export const storage = getStorage(app);

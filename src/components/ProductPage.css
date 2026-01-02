@@ -1,235 +1,346 @@
 /* src/components/ProductPage.css */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-.vanokhi-pdp-container {
-  background-color: #fff;
-  padding-top: 80px; /* Navbar space */
+.pdp-master-wrapper {
+  display: flex !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  background: #fff;
+  /* padding-top: 70px; */
+  font-family: "Montserrat", sans-serif !important;
 }
 
-.pdp-fixed-back {
-  position: fixed;
-  left: 40px;
-  top: 110px;
+/* 1. LEFT RAIL (Fixed & Centered Sizes) */
+.pdp-left-rail {
+  width: 120px;
+  height: 100%;
+  border-right: 1px solid #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: #fff;
+}
+
+.pdp-back-btn {
+  /* margin-top: 30px; */
   width: 50px;
   height: 50px;
   border-radius: 50%;
   border: 1px solid #eee;
-  background: white;
+  background: #fff;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 100;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
-.pdp-fixed-back:hover {
+.pdp-back-btn:hover {
   background: #860204;
-  color: white;
+  color: #fff;
+  border-color: #860204;
 }
 
-.pdp-layout-grid {
-  display: flex;
-  align-items: flex-start; /* CRITICAL FOR STICKY */
-}
-
-/* LEFT & CENTER PINNED WRAPPER */
-.pdp-pinned-content {
-  flex: 1; /* Takes up 50% roughly */
-  position: sticky;
-  top: 80px; /* Aligns with Navbar */
-  height: calc(100vh - 80px);
-  overflow: hidden;
-  background-color: #fdf8f2; /* Creamish background */
-}
-
-.pdp-sticky-wrapper {
-  display: flex;
-  height: 100%;
-}
-
-/* SIZE SIDEBAR */
-.pdp-size-sidebar {
-  width: 100px;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+.pdp-rail-center-group {
+  margin: auto 0; /* Centers the sizes vertically in the rail */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-.sidebar-label {
-  font-family: "myMontserrat";
-  font-size: 0.6rem;
+.pdp-rail-label {
+  font-size: 0.65rem;
+  font-weight: 700;
   letter-spacing: 4px;
-  color: #888;
+  color: #bbb;
   transform: rotate(-90deg);
-  margin-bottom: 60px;
+  margin-bottom: 70px;
   white-space: nowrap;
 }
 
-.size-vertical-list {
+.pdp-vertical-sizes {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-.v-size-btn {
-  width: 45px;
-  height: 45px;
-  border: 1px solid transparent;
+.rail-size-btn {
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid #eee;
   background: none;
-  font-family: "myMontserrat";
-  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: 0.3s;
+  color: #333;
 }
-.v-size-btn.active {
+.rail-size-btn.active {
   background: #1a1a1a;
-  color: white;
+  color: #fff;
+  border-color: #1a1a1a;
+  transform: scale(1.1);
 }
 
-/* CENTER MAIN INFO */
-.pdp-info-center {
-  flex: 1;
-  padding: 8% 10%;
+/* 2. CENTER INFO (Not Scrollable, but Reviews are) */
+.pdp-center-info {
+  flex: 1 !important;
+  background: #fdf8f2;
+  padding: 40px 5%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .pdp-brand {
-  font-family: "myMontserrat";
   font-size: 0.7rem;
-  letter-spacing: 3px;
+  font-weight: 700;
+  letter-spacing: 5px;
   color: #860204;
 }
 .pdp-title {
-  font-family: "Fragor";
-  font-size: 3.5rem;
+  font-family: "Fragor", serif;
+  font-size: 3rem;
   margin: 10px 0;
+  color: #1a1a1a;
   line-height: 1;
 }
 .pdp-price {
-  font-family: "myMontserrat";
-  font-size: 1.5rem;
-  color: #333;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 20px;
 }
 
-/* BLUE TABS UI */
-.pdp-blue-tabs {
-  margin: 40px 0;
-  border: 1px solid #dbeafe; /* Light blue border */
-  border-radius: 12px;
-  background: white;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-}
-
-.tabs-nav {
+.pdp-tabs-system {
+  background: #fff;
+  border: 1px solid #eef2ff;
+  border-radius: 16px;
   display: flex;
-  background: #f0f7ff;
-  border-bottom: 1px solid #dbeafe;
-}
-.tabs-nav button {
+  flex-direction: column;
   flex: 1;
-  padding: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  margin-bottom: 20px;
+}
+
+.tabs-header {
+  display: flex;
+  background: #f9fbff;
+  border-bottom: 1px solid #eef2ff;
+}
+.tabs-header button {
+  flex: 1;
+  padding: 20px;
   border: none;
   background: none;
-  font-family: "myMontserrat";
-  font-size: 0.7rem;
+  font-family: "Montserrat";
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
   opacity: 0.4;
+  transition: 0.3s;
 }
-.tabs-nav button.active {
+.tabs-header button.active {
   opacity: 1;
-  background: white;
   color: #860204;
-  font-weight: 700;
+  background: #fff;
 }
 
-.tabs-body {
-  padding: 25px;
-  min-height: 160px;
+.tabs-pane {
+  padding: 30px;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-.tab-content p,
-.tab-content li {
-  font-family: "myMontserrat";
-  font-size: 0.9rem;
-  line-height: 1.7;
+.pdp-text-content {
+  line-height: 1.8;
   color: #555;
+  font-size: 0.95rem;
 }
 
-.pdp-button-group {
+/* REVIEWS TAB SPECIFIC SCROLLING */
+.reviews-tab-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modern-post-review {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #f1f5f9;
+}
+.star-rating-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.input-with-send {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.input-with-send textarea {
+  flex: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 50px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: none;
+}
+.minimal-send-btn {
+  background: #860204;
+  color: #fff;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-review-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.modern-review-list::-webkit-scrollbar {
+  width: 4px;
+}
+.modern-review-list::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+
+.modern-review-msg {
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.rev-msg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.rev-user-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rev-user-meta img,
+.user-icon-alt {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f2f2f2;
+}
+.rev-name {
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #333;
+}
+.rev-msg-body {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.5;
+}
+.rev-msg-date {
+  font-size: 0.65rem;
+  color: #aaa;
+  display: block;
+  margin-top: 8px;
+}
+
+/* 3. RIGHT GALLERY (Vertical layout) */
+.pdp-right-gallery {
+  flex: 1.2 !important;
+  padding: 40px;
+  background: #fff;
+}
+.gallery-layout-horizontal {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+}
+.main-display-box {
+  flex: 1;
+  background: #fbfbfb;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.main-display-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumb-strip-right {
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.thumb-card-modern {
+  width: 90px;
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s;
+  opacity: 0.5;
+}
+.thumb-card-modern.active {
+  border-color: #860204;
+  opacity: 1;
+  transform: translateX(-5px);
+}
+.thumb-card-modern img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-fixed-actions {
   display: flex;
   gap: 15px;
+  margin-top: auto;
 }
-.pdp-btn-primary {
+.luxe-add-btn {
   flex: 1;
   background: #860204;
-  color: white;
+  color: #fff;
   border: none;
   padding: 22px;
-  font-family: "myMontserrat";
   font-weight: 700;
+  font-family: "Montserrat";
   letter-spacing: 2px;
   cursor: pointer;
 }
-.pdp-btn-wish {
+.luxe-wish-btn {
   width: 70px;
-  border: 1px solid #eee;
-  background: white;
-  cursor: pointer;
-}
-
-/* SCROLLING GALLERY (RIGHT) */
-.pdp-scroll-gallery {
-  flex: 1.2;
-  padding: 20px 40px;
-}
-
-.image-stack-scroll {
+  border: 1px solid #ddd;
+  background: #fff;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.stack-item img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.scroll-spacer {
-  height: 100px;
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 1024px) {
-  .pdp-layout-grid {
-    flex-direction: column;
-  }
-  .pdp-pinned-content {
-    position: relative;
-    height: auto;
-    top: 0;
-  }
-  .pdp-sticky-wrapper {
-    flex-direction: column;
-  }
-  .pdp-size-sidebar {
-    width: 100%;
-    border: none;
-    padding: 20px;
-    flex-direction: row;
-  }
-  .size-vertical-list {
-    flex-direction: row;
-  }
-  .sidebar-label {
-    transform: none;
-    margin: 0 20px 0 0;
-  }
-  .pdp-scroll-gallery {
-    padding: 20px;
-  }
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }

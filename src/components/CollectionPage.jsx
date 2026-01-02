@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { useAuth } from "../context/AuthContext";
 import { ALL_PRODUCTS } from "../data"; // Import shared data
 import "./CollectionPage.css";
+import AverageRating from "./AverageRating";
 
 const COLLECTIONS = [
   {
@@ -105,6 +106,8 @@ const CollectionPage = () => {
                         <h3>{item.name}</h3>
                       </Link>
                       <p className="cp-price">{item.price}</p>
+                      {/* Add this line */}
+                      <AverageRating productId={item.id} />
                     </div>
                   </div>
                 );
