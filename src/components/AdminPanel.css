@@ -1,3 +1,4 @@
+/* --- ORIGINAL STYLES (UNTOUCHED AS REQUESTED) --- */
 .admin-page {
   padding: 120px 5% 50px;
   background: #fdf8f2;
@@ -59,5 +60,272 @@
 @media (max-width: 900px) {
   .admin-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* --- ENHANCED INVENTORY MANAGER & UPDATE UI --- */
+
+/* Header Area */
+.admin-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.admin-header h1 {
+  font-family: "Bodoni Moda", serif;
+  font-size: 3rem;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+.admin-header p {
+  color: #888;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Glassmorphism for the Management Section */
+.glass-morph {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Search Bar Improvement */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 18px;
+  border-radius: 14px;
+  gap: 12px;
+  margin-bottom: 25px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+.search-bar input {
+  border: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  width: 100%;
+  font-size: 0.95rem;
+  background: transparent !important;
+}
+
+/* Inventory List Styling */
+.product-list-mini {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.product-list-mini::-webkit-scrollbar {
+  width: 4px;
+}
+.product-list-mini::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+.mini-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mini-item:hover {
+  border-color: #860204;
+  transform: translateX(8px);
+  box-shadow: 0 10px 20px rgba(134, 2, 4, 0.05);
+}
+.mini-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-right: 15px;
+  background: #f9f9f9;
+}
+.item-info {
+  flex: 1;
+}
+.item-info span {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+.item-info small {
+  color: #888;
+  font-size: 0.8rem;
+  font-family: "Lora", serif;
+}
+
+/* Action Buttons */
+.item-actions {
+  display: flex;
+  gap: 8px;
+}
+.item-actions button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.edit-icon {
+  background: #f0f0f0;
+  color: #1a1a1a;
+}
+.edit-icon:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+.delete-icon {
+  background: #fff1f1;
+  color: #860204;
+}
+.delete-icon:hover {
+  background: #860204;
+  color: #fff;
+}
+
+/* --- UPDATE MODAL OVERLAY --- */
+.edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.edit-modal {
+  width: 100%;
+  max-width: 850px;
+  max-height: 90vh;
+  padding: 40px !important;
+  border-radius: 30px !important;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3) !important;
+  animation: modalIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.modal-header h2 {
+  margin-bottom: 0 !important;
+  font-size: 1.5rem !important;
+}
+
+.close-btn {
+  background: #f5f5f5;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  background: #860204;
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* Structured Form in Modal */
+.edit-form-scroll {
+  overflow-y: auto;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.edit-form-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.edit-form-scroll::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.input-group label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+.edit-form-scroll textarea {
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.admin-btn.update {
+  background: #1a1a1a;
+  width: 100%;
+  margin-top: 20px;
+  padding: 18px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 12px;
+}
+.admin-btn.update:hover {
+  background: #000;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 650px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .edit-modal {
+    padding: 25px !important;
   }
 }
