@@ -1,0 +1,70 @@
+* {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.all-products-container {
+  padding: 4rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.swiper_container {
+  height: 52rem;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.swiper-slide {
+  width: 37rem;
+  height: 42rem;
+  position: relative;
+  /* Grayscale effect for inactive slides */
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+/* Only the active slide is colorful */
+.swiper-slide-active {
+  filter: grayscale(0%);
+}
+
+.product-slide-content img {
+  width: 37rem;
+  height: 42rem;
+  border-radius: 2rem;
+  object-fit: cover;
+  /* Removed all shadows as requested for PNG compatibility */
+  box-shadow: none !important;
+}
+
+.product-details-overlay {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.product-details-overlay h3 {
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.product-details-overlay p {
+  color: #860204;
+  font-weight: 600;
+}
+
+/* Adjustments for the arrows - removed drop-shadows */
+.slider-controler {
+  position: relative;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-arrow {
+  cursor: pointer;
+  /* Removed drop-shadow */
+  filter: none !important;
+}

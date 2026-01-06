@@ -86,6 +86,13 @@ const MiniNav = () => {
     </div>
   );
 
+  // Helper function to handle routing logic
+  const getPath = (item) => {
+    if (item === "Collections") return "/collections";
+    if (item === "All Products") return "/all-products";
+    return "/";
+  };
+
   return (
     <>
       <div className="mini-nav" role="navigation">
@@ -106,7 +113,7 @@ const MiniNav = () => {
             {menuItems.map((item, index) => (
               <li key={index} className="mini-link-item">
                 <Link
-                  to={item === "Collections" ? "/collections" : "/"}
+                  to={getPath(item)} // Use helper for correct pathing
                   className="nav-route-link"
                 >
                   {item}
@@ -126,7 +133,7 @@ const MiniNav = () => {
               {menuItems.map((item, i) => (
                 <li key={i}>
                   <Link
-                    to={item === "Collections" ? "/collections" : "/"}
+                    to={getPath(item)} // Use helper for correct pathing
                     className="mini-link-nav"
                     onClick={() => setOpen(false)}
                   >

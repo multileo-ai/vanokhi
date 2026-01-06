@@ -1,0 +1,74 @@
+.policy-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999;
+  padding: 20px;
+}
+
+.policy-modal {
+  background: #fff;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-top: 4px solid #860204;
+}
+
+.policy-modal-header {
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.policy-modal-header h2 {
+  font-family: "Bodoni Moda", serif;
+  color: #860204;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.policy-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.policy-modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  font-family: "Work Sans", sans-serif;
+  line-height: 1.6;
+  color: #444;
+}
+
+.policy-text-content {
+  white-space: pre-wrap;
+  font-size: 1rem;
+}
+
+.policy-modal-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.policy-accept-btn {
+  background: #860204;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 1px;
+}
