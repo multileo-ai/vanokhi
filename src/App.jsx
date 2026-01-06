@@ -62,15 +62,13 @@ function AppContent() {
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
-      
       <Toaster
-        position="top-right" 
+        position="top-right"
         reverseOrder={false}
         containerStyle={{
-          zIndex: 999999,  
+          zIndex: 999999,
         }}
         toastOptions={{
-         
           style: {
             zIndex: 999999,
           },
@@ -123,9 +121,7 @@ function AppContent() {
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
                 <li>Email: support@nishorama.com</li>
-                <li>Mob: +91 9511948736</li>
-                <li>Opening Hours: Mon to Sat: 10:30 AM - 6:30 PM</li>
-                <li>Most Wanted</li>
+                {/* <li>Mob: +91 9511948736</li> */}
               </ul>
             </div>
 
@@ -136,7 +132,6 @@ function AppContent() {
                 <li>About Us</li>
                 <li>FAQ'S</li>
                 <li>Return/Exchange My Order</li>
-                <li>Return and Exchnage Policy</li>
               </ul>
             </div>
 
@@ -146,6 +141,7 @@ function AppContent() {
               <ul>
                 <li>Privacy Policy</li>
                 <li>Shipping & Delivery Policy</li>
+                <li>Return and Exchnage Policy</li>
                 <li>Terms of Service</li>
               </ul>
             </div>

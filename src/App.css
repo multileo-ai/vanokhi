@@ -283,6 +283,7 @@ video {
   position: relative;
   font-weight: 700;
   line-height: 1.4;
+  margin-bottom: 30px;
 }
 
 .footer-column h3::after {

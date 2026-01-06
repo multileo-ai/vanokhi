@@ -1,4 +1,4 @@
-/* --- ORIGINAL STYLES (UNTOUCHED AS REQUESTED) --- */
+/* --- ORIGINAL STYLES --- */
 .admin-page {
   padding: 120px 5% 50px;
   background: #fdf8f2;
@@ -57,155 +57,96 @@
   transform: translateY(-2px);
 }
 
-@media (max-width: 900px) {
-  .admin-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* --- ENHANCED INVENTORY MANAGER & UPDATE UI --- */
-
-/* Header Area */
-.admin-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
+/* --- NEW TAB & MANAGEMENT UI --- */
 .admin-header h1 {
   font-family: "Bodoni Moda", serif;
-  font-size: 3rem;
-  color: #1a1a1a;
-  letter-spacing: -1px;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
 }
-.admin-header p {
-  color: #888;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-/* Glassmorphism for the Management Section */
-.glass-morph {
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Search Bar Improvement */
-.search-bar {
+.admin-tabs {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+.admin-tabs button {
   background: #fff;
-  padding: 14px 18px;
-  border-radius: 14px;
-  gap: 12px;
-  margin-bottom: 25px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-}
-.search-bar input {
-  border: none !important;
-  outline: none !important;
-  padding: 0 !important;
-  width: 100%;
-  font-size: 0.95rem;
-  background: transparent !important;
-}
-
-/* Inventory List Styling */
-.product-list-mini {
-  max-height: 520px;
-  overflow-y: auto;
-  padding-right: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.product-list-mini::-webkit-scrollbar {
-  width: 4px;
-}
-.product-list-mini::-webkit-scrollbar-thumb {
-  background: #e0e0e0;
-  border-radius: 10px;
-}
-
-.mini-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.mini-item:hover {
-  border-color: #860204;
-  transform: translateX(8px);
-  box-shadow: 0 10px 20px rgba(134, 2, 4, 0.05);
-}
-.mini-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  object-fit: cover;
-  margin-right: 15px;
-  background: #f9f9f9;
-}
-.item-info {
-  flex: 1;
-}
-.item-info span {
-  display: block;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #1a1a1a;
-  margin-bottom: 2px;
-}
-.item-info small {
-  color: #888;
-  font-size: 0.8rem;
-  font-family: "Lora", serif;
-}
-
-/* Action Buttons */
-.item-actions {
-  display: flex;
-  gap: 8px;
-}
-.item-actions button {
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
+  border: 1px solid #eee;
+  padding: 12px 25px;
+  border-radius: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: 0.2s;
+  gap: 10px;
+  font-weight: 600;
+  transition: 0.3s;
 }
-.edit-icon {
-  background: #f0f0f0;
-  color: #1a1a1a;
-}
-.edit-icon:hover {
-  background: #1a1a1a;
-  color: #fff;
-}
-.delete-icon {
-  background: #fff1f1;
-  color: #860204;
-}
-.delete-icon:hover {
+.admin-tabs button.active {
   background: #860204;
   color: #fff;
+  border-color: #860204;
+  box-shadow: 0 5px 15px rgba(134, 2, 4, 0.2);
 }
 
-/* --- UPDATE MODAL OVERLAY --- */
+.glass-morph {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Inventory Alert UI */
+.low-stock-alert {
+  border-left: 5px solid #ff4d4d !important;
+  background: #fff8f8 !important;
+}
+.stock-tag {
+  color: #ff4d4d;
+  font-size: 0.7rem;
+  margin-left: 10px;
+  letter-spacing: 1px;
+}
+
+/* Orders Styling */
+.admin-orders-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.order-card {
+  padding: 25px;
+  border-radius: 20px;
+}
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.status-select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  border: none;
+}
+.status-select.Processing {
+  background: #fff4e5;
+  color: #ff9800;
+}
+.status-select.Shipped {
+  background: #e8f4fd;
+  color: #2196f3;
+}
+.status-select.Delivered {
+  background: #edf7ed;
+  color: #4caf50;
+}
+
+/* Edit Modal Overlay */
 .edit-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
   z-index: 3000;
   display: flex;
   justify-content: center;
@@ -214,118 +155,67 @@
 }
 .edit-modal {
   width: 100%;
-  max-width: 850px;
+  max-width: 700px;
   max-height: 90vh;
+  overflow-y: auto;
   padding: 40px !important;
   border-radius: 30px !important;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3) !important;
-  animation: modalIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
-.modal-header h2 {
-  margin-bottom: 0 !important;
-  font-size: 1.5rem !important;
-}
-
 .close-btn {
   background: #f5f5f5;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Misc UI */
+.full-width {
+  grid-column: 1 / -1;
+}
+.search-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  gap: 10px;
+  background: #f9f9f9;
+  padding: 10px 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.search-bar input {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  width: 100%;
+}
+.product-list-mini {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mini-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
   transition: 0.3s;
 }
-.close-btn:hover {
-  background: #860204;
-  color: #fff;
-  transform: rotate(90deg);
-}
-
-/* Structured Form in Modal */
-.edit-form-scroll {
-  overflow-y: auto;
-  padding-right: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.edit-form-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.edit-form-scroll::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 10px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.input-group label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #aaa;
-  letter-spacing: 1px;
-}
-
-.edit-form-scroll textarea {
-  min-height: 80px;
-  line-height: 1.5;
-}
-
-.admin-btn.update {
-  background: #1a1a1a;
-  width: 100%;
-  margin-top: 20px;
-  padding: 18px;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border-radius: 12px;
-}
-.admin-btn.update:hover {
-  background: #000;
-  letter-spacing: 1px;
-}
-
-@media (max-width: 650px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  .edit-modal {
-    padding: 25px !important;
-  }
+.mini-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
 }
