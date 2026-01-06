@@ -4,18 +4,16 @@ import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { ALL_PRODUCTS } from "../data";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import "./AllProducts.css";
 
 const AllProducts = () => {
   return (
     <div className="all-products-container">
-      <h1 className="heading">Our Collection</h1>
+      <h1 className="heading">All Products</h1>
 
       <Swiper
         effect={"coverflow"}
@@ -28,6 +26,7 @@ const AllProducts = () => {
           stretch: 0,
           depth: 100,
           modifier: 2.5,
+          slideShadows: false, // CRITICAL: This removes the black boxes
         }}
         pagination={{ el: ".swiper-pagination", clickable: true }}
         navigation={{
@@ -42,7 +41,6 @@ const AllProducts = () => {
           <SwiperSlide key={product.id}>
             <div className="product-slide-content">
               <Link to={`/product/${product.id}`}>
-                {/* Ensure the data.js uses product.img or update the key here */}
                 <img src={product.pngimg} alt={product.name} />
               </Link>
               <div className="product-details-overlay">
@@ -54,11 +52,11 @@ const AllProducts = () => {
         ))}
 
         {/* <div className="slider-controler">
-          <div className="swiper-button-prev slider-arrow">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </div>
           <div className="swiper-button-next slider-arrow">
-            <ion-icon name="arrow-forward-outline"></ion-icon>
+             <ion-icon name="arrow-forward-outline"></ion-icon>
+          </div>
+          <div className="swiper-button-prev slider-arrow">
+             <ion-icon name="arrow-back-outline"></ion-icon>
           </div>
           <div className="swiper-pagination"></div>
         </div> */}

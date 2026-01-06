@@ -130,7 +130,27 @@ function AppContent() {
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
                 <li>Email: support@nishorama.com</li>
-                {/* <li>Mob: +91 9511948736</li> */}
+                <li className="social-links">
+                  <a
+                    href="https://www.instagram.com/vanokhi.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <img
+                      src="/instagram.png"
+                      alt="Instagram"
+                      style={{ width: "24px", height: "24px" }}
+                    />
+                    @vanokhi.in
+                  </a>
+                </li>
               </ul>
             </div>
 
