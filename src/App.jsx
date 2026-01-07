@@ -1,3 +1,4 @@
+/* src/App.jsx */
 import React, { useState, useEffect, useRef } from "react";
 import {
   BrowserRouter as Router,
@@ -17,9 +18,8 @@ import Category from "./components/Category";
 import NewArivals from "./components/NewArivals";
 import InstagramGrid from "./components/InstagramGrid";
 import TestimonialsGrid from "./components/TestimonialsGrid";
-import ImageTrail from "./components/ImageTrail";
 import CollectionPage from "./components/CollectionPage";
-import { Toaster } from "react-hot-toast"; // For the right-side notifications
+import { Toaster } from "react-hot-toast";
 import WishlistPage from "./components/WishlistPage";
 import SettingsPage from "./components/SettingsPage";
 import ProductPage from "./components/ProductPage";
@@ -44,8 +44,9 @@ const HomePage = ({
       <Category />
     </div>
     <NewArivals />
-    <InstagramGrid />
+    {/* This section triggers the navbar to disappear */}
     <div ref={hideSectionRef}>
+      <InstagramGrid />
       <TestimonialsGrid />
     </div>
   </>
@@ -53,6 +54,9 @@ const HomePage = ({
 
 function AppContent() {
   const [activePolicy, setActivePolicy] = useState(null);
+  const [navHidden, setNavHidden] = useState(false);
+  const [navWhite, setNavWhite] = useState(false);
+
   const location = useLocation();
   const isCollectionPage = location.pathname === "/collections";
 
@@ -63,20 +67,31 @@ function AppContent() {
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (whiteSectionRef.current && hideSectionRef.current) {
+        const whiteRect = whiteSectionRef.current.getBoundingClientRect();
+        const hideRect = hideSectionRef.current.getBoundingClientRect();
+
+        // 1. Color Logic: White when the BrandStoryPage is in view
+        // Adjust the offset (100) if you want it to trigger exactly when hitting the top
+        const isHeaderInWhiteSection =
+          whiteRect.top <= 80 && whiteRect.bottom >= 0;
+        setNavWhite(isHeaderInWhiteSection);
+
+        // 2. Visibility Logic: Hide when we reach the Instagram Grid (hideSectionRef)
+        const hasReachedInstagram = hideRect.top <= 80;
+        setNavHidden(hasReachedInstagram);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        containerStyle={{
-          zIndex: 999999,
-        }}
-        toastOptions={{
-          style: {
-            zIndex: 999999,
-          },
-        }}
-      />
+      <Toaster position="top-right" containerStyle={{ zIndex: 999999 }} />
 
       <PolicyModal
         isOpen={!!activePolicy}
@@ -84,13 +99,13 @@ function AppContent() {
         policyTitle={activePolicy}
       />
 
-      {/* Notification Container */}
       {!isCollectionPage && (
         <>
-          <Navbar isWhite={false} isHidden={false} />
+          <Navbar isWhite={navWhite} isHidden={navHidden} />
           <MiniNav />
         </>
       )}
+
       <Routes>
         <Route
           path="/"
@@ -110,9 +125,9 @@ function AppContent() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
+
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
-          <div className="footer-trail-wrapper">{/* <ImageTrail /> */}</div>
           <div className="footer-glow" />
           <div className="footer-header">
             <h1 className="vanokhi-logo">Vanokhi</h1>
@@ -130,31 +145,23 @@ function AppContent() {
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
                 <li>Email: support@nishorama.com</li>
-                <li className="social-links">
-                  <a
-                    href="https://www.instagram.com/vanokhi.in/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                      color: "inherit",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <img
-                      src="/instagram.png"
-                      alt="Instagram"
-                      style={{ width: "24px", height: "24px" }}
-                    />
-                    @vanokhi.in
-                  </a>
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: "10px",
+                  }}
+                >
+                  <img
+                    src="/instagram.png"
+                    alt="Insta"
+                    style={{ width: "20px" }}
+                  />
+                  @vanokhi_official
                 </li>
               </ul>
             </div>
-
-            {/* SUPPORT Section */}
             <div className="footer-column">
               <h3>SUPPORT</h3>
               <ul>
@@ -163,8 +170,6 @@ function AppContent() {
                 <li>Return/Exchange My Order</li>
               </ul>
             </div>
-
-            {/* POLICIES Section */}
             <div className="footer-column">
               <h3>POLICIES</h3>
               <ul>

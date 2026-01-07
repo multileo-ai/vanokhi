@@ -2,23 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Heart,
-  ShoppingBag,
-  ArrowLeft,
-  Star,
-  Send,
-  Loader2,
-  User,
-  Truck,
-  ShieldCheck,
-  Factory,
-} from "lucide-react";
+import { Star, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import {
   collection,
   addDoc,
+  deleteDoc,
+  doc,
   onSnapshot,
   query,
   orderBy,
@@ -29,19 +20,12 @@ import "./ProductPage.css";
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    addToCart,
-    addToWishlist,
-    user,
-    currentUser,
-    userData,
-    liveProducts,
-  } = useAuth();
+  const { addToCart, user, currentUser, liveProducts } = useAuth();
   const activeUser = user || currentUser;
 
   const [product, setProduct] = useState(null);
   const [mainImg, setMainImg] = useState("");
-  const [activeTab, setActiveTab] = useState("description");
+  const [activeTab, setActiveTab] = useState("Description");
   const [selectedSize, setSelectedSize] = useState("M");
 
   const [reviews, setReviews] = useState([]);
@@ -49,17 +33,14 @@ export default function ProductPage() {
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const isInWishlist = userData?.wishlist?.some((w) => w.id === product?.id);
-
   useEffect(() => {
-    // 1. Wait for liveProducts to load from Firebase
     if (liveProducts.length > 0) {
       const found = liveProducts.find((p) => p.id === id);
       if (found) {
         setProduct(found);
-        setMainImg(found.img);
+        // prefer gallery first, then img field, then fallback placeholder
+        setMainImg(found.gallery?.[0] || found.img || "/img_1.png");
 
-        // 2. Fetch Reviews for this specific product string ID
         const q = query(
           collection(db, `products/${id}/reviews`),
           orderBy("createdAt", "desc")
@@ -76,7 +57,7 @@ export default function ProductPage() {
 
   const handlePostReview = async (e) => {
     e.preventDefault();
-    if (!activeUser) return alert("Please login via Google to post a review.");
+    if (!activeUser) return alert("Please login to post a review.");
     if (!newComment.trim()) return alert("Please write a comment.");
 
     setSubmitting(true);
@@ -87,263 +68,238 @@ export default function ProductPage() {
         comment: newComment,
         createdAt: serverTimestamp(),
         userId: activeUser.uid,
-        userPhoto: activeUser.photoURL || null,
       });
       setNewComment("");
       setNewRating(5);
     } catch (err) {
       console.error("Firebase Error:", err);
-      alert("Error posting review.");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    if (!activeUser) return alert("Please login to delete your review.");
+    try {
+      await deleteDoc(doc(db, `products/${id}/reviews/${reviewId}`));
+    } catch (err) {
+      console.error("Firebase Error (delete):", err);
     }
   };
 
   if (!product)
     return <div className="vanokhi-loader">Loading Excellence...</div>;
 
+  const tabs = ["Description", "Shipping", "Manufacturing"];
+  const tabContent = {
+    Description: product.description,
+    Shipping: product.shippingInfo || "Free standard shipping on all orders.",
+    Manufacturing:
+      product.manufacturing || "Handcrafted with premium materials.",
+  };
+
   return (
-    <div className="pdp-master-wrapper">
-      {/* 1. LEFT RAIL: VERTICAL SIZES */}
-      <div className="pdp-left-rail">
-        <button className="pdp-back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={22} />
-        </button>
-        <div className="pdp-rail-center-group">
-          <span className="pdp-rail-label">SELECT SIZE</span>
-          <div className="pdp-vertical-sizes">
-            {product.sizes?.map((s) => (
+    <div className="pdWrapper">
+      {/* 100% Matching Header Text */}
+      {/* show collection/category in the large faded heading like reference */}
+      <h1 className="prodName">{product.name}</h1>
+
+      <div className="prodMainCont">
+        {/* 1. SIZES SECTION */}
+        <div className="sizes">
+          {product.sizes?.map((sz) => (
+            <div
+              key={sz}
+              className={`size ${selectedSize === sz ? "selected" : ""}`}
+              onClick={() => setSelectedSize(sz)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") setSelectedSize(sz);
+              }}
+              aria-pressed={selectedSize === sz}
+            >
+              <p>{sz}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 2. DESCRIPTION SECTION */}
+        <div className="descWrapper">
+          <div className="prodDesc">
+            <div className="descLabel">— DETAILS</div>
+            <h2 className="descTitle">{product.name}</h2>
+            <p className="descText">{tabContent[activeTab]}</p>
+            <div className="price">
+              {product.price} <span className="currency">INR</span>
+            </div>
+
+            {/* Added Add to Bag Button styled exactly like the reference primary btn */}
+            <div
+              className="reviewActions"
+              style={{ justifyContent: "flex-start", marginTop: "20px" }}
+            >
               <button
-                key={s}
-                className={`rail-size-btn ${
-                  selectedSize === s ? "active" : ""
-                }`}
-                onClick={() => setSelectedSize(s)}
+                className="btnPrimary"
+                onClick={() => addToCart(product, selectedSize)}
               >
-                {s}
+                Add to Bag
+              </button>
+            </div>
+          </div>
+
+          <div className="infoTabs" role="region">
+            <div className="tabButtons" role="tablist">
+              {tabs.map((t) => (
+                <button
+                  key={t}
+                  role="tab"
+                  aria-selected={activeTab === t}
+                  tabIndex={0}
+                  className={`tabButton ${activeTab === t ? "active" : ""}`}
+                  onClick={() => setActiveTab(t)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") setActiveTab(t);
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 3. GALLERY SECTION */}
+        <div className="gallery">
+          <div className="mainImage">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={mainImg}
+                src={"/img_1.png"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.24 }}
+                alt={product.name}
+              />
+            </AnimatePresence>
+          </div>
+
+          <div className="thumbs">
+            {product.gallery?.map((img, i) => (
+              <button
+                key={i}
+                className={`thumb ${mainImg === img ? "active" : ""}`}
+                onClick={() => setMainImg(img)}
+                tabIndex={0}
+                aria-pressed={mainImg === img}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") setMainImg(img);
+                }}
+              >
+                <img src={img} alt={`Thumbnail ${i}`} />
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* 2. CENTER: PRODUCT INFO */}
-      <div className="pdp-center-info">
-        <div className="pdp-static-header">
-          <span className="pdp-brand">VANOKHI • LUXE</span>
-          <h1 className="pdp-title">{product.name}</h1>
-          <p className="pdp-price">{product.price}</p>
-        </div>
+      {/* REVIEWS SECTION - EXACT REPLICATION */}
+      <div className="reviewsSection">
+        <h3 className="reviewsTitle">Customer Reviews</h3>
 
-        <div className="pdp-tabs-system">
-          <div className="tabs-header">
-            <button
-              className={activeTab === "description" ? "active" : ""}
-              onClick={() => setActiveTab("description")}
-            >
-              Description
-            </button>
-            <button
-              className={activeTab === "shipping" ? "active" : ""}
-              onClick={() => setActiveTab("shipping")}
-            >
-              Shipping
-            </button>
-            <button
-              className={activeTab === "manufacturing" ? "active" : ""}
-              onClick={() => setActiveTab("manufacturing")}
-            >
-              Manufacturing
-            </button>
-            <button
-              className={activeTab === "reviews" ? "active" : ""}
-              onClick={() => setActiveTab("reviews")}
-            >
-              Reviews ({reviews.length})
-            </button>
+        <form className="reviewForm" onSubmit={handlePostReview}>
+          <div className="reviewLeft">
+            <div className="avatar small">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="3.2" />
+                <path d="M4 20c0-3.3 3.1-6 8-6s8 2.7 8 6" />
+              </svg>
+            </div>
           </div>
-
-          <div className="tabs-pane">
-            <AnimatePresence mode="wait">
-              {activeTab === "description" && (
-                <motion.div
-                  key="desc"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="tab-content-scroll"
+          <div className="reviewRight">
+            <div className="ratingInput">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  type="button"
+                  key={n}
+                  className={`star ${newRating >= n ? "on" : ""}`}
+                  onClick={() => setNewRating(n)}
                 >
-                  <p className="pdp-text-content pre-wrap">
-                    {product.description}
-                  </p>
-                  {product.details && (
-                    <ul className="details-list">
-                      {product.details.map((d, i) => (
-                        <li key={i}>{d}</li>
-                      ))}
-                    </ul>
-                  )}
-                </motion.div>
-              )}
-
-              {activeTab === "shipping" && (
-                <motion.div
-                  key="ship"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="tab-content-scroll"
-                >
-                  <div className="info-card">
-                    <Truck size={18} />{" "}
-                    <p className="pre-wrap">{product.shippingInfo}</p>
-                  </div>
-                  <div className="info-card">
-                    <ShieldCheck size={18} />{" "}
-                    <p className="pre-wrap">{product.returnPolicy}</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {activeTab === "manufacturing" && (
-                <motion.div
-                  key="manuf"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="tab-content-scroll"
-                >
-                  <div className="info-card">
-                    <Factory size={18} />{" "}
-                    <p className="pre-wrap">{product.manufacturing}</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {activeTab === "reviews" && (
-                <motion.div
-                  key="rev"
-                  className="reviews-tab-container"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <div className="modern-post-review">
-                    <div className="star-rating-row">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <Star
-                          key={n}
-                          size={20}
-                          fill={n <= newRating ? "#860204" : "none"}
-                          color={n <= newRating ? "#860204" : "#ddd"}
-                          onClick={() => setNewRating(n)}
-                          style={{ cursor: "pointer" }}
-                        />
-                      ))}
-                    </div>
-                    <div className="input-with-send">
-                      <textarea
-                        placeholder="Feedback..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                      />
-                      <button
-                        className="minimal-send-btn"
-                        onClick={handlePostReview}
-                        disabled={submitting}
-                      >
-                        {submitting ? (
-                          <Loader2 className="animate-spin" size={18} />
-                        ) : (
-                          <Send size={18} />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="modern-review-list">
-                    {reviews.map((r) => (
-                      <div key={r.id} className="modern-review-msg">
-                        <div className="rev-msg-header">
-                          <div className="rev-user-meta">
-                            {r.userPhoto ? (
-                              <img src={r.userPhoto} alt="u" />
-                            ) : (
-                              <div className="user-icon-alt">
-                                <User size={12} />
-                              </div>
-                            )}{" "}
-                            <span className="rev-name">{r.userName}</span>
-                          </div>
-                          <div className="rev-rating-stars">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                size={10}
-                                fill={i < r.rating ? "#860204" : "none"}
-                                color={i < r.rating ? "#860204" : "#ddd"}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="rev-msg-body">{r.comment}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        <div className="pdp-fixed-actions">
-          <button
-            className="luxe-add-btn"
-            onClick={() => addToCart(product, product.colors[0])}
-          >
-            ADD TO BAG
-          </button>
-          <button
-            className={`luxe-wish-btn ${isInWishlist ? "active" : ""}`}
-            onClick={() => addToWishlist(product)}
-          >
-            <Heart
-              size={22}
-              fill={isInWishlist ? "#ff0000" : "none"}
-              color={isInWishlist ? "#ff0000" : "currentColor"}
+                  ★
+                </button>
+              ))}
+            </div>
+            <textarea
+              className="reviewInput"
+              placeholder="Write your review..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              rows={3}
             />
-          </button>
-        </div>
-      </div>
-
-      {/* 3. RIGHT: GALLERY */}
-      <div className="pdp-right-gallery">
-        <div className="gallery-layout-horizontal">
-          <div className="main-display-box">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={mainImg}
-                src={mainImg}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </AnimatePresence>
-          </div>
-          <div className="thumb-strip-right">
-            {product.gallery?.map((img, i) => (
-              <div
-                key={i}
-                className={`thumb-card-modern ${
-                  mainImg === img ? "active" : ""
-                }`}
-                onClick={() => setMainImg(img)}
+            <div className="reviewActions">
+              <button
+                type="submit"
+                className="btnPrimary"
+                disabled={submitting}
               >
-                <img src={img} alt="thumb" />
-              </div>
-            ))}
+                {submitting ? "Posting..." : "Post review"}
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
+
+        <ul className="reviewList">
+          {reviews.map((r) => {
+            const date =
+              r.createdAt && typeof r.createdAt.toDate === "function"
+                ? r.createdAt.toDate()
+                : r.createdAt
+                ? new Date(r.createdAt)
+                : null;
+            return (
+              <li className="reviewItem" key={r.id}>
+                <div className="avatar">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="8" r="3.2" />
+                    <path d="M4 20c0-3.3 3.1-6 8-6s8 2.7 8 6" />
+                  </svg>
+                </div>
+                <div className="reviewBody">
+                  <div className="reviewHeader">
+                    <div className="reviewUser">{r.userName}</div>
+                    <div className="reviewStars" aria-hidden>
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`star ${i < r.rating ? "on" : ""}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="reviewText">{r.comment}</div>
+                </div>
+
+                <div className="reviewMeta">
+                  <div className="reviewDate">
+                    {date ? date.toLocaleDateString() : ""}
+                  </div>
+                  {activeUser && activeUser.uid === r.userId && (
+                    <button
+                      className="deleteBtn"
+                      onClick={() => handleDeleteReview(r.id)}
+                      aria-label="Delete review"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

@@ -103,10 +103,10 @@ const CollectionPage = () => {
                         <img src={item.img} alt={item.name} />
                       </Link>
 
-                      <div className="cp-rating-tag">
+                      {/* <div className="cp-rating-tag">
                         <Star size={12} fill="#860204" color="#860204" />
-                        <span>4.5</span>
-                      </div>
+                      </div> */}
+                        <AverageRating productId={item.id} />
 
                       <div className="cp-product-actions">
                         <button
@@ -149,7 +149,7 @@ const CollectionPage = () => {
                         </Link>
                       </div>
                       <p className="cp-price">{item.price}</p>
-                      <AverageRating productId={item.id} />
+                      {/* <AverageRating productId={item.id} /> */}
                     </div>
                   </div>
                 );
