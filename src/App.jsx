@@ -7,6 +7,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import "./App.css";
+import { db } from "./firebase"; // Adjust path to your firebase config file
+import { doc, onSnapshot } from "firebase/firestore";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -26,15 +28,18 @@ import ProductPage from "./components/ProductPage";
 import AdminPanel from "./components/AdminPanel";
 import PolicyModal from "./components/PolicyModal";
 import AllProducts from "./components/AllProducts";
+import FAQModal from "./components/FaqModal";
+import OrdersPage from "./components/OrdersPage";
 
 const HomePage = ({
   whiteSectionRef,
   categoryRef,
   hideSectionRef,
   scrollToCategory,
+  bannerUrl,
 }) => (
   <>
-    <img src="/banner.png" className="bgbanner" alt="" />
+    <img src={bannerUrl || "/banner.png"} className="bgbanner" alt="Banner" />
     <BrandImage scrollToCategory={scrollToCategory} />
     <BrandStory />
     <div ref={whiteSectionRef}>
@@ -56,6 +61,8 @@ function AppContent() {
   const [activePolicy, setActivePolicy] = useState(null);
   const [navHidden, setNavHidden] = useState(false);
   const [navWhite, setNavWhite] = useState(false);
+  const [bannerUrl, setBannerUrl] = useState("");
+  const [faqOpen, setFaqOpen] = useState(false);
 
   const location = useLocation();
   const isCollectionPage = location.pathname === "/collections";
@@ -66,6 +73,22 @@ function AppContent() {
 
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
+
+  useEffect(() => {
+    const heroDocRef = doc(db, "siteSettings", "hero");
+
+    // This creates a real-time connection to the "hero" document
+    const unsubscribe = onSnapshot(heroDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.bannerUrl) {
+          setBannerUrl(data.bannerUrl); // Update state with the URL from Admin Panel
+        }
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,6 +122,8 @@ function AppContent() {
         policyTitle={activePolicy}
       />
 
+      <FAQModal isOpen={faqOpen} onClose={() => setFaqOpen(false)} />
+
       {!isCollectionPage && (
         <>
           <Navbar isWhite={navWhite} isHidden={navHidden} />
@@ -115,6 +140,7 @@ function AppContent() {
               categoryRef={categoryRef}
               hideSectionRef={hideSectionRef}
               scrollToCategory={scrollToCategory}
+              bannerUrl={bannerUrl}
             />
           }
         />
@@ -124,7 +150,9 @@ function AppContent() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/orders" element={<OrdersPage />} />
       </Routes>
+
 
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
@@ -158,7 +186,7 @@ function AppContent() {
                     alt="Insta"
                     style={{ width: "20px" }}
                   />
-                  @vanokhi_official
+                  @vanokhi.in
                 </li>
               </ul>
             </div>
@@ -166,7 +194,12 @@ function AppContent() {
               <h3>SUPPORT</h3>
               <ul>
                 <li>About Us</li>
-                <li>FAQ'S</li>
+                <li
+                  onClick={() => setFaqOpen(true)}
+                  style={{ cursor: "pointer" }}
+                >
+                  FAQ'S
+                </li>
                 <li>Return/Exchange My Order</li>
               </ul>
             </div>

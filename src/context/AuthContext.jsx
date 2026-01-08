@@ -193,6 +193,51 @@ export function AuthProvider({ children }) {
     toast.success("Moved to Bag");
   };
 
+  const moveToWishlistFromCart = async (item) => {
+    if (!currentUser) return;
+
+    // 1. Remove from Cart
+    const newCart = userData.cart.filter(
+      (c) => !(c.id === item.id && c.color === item.color)
+    );
+
+    // 2. Add to Wishlist (check if it's already there first to avoid duplicates)
+    const isAlreadyInWishlist = (userData.wishlist || []).some(
+      (w) => w.id === item.id
+    );
+
+    let newWishlist = [...(userData.wishlist || [])];
+    if (!isAlreadyInWishlist) {
+      // Strip cart-specific properties like 'qty' before adding to wishlist
+      const { qty, ...productData } = item;
+      newWishlist.push(productData);
+    }
+
+    await updateFirebase({ cart: newCart, wishlist: newWishlist });
+    toast.success("Moved to Wishlist");
+  };
+
+  const createOrder = async (orderData) => {
+    if (!currentUser) return;
+    try {
+      // 1. Add order to 'orders' collection
+      const orderRef = await addDoc(collection(db, "orders"), {
+        ...orderData,
+        userId: currentUser.uid,
+        status: "Processing",
+        createdAt: new Date().toISOString(),
+      });
+
+      // 2. Clear user's cart in Firebase
+      await updateFirebase({ cart: [] });
+
+      return orderRef.id;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     userData,
@@ -208,6 +253,8 @@ export function AuthProvider({ children }) {
     removeFromCart,
     addToWishlist,
     moveWishlistToCart,
+    moveToWishlistFromCart,
+    createOrder,
     updateFirebase,
   };
 

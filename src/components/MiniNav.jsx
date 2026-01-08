@@ -11,7 +11,7 @@ const MiniNav = () => {
   const menuItems = [
     "Collections",
     "All Products",
-    "Return & Exchange",
+    // "Return & Exchange",
     "New Arrivals",
     "Most Wanted",
     "Our Story",

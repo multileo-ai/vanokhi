@@ -13,7 +13,7 @@ import "./AllProducts.css";
 const AllProducts = () => {
   return (
     <div className="all-products-container">
-      <h1 className="heading">All Products</h1>
+      {/* <h1 className="heading">All Products</h1> */}
 
       <Swiper
         effect={"coverflow"}

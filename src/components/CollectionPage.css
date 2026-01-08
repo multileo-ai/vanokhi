@@ -200,6 +200,7 @@
   border-radius: 15px;
   overflow: hidden;
   background: #f9f9f9;
+  
 }
 
 .cp-img-container img {
@@ -207,6 +208,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  
 }
 
 .cp-product-card:hover .cp-img-container img {

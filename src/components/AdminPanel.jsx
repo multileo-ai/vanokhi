@@ -37,7 +37,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("inventory");
 
   // --- STATE: INVENTORY ---
-  const [newColl, setNewColl] = useState({ title: "", subtitle: "", img: "" });
+  const [newColl, setNewColl] = useState({ title: "", tagline: "", img: "" });
   const [newProd, setNewProd] = useState({
     name: "",
     price: "",
@@ -51,15 +51,46 @@ export default function AdminPanel() {
     returnPolicy: "",
     manufacturing: "",
     details: "",
+    galleryNormal: Array(4).fill(""), // Changed to parallel array structure
+    galleryPNG: Array(4).fill(""), // Changed to parallel array structure
   });
   const [editingProd, setEditingProd] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleGalleryChange = (type, index, value) => {
+    if (type === "normal") {
+      const updatedNormal = [...newProd.galleryNormal];
+      updatedNormal[index] = value;
+      setNewProd({ ...newProd, galleryNormal: updatedNormal });
+    } else {
+      const updatedPNG = [...newProd.galleryPNG];
+      updatedPNG[index] = value;
+      setNewProd({ ...newProd, galleryPNG: updatedPNG });
+    }
+  };
+
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    try {
+      // Save arrays while maintaining positions
+      await addDoc(collection(db, "products"), {
+        ...newProd,
+        price: `₹${newProd.price}`,
+        sizes: newProd.sizes.split(","),
+        colors: newProd.colors.split(","),
+        details: newProd.details.split("\n"),
+        stock: parseInt(newProd.stock),
+        galleryNormal: newProd.galleryNormal,
+        galleryPNG: newProd.galleryPNG,
+      });
+      alert("Product Published!");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   // --- STATE: ORDERS ---
   const [orders, setOrders] = useState([]);
-
-  // --- STATE: REVIEWS ---
-  const [allReviews, setAllReviews] = useState([]);
 
   // --- STATE: SITE CONTENT ---
   const [heroData, setHeroData] = useState({ bannerUrl: "", tagline: "" });
@@ -67,7 +98,6 @@ export default function AdminPanel() {
   useEffect(() => {
     if (!userData?.isAdmin) return;
 
-    // Fetch Orders
     const qOrders = query(
       collection(db, "orders"),
       orderBy("createdAt", "desc")
@@ -76,7 +106,6 @@ export default function AdminPanel() {
       setOrders(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
 
-    // Fetch Hero Settings
     const fetchHero = async () => {
       const docRef = doc(db, "siteSettings", "hero");
       const docSnap = await getDoc(docRef);
@@ -90,32 +119,11 @@ export default function AdminPanel() {
   if (!userData?.isAdmin)
     return <div className="admin-denied">Admin Access Required.</div>;
 
-  // --- HANDLERS: INVENTORY ---
   const handleCreateCollection = async (e) => {
     e.preventDefault();
     await addDoc(collection(db, "collections"), { ...newColl, productIds: [] });
     alert("Collection Created!");
     setNewColl({ title: "", subtitle: "", img: "" });
-  };
-
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
-    try {
-      const prodRef = await addDoc(collection(db, "products"), {
-        ...newProd,
-        price: `₹${newProd.price}`,
-        sizes: newProd.sizes.split(","),
-        colors: newProd.colors.split(","),
-        details: newProd.details.split("\n"),
-        stock: parseInt(newProd.stock),
-        gallery: [newProd.img],
-      });
-      const collRef = doc(db, "collections", newProd.collectionId);
-      await updateDoc(collRef, { productIds: arrayUnion(prodRef.id) });
-      alert("Product Published!");
-    } catch (err) {
-      alert(err.message);
-    }
   };
 
   const handleUpdateProduct = async (e) => {
@@ -145,7 +153,6 @@ export default function AdminPanel() {
     }
   };
 
-  // --- HANDLERS: ORDERS & SITE ---
   const updateOrderStatus = async (orderId, newStatus) => {
     await updateDoc(doc(db, "orders", orderId), { status: newStatus });
   };
@@ -189,18 +196,25 @@ export default function AdminPanel() {
       <div className="admin-content">
         {activeTab === "inventory" && (
           <div className="admin-grid">
-            {/* NEW COLLECTION */}
             <div className="admin-card glass-morph">
               <h2>
                 <Layers /> New Collection
               </h2>
               <form onSubmit={handleCreateCollection}>
                 <input
-                  placeholder="Title"
+                  placeholder="Collection Title"
                   required
                   value={newColl.title}
                   onChange={(e) =>
                     setNewColl({ ...newColl, title: e.target.value })
+                  }
+                />
+                <input
+                  placeholder="Tagline"
+                  required
+                  value={newColl.tagline}
+                  onChange={(e) =>
+                    setNewColl({ ...newColl, tagline: e.target.value })
                   }
                 />
                 <input
@@ -212,107 +226,131 @@ export default function AdminPanel() {
                   }
                 />
                 <button type="submit" className="admin-btn">
-                  Create
+                  Create Collection
                 </button>
               </form>
             </div>
 
-            {/* NEW PRODUCT */}
             <div className="admin-card glass-morph">
-          <h2>
-            <Plus /> New Product
-          </h2>
-          <form onSubmit={handleAddProduct}>
-            <select
-              required
-              onChange={(e) =>
-                setNewProd({ ...newProd, collectionId: e.target.value })
-              }
-            >
-              <option value="">Select Collection</option>
-              {liveCollections.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.title}
-                </option>
-              ))}
-            </select>
-            <input
-              placeholder="Product Name"
-              required
-              onChange={(e) => setNewProd({ ...newProd, name: e.target.value })}
-            />
-            <input
-              placeholder="Price (Numeric: 1395)"
-              required
-              onChange={(e) =>
-                setNewProd({ ...newProd, price: e.target.value })
-              }
-            />
-            <input
-              placeholder="Main Image URL"
-              required
-              onChange={(e) => setNewProd({ ...newProd, img: e.target.value })}
-            />
-            <input
-              placeholder="Stock"
-              type="number"
-              required
-              onChange={(e) =>
-                setNewProd({ ...newProd, stock: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Description"
-              required
-              onChange={(e) =>
-                setNewProd({ ...newProd, description: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Sizes (comma separated)"
-              defaultValue="XS,S,M,L,XL"
-              onChange={(e) =>
-                setNewProd({ ...newProd, sizes: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Colors (comma separated hex)"
-              defaultValue="#860204,#000000,#ffffff"
-              onChange={(e) =>
-                setNewProd({ ...newProd, colors: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Shipping Info"
-              onChange={(e) =>
-                setNewProd({ ...newProd, shippingInfo: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Return Policy"
-              onChange={(e) =>
-                setNewProd({ ...newProd, returnPolicy: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Manufacturing"
-              onChange={(e) =>
-                setNewProd({ ...newProd, manufacturing: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Details (one per line)"
-              onChange={(e) =>
-                setNewProd({ ...newProd, details: e.target.value })
-              }
-            />
-            <button type="submit" className="admin-btn publish">
-              Publish Product
-            </button>
-          </form>
-        </div>
+              <h2>
+                <Plus /> New Product
+              </h2>
+              <form onSubmit={handleAddProduct} className="admin-form-scroll">
+                <select
+                  required
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, collectionId: e.target.value })
+                  }
+                >
+                  <option value="">Select Collection</option>
+                  {liveCollections.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.title}
+                    </option>
+                  ))}
+                </select>
 
-            {/* INVENTORY MANAGER */}
+                <div className="form-row">
+                  <input
+                    placeholder="Product Name"
+                    required
+                    onChange={(e) =>
+                      setNewProd({ ...newProd, name: e.target.value })
+                    }
+                  />
+                  <input
+                    placeholder="Price (Numeric)"
+                    required
+                    onChange={(e) =>
+                      setNewProd({ ...newProd, price: e.target.value })
+                    }
+                  />
+                </div>
+
+                <input
+                  placeholder="Main Thumbnail URL"
+                  required
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, img: e.target.value })
+                  }
+                />
+                <input
+                  placeholder="Stock"
+                  type="number"
+                  required
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, stock: e.target.value })
+                  }
+                />
+
+                <div className="gallery-section">
+                  <label>Image Gallery (Normal & PNG Parallel Inputs)</label>
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="form-row"
+                      style={{ marginBottom: "10px" }}
+                    >
+                      <input
+                        placeholder={`Img ${i + 1} Normal URL`}
+                        value={newProd.galleryNormal[i]}
+                        onChange={(e) =>
+                          handleGalleryChange("normal", i, e.target.value)
+                        }
+                      />
+                      <input
+                        placeholder={`Img ${i + 1} PNG URL`}
+                        value={newProd.galleryPNG[i]}
+                        onChange={(e) =>
+                          handleGalleryChange("png", i, e.target.value)
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <textarea
+                  placeholder="Description"
+                  required
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, description: e.target.value })
+                  }
+                />
+                <textarea
+                  placeholder="Sizes"
+                  defaultValue="XS,S,M,L,XL"
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, sizes: e.target.value })
+                  }
+                />
+                <textarea
+                  placeholder="Colors"
+                  defaultValue="#860204,#000000"
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, colors: e.target.value })
+                  }
+                />
+
+                <div className="form-row">
+                  <textarea
+                    placeholder="Shipping Info"
+                    onChange={(e) =>
+                      setNewProd({ ...newProd, shippingInfo: e.target.value })
+                    }
+                  />
+                  <textarea
+                    placeholder="Return Policy"
+                    onChange={(e) =>
+                      setNewProd({ ...newProd, returnPolicy: e.target.value })
+                    }
+                  />
+                </div>
+                <button type="submit" className="admin-btn publish">
+                  Publish Product
+                </button>
+              </form>
+            </div>
+
             <div className="admin-card manage-card glass-morph full-width">
               <h2>
                 <Package /> Inventory Manager
@@ -337,8 +375,7 @@ export default function AdminPanel() {
                     <div className="item-info">
                       <span>{p.name}</span>
                       <small>
-                        {p.price} — Stock: {p.stock}{" "}
-                        {p.stock < 5 && <b className="stock-tag">LOW STOCK</b>}
+                        {p.price} — Stock: {p.stock}
                       </small>
                     </div>
                     <div className="item-actions">
@@ -365,71 +402,127 @@ export default function AdminPanel() {
 
         {activeTab === "orders" && (
           <div className="admin-orders-list">
-            {orders.map((order) => (
-              <div key={order.id} className="order-card glass-morph">
-                <div className="order-header">
-                  <h3>Order #{order.id.slice(-6)}</h3>
-                  <select
-                    value={order.status}
-                    onChange={(e) =>
-                      updateOrderStatus(order.id, e.target.value)
-                    }
-                    className={`status-select ${order.status}`}
-                  >
-                    <option value="Processing">Processing</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                  </select>
-                </div>
-                <div className="order-details">
-                  <p>
-                    <b>Customer:</b> {order.customerName} ({order.email})
-                  </p>
-                  <p>
-                    <b>Total:</b> ₹{order.total}
-                  </p>
-                  <div className="order-items">
-                    {order.items?.map((item, i) => (
-                      <span key={i}>
-                        {item.name} ({item.size}) x{item.qty}
-                      </span>
-                    ))}
+            {orders.length === 0 ? (
+              <p>No orders found.</p>
+            ) : (
+              orders.map((order) => (
+                <div
+                  key={order.id}
+                  className="admin-card order-card glass-morph"
+                >
+                  <div className="order-header">
+                    <div>
+                      <strong>Order #{order.id.slice(-6)}</strong>
+                      <p>{order.customerName}</p>
+                    </div>
+                    <select
+                      className={`status-select ${order.status}`}
+                      value={order.status}
+                      onChange={(e) =>
+                        updateOrderStatus(order.id, e.target.value)
+                      }
+                    >
+                      <option value="Processing">Processing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                  </div>
+                  <div className="order-details">
+                    <small>
+                      {order.items?.length} items — Total: {order.total}
+                    </small>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         )}
 
         {activeTab === "content" && (
-          <div className="admin-card glass-morph">
-            <h2>
-              <ImageIcon /> Landing Page Hero
-            </h2>
-            <form onSubmit={updateHero}>
-              <label>Hero Banner URL</label>
-              <input
-                value={heroData.bannerUrl}
-                onChange={(e) =>
-                  setHeroData({ ...heroData, bannerUrl: e.target.value })
-                }
-              />
-              <label>Hero Tagline</label>
-              <input
-                value={heroData.tagline}
-                onChange={(e) =>
-                  setHeroData({ ...heroData, tagline: e.target.value })
-                }
-              />
-              <button type="submit" className="admin-btn publish">
-                Update Landing Page
-              </button>
-            </form>
+          <div className="admin-grid">
+            <div className="admin-card glass-morph full-width">
+              <h2>
+                <Star /> Landing Page Hero
+              </h2>
+              <form onSubmit={updateHero}>
+                <div className="form-row">
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "5px",
+                    }}
+                  >
+                    <label style={{ fontSize: "0.8rem", fontWeight: "bold" }}>
+                      Banner Image URL
+                    </label>
+                    <input
+                      placeholder="https://..."
+                      value={heroData.bannerUrl}
+                      onChange={(e) =>
+                        setHeroData({ ...heroData, bannerUrl: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "5px",
+                    }}
+                  >
+                    <label style={{ fontSize: "0.8rem", fontWeight: "bold" }}>
+                      Main Tagline
+                    </label>
+                    <input
+                      placeholder="Elevate Your Style"
+                      value={heroData.tagline}
+                      onChange={(e) =>
+                        setHeroData({ ...heroData, tagline: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="admin-btn publish"
+                  style={{ marginTop: "10px" }}
+                >
+                  <Save size={18} /> Update Hero Section
+                </button>
+              </form>
+            </div>
+
+            {/* Preview Section */}
+            <div
+              className="admin-card glass-morph full-width"
+              style={{ opacity: 0.8 }}
+            >
+              <h2 style={{ fontSize: "0.9rem" }}>Live Preview</h2>
+              <div
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  backgroundImage: `url(${heroData.bannerUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "white",
+                  textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+                }}
+              >
+                <h1 style={{ fontFamily: "Bodoni Moda" }}>
+                  {heroData.tagline}
+                </h1>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* EDIT MODAL */}
       {editingProd && (
         <div className="edit-overlay">
           <div className="admin-card edit-modal glass-morph">
@@ -446,56 +539,57 @@ export default function AdminPanel() {
             </div>
             <form onSubmit={handleUpdateProduct} className="edit-form-scroll">
               <div className="form-row">
-                <div className="input-group">
-                  <label>Name</label>
-                  <input
-                    value={editingProd.name}
-                    onChange={(e) =>
-                      setEditingProd({ ...editingProd, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="input-group">
-                  <label>Price</label>
-                  <input
-                    value={editingProd.price}
-                    onChange={(e) =>
-                      setEditingProd({ ...editingProd, price: e.target.value })
-                    }
-                  />
-                </div>
+                <input
+                  value={editingProd.name}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, name: e.target.value })
+                  }
+                />
+                <input
+                  value={editingProd.price}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, price: e.target.value })
+                  }
+                />
               </div>
               <div className="form-row">
-                <div className="input-group">
-                  <label>Stock</label>
-                  <input
-                    type="number"
-                    value={editingProd.stock}
-                    onChange={(e) =>
-                      setEditingProd({ ...editingProd, stock: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="input-group">
-                  <label>Image URL</label>
-                  <input
-                    value={editingProd.img}
-                    onChange={(e) =>
-                      setEditingProd({ ...editingProd, img: e.target.value })
-                    }
-                  />
-                </div>
+                <input
+                  type="number"
+                  value={editingProd.stock}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, stock: e.target.value })
+                  }
+                />
+                <input
+                  value={editingProd.img}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, img: e.target.value })
+                  }
+                />
               </div>
-              <label>Description</label>
+
+              <label>Gallery Normal (Comma Separated)</label>
               <textarea
-                value={editingProd.description}
+                value={editingProd.galleryNormal?.join(",")}
                 onChange={(e) =>
                   setEditingProd({
                     ...editingProd,
-                    description: e.target.value,
+                    galleryNormal: e.target.value.split(","),
                   })
                 }
               />
+
+              <label>Gallery PNG (Comma Separated)</label>
+              <textarea
+                value={editingProd.galleryPNG?.join(",")}
+                onChange={(e) =>
+                  setEditingProd({
+                    ...editingProd,
+                    galleryPNG: e.target.value.split(","),
+                  })
+                }
+              />
+
               <button type="submit" className="admin-btn update">
                 <Save size={18} /> Update Product
               </button>

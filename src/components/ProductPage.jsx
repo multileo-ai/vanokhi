@@ -24,7 +24,7 @@ export default function ProductPage() {
   const activeUser = user || currentUser;
 
   const [product, setProduct] = useState(null);
-  const [mainImg, setMainImg] = useState("");
+  const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("Description");
   const [selectedSize, setSelectedSize] = useState("M");
 
@@ -39,7 +39,7 @@ export default function ProductPage() {
       if (found) {
         setProduct(found);
         // prefer gallery first, then img field, then fallback placeholder
-        setMainImg(found.gallery?.[0] || found.img || "/img_1.png");
+        // setMainImg(found.galleryNormal?.[0] || found.img || "/img_1.png");
 
         const q = query(
           collection(db, `products/${id}/reviews`),
@@ -174,8 +174,9 @@ export default function ProductPage() {
           <div className="mainImage">
             <AnimatePresence mode="wait">
               <motion.img
-                key={mainImg}
-                src={"/img_1.png"}
+                key={activeImgIndex} 
+                // Logic: Click normal thumbnail [index], show PNG [index] in main view
+                src={product.galleryPNG?.[activeImgIndex] || product.img}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -186,20 +187,18 @@ export default function ProductPage() {
           </div>
 
           <div className="thumbs">
-            {product.gallery?.map((img, i) => (
-              <button
-                key={i}
-                className={`thumb ${mainImg === img ? "active" : ""}`}
-                onClick={() => setMainImg(img)}
-                tabIndex={0}
-                aria-pressed={mainImg === img}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") setMainImg(img);
-                }}
-              >
-                <img src={img} alt={`Thumbnail ${i}`} />
-              </button>
-            ))}
+            {product.galleryNormal?.map(
+              (img, i) =>
+                img && (
+                  <button
+                    key={i}
+                    className={`thumb ${activeImgIndex === i ? "active" : ""}`}
+                    onClick={() => setActiveImgIndex(i)}
+                  >
+                    <img src={img} alt={`Thumbnail ${i}`} />
+                  </button>
+                )
+            )}
           </div>
         </div>
       </div>

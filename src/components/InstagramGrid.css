@@ -51,18 +51,24 @@ img {
   max-width: 100%;
   margin: 0;
   padding: 0;
+  display: grid; /* Changed from default block to grid */
 }
 
 .gallery {
-  display: grid;
-  /* Force exactly 3 columns */
-  grid-template-columns: repeat(3, 1fr);
-  /* No spacing between grids */
+  display: grid !important; /* Force grid display */
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ) !important; /* Applied 4 columns as requested */
   gap: 0;
-  /* Full width */
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+.grid-section main {
+  display: grid;
+  width: 100%;
 }
 
 .gallery-item {
