@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown } from "lucide-react";
-import "./FAQModal.css";
+import "./FaqModal.css";
 
 const FAQ_DATA = [
   {
