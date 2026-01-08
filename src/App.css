@@ -147,30 +147,20 @@ video {
   width: 100%;
   z-index: 1000;
   background-color: #860204; /* Initial Red */
-  transition: transform 0.3s ease, opacity 0.3s ease; /* Visibility transition only */
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Visibility transition only */
 }
 
-/* Red Logo by default or White depending on your design preference */
-.nav-logo {
-  color: #faecd9; /* Tan/Gold color from your footer */
-  transition: color 0.1s; /* No slow animations for color */
+.vanokhi-navbar.nav-white .nav-logo {
+  color: white !important;
 }
 
-/* White Section State */
-.nav-white {
-  background-color: #ffffff !important;
-}
-
-.nav-white .nav-logo {
-  color: #860204 !important; /* Logo turns red when bg is white */
-}
-
-/* Hidden State */
-.nav-hidden {
+.vanokhi-navbar.nav-hidden {
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
 }
+
+
 
 @media (max-width: 480px) {
   :root {

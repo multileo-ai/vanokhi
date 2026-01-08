@@ -40,6 +40,7 @@ img {
 
 .container {
   max-width: 93.5rem;
+  width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -47,11 +48,12 @@ img {
 /* --- FULL WIDTH GALLERY STYLES --- */
 
 .gallery-full-width {
-  width: 100%;
+  width: 100% !important;
   max-width: 100%;
   margin: 0;
   padding: 0;
-  display: grid; /* Changed from default block to grid */
+  /* display: grid;  */
+  /* Changed from default block to grid */
 }
 
 .gallery {
@@ -60,7 +62,7 @@ img {
     3,
     1fr
   ) !important; /* Applied 4 columns as requested */
-  gap: 0;
+  gap: 0 !important;
   width: 100%;
   margin: 0;
   padding: 0;

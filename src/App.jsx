@@ -92,17 +92,21 @@ function AppContent() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Check if refs are current
       if (whiteSectionRef.current && hideSectionRef.current) {
         const whiteRect = whiteSectionRef.current.getBoundingClientRect();
         const hideRect = hideSectionRef.current.getBoundingClientRect();
 
-        // 1. Color Logic: White when the BrandStoryPage is in view
-        // Adjust the offset (100) if you want it to trigger exactly when hitting the top
+        // 1. Color Logic: Set to white when BrandStoryPage is in the viewport
+        // It triggers when the top of the section hits the threshold (80px)
+        // and stays white until the bottom of the section leaves the top of the screen.
         const isHeaderInWhiteSection =
           whiteRect.top <= 80 && whiteRect.bottom >= 0;
         setNavWhite(isHeaderInWhiteSection);
 
-        // 2. Visibility Logic: Hide when we reach the Instagram Grid (hideSectionRef)
+        // 2. Visibility Logic: Hide when the Instagram Grid ("Our Story") is reached
+        // The navbar hides as soon as the InstagramGrid section (hideSectionRef)
+        // is 80px or less from the top.
         const hasReachedInstagram = hideRect.top <= 80;
         setNavHidden(hasReachedInstagram);
       }
@@ -152,7 +156,6 @@ function AppContent() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/orders" element={<OrdersPage />} />
       </Routes>
-
 
       {!isCollectionPage && (
         <footer className="vanokhi-footer">
