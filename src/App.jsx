@@ -92,27 +92,29 @@ function AppContent() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if refs are current
+      // Check if refs are attached to elements
       if (whiteSectionRef.current && hideSectionRef.current) {
         const whiteRect = whiteSectionRef.current.getBoundingClientRect();
         const hideRect = hideSectionRef.current.getBoundingClientRect();
 
-        // 1. Color Logic: Set to white when BrandStoryPage is in the viewport
-        // It triggers when the top of the section hits the threshold (80px)
-        // and stays white until the bottom of the section leaves the top of the screen.
+        // 1. Color Change Logic (BrandStoryPage)
+        // navWhite becomes true when the Brand Story section is crossing the top of the screen
         const isHeaderInWhiteSection =
           whiteRect.top <= 80 && whiteRect.bottom >= 0;
         setNavWhite(isHeaderInWhiteSection);
 
-        // 2. Visibility Logic: Hide when the Instagram Grid ("Our Story") is reached
-        // The navbar hides as soon as the InstagramGrid section (hideSectionRef)
-        // is 80px or less from the top.
+        // 2. Hiding Logic (InstagramGrid / "Our Story")
+        // navHidden becomes true the moment the Instagram section hits the top (threshold 80px)
+        // It stays hidden for everything below it.
         const hasReachedInstagram = hideRect.top <= 80;
         setNavHidden(hasReachedInstagram);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Run once on mount in case user refreshes while scrolled down
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

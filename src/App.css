@@ -140,28 +140,6 @@ video {
 
 /* src/App.css */
 
-.vanokhi-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #860204; /* Initial Red */
-  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Visibility transition only */
-}
-
-.vanokhi-navbar.nav-white .nav-logo {
-  color: white !important;
-}
-
-.vanokhi-navbar.nav-hidden {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-
-
 @media (max-width: 480px) {
   :root {
     --navbar-reserve: 64px;
