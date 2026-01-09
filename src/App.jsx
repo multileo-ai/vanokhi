@@ -35,6 +35,7 @@ const HomePage = ({
   whiteSectionRef,
   categoryRef,
   hideSectionRef,
+  newArrivalsRef,
   scrollToCategory,
   bannerUrl,
 }) => (
@@ -42,14 +43,20 @@ const HomePage = ({
     <img src={bannerUrl || "/banner.png"} className="bgbanner" alt="Banner" />
     <BrandImage scrollToCategory={scrollToCategory} />
     <BrandStory />
+
+    {/* Trigger for WHITE color */}
     <div ref={whiteSectionRef}>
-      <BrandStoryPage largeImage="/Rectangle 3.png" smallImage="/image 2.png" />
+      <BrandStoryPage />
     </div>
+
     <div ref={categoryRef}>
       <Category />
     </div>
-    <NewArivals />
-    {/* This section triggers the navbar to disappear */}
+    <div ref={newArrivalsRef}>
+      <NewArivals />
+    </div>
+
+    {/* Trigger for HIDING navbar */}
     <div ref={hideSectionRef}>
       <InstagramGrid />
       <TestimonialsGrid />
@@ -61,6 +68,7 @@ function AppContent() {
   const [activePolicy, setActivePolicy] = useState(null);
   const [navHidden, setNavHidden] = useState(false);
   const [navWhite, setNavWhite] = useState(false);
+  const [navRed, setNavRed] = useState(false);
   const [bannerUrl, setBannerUrl] = useState("");
   const [faqOpen, setFaqOpen] = useState(false);
 
@@ -70,6 +78,7 @@ function AppContent() {
   const whiteSectionRef = useRef(null);
   const categoryRef = useRef(null);
   const hideSectionRef = useRef(null);
+  const newArrivalsRef = useRef(null);
 
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -92,29 +101,44 @@ function AppContent() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if refs are attached to elements
-      if (whiteSectionRef.current && hideSectionRef.current) {
-        const whiteRect = whiteSectionRef.current.getBoundingClientRect();
-        const hideRect = hideSectionRef.current.getBoundingClientRect();
+      // Calculate rectangles safely (may be undefined)
+      const hideRect = hideSectionRef.current?.getBoundingClientRect();
+      const hasReachedInstagram = !!hideRect && hideRect.top <= 80;
 
-        // 1. Color Change Logic (BrandStoryPage)
-        // navWhite becomes true when the Brand Story section is crossing the top of the screen
-        const isHeaderInWhiteSection =
-          whiteRect.top <= 80 && whiteRect.bottom >= 0;
-        setNavWhite(isHeaderInWhiteSection);
+      const naRect = newArrivalsRef.current?.getBoundingClientRect();
+      const passedNewArrivals = !!naRect && naRect.bottom <= 0; // we scrolled past it
 
-        // 2. Hiding Logic (InstagramGrid / "Our Story")
-        // navHidden becomes true the moment the Instagram section hits the top (threshold 80px)
-        // It stays hidden for everything below it.
-        const hasReachedInstagram = hideRect.top <= 80;
-        setNavHidden(hasReachedInstagram);
-      }
+      const whiteRect = whiteSectionRef.current?.getBoundingClientRect();
+      const isHeaderInWhiteSection =
+        !!whiteRect && whiteRect.top <= 80 && whiteRect.bottom >= 0;
+
+      // Scope the brand-title lookup to the BrandStoryPage container to avoid other pages' elements
+      const titleEl = whiteSectionRef.current?.querySelector(".brand-title");
+      const titleRect = titleEl?.getBoundingClientRect();
+      const nearTitle =
+        !!titleRect && titleRect.top <= 160 && titleRect.bottom >= 0;
+
+      const shouldHide = hasReachedInstagram || passedNewArrivals;
+
+      // Debug logs to help diagnose why behavior may not be triggering
+      console.log("NAV SCROLL DEBUG", {
+        hasReachedInstagram,
+        passedNewArrivals,
+        isHeaderInWhiteSection,
+        nearTitle,
+        hideRect,
+        naRect,
+        whiteRect,
+        titleRect,
+      });
+
+      setNavHidden(shouldHide);
+      setNavWhite(isHeaderInWhiteSection);
+      setNavRed(nearTitle);
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Run once on mount in case user refreshes while scrolled down
-    handleScroll();
-
+    handleScroll(); // Initialize on load
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -132,7 +156,7 @@ function AppContent() {
 
       {!isCollectionPage && (
         <>
-          <Navbar isWhite={navWhite} isHidden={navHidden} />
+          <Navbar isWhite={navWhite} isHidden={navHidden} isRed={navRed} />
           <MiniNav />
         </>
       )}
@@ -145,6 +169,7 @@ function AppContent() {
               whiteSectionRef={whiteSectionRef}
               categoryRef={categoryRef}
               hideSectionRef={hideSectionRef}
+              newArrivalsRef={newArrivalsRef}
               scrollToCategory={scrollToCategory}
               bannerUrl={bannerUrl}
             />

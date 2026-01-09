@@ -19,7 +19,7 @@
 
   top: 0;
   left: 0;
-  z-index: 2000; /* Increased to stay above other elements */
+  z-index: 9999 !important; /* Increased to stay above other elements */
   height: 76px;
   box-sizing: border-box;
   background-color: transparent; /* Keep it transparent by default */
@@ -46,4 +46,8 @@
 
 .vanokhi-navbar.nav-white .nav-logo {
   color: #ffffff !important;
+}
+
+.vanokhi-navbar.nav-red .nav-logo {
+  color: #ff0000 !important;
 }

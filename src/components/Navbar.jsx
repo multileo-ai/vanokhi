@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
-export default function Navbar({ isWhite, isHidden }) {
+export default function Navbar({ isWhite, isHidden, isRed }) {
   return (
     <nav
       className={`vanokhi-navbar ${isWhite ? "nav-white" : ""} ${
-        isHidden ? "nav-hidden" : ""
-      }`}
+        isRed ? "nav-red" : ""
+      } ${isHidden ? "nav-hidden" : ""}`}
       role="navigation"
       aria-label="Main"
     >

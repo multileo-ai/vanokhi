@@ -1,9 +1,8 @@
 // src/components/ProductPage.jsx
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Star, ArrowLeft, Loader2 } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ShoppingBag, Heart } from "lucide-react";
 import { db } from "../firebase";
 import {
   collection,
@@ -19,15 +18,22 @@ import "./ProductPage.css";
 
 export default function ProductPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart, user, currentUser, liveProducts } = useAuth();
+  const {
+    addToCart,
+    addToWishlist,
+    user,
+    currentUser,
+    liveProducts,
+    userData,
+  } = useAuth();
   const activeUser = user || currentUser;
 
-  const [product, setProduct] = useState(null);
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState("Description");
-  const [selectedSize, setSelectedSize] = useState("M");
+  // Logic to check if product is in wishlist
+  const isInWishlist = userData?.wishlist?.some((item) => item.id === id);
 
+  const [product, setProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedImage, setSelectedImage] = useState("");
   const [reviews, setReviews] = useState([]);
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState("");
@@ -38,9 +44,9 @@ export default function ProductPage() {
       const found = liveProducts.find((p) => p.id === id);
       if (found) {
         setProduct(found);
-        // prefer gallery first, then img field, then fallback placeholder
-        // setMainImg(found.galleryNormal?.[0] || found.img || "/img_1.png");
+        setSelectedImage(found.galleryPNG?.[0] || found.img);
 
+        // Fetch Reviews from Database
         const q = query(
           collection(db, `products/${id}/reviews`),
           orderBy("createdAt", "desc")
@@ -90,22 +96,12 @@ export default function ProductPage() {
   if (!product)
     return <div className="vanokhi-loader">Loading Excellence...</div>;
 
-  const tabs = ["Description", "Shipping", "Manufacturing"];
-  const tabContent = {
-    Description: product.description,
-    Shipping: product.shippingInfo || "Free standard shipping on all orders.",
-    Manufacturing:
-      product.manufacturing || "Handcrafted with premium materials.",
-  };
-
   return (
     <div className="pdWrapper">
-      {/* 100% Matching Header Text */}
-      {/* show collection/category in the large faded heading like reference */}
-      <h1 className="prodName">{product.name}</h1>
+      {/* Exact UI matching reference */}
+      <h1 className="catName">{product.name}</h1>
 
       <div className="prodMainCont">
-        {/* 1. SIZES SECTION */}
         <div className="sizes">
           {product.sizes?.map((sz) => (
             <div
@@ -113,97 +109,84 @@ export default function ProductPage() {
               className={`size ${selectedSize === sz ? "selected" : ""}`}
               onClick={() => setSelectedSize(sz)}
               role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") setSelectedSize(sz);
-              }}
-              aria-pressed={selectedSize === sz}
             >
               <p>{sz}</p>
             </div>
           ))}
         </div>
 
-        {/* 2. DESCRIPTION SECTION */}
         <div className="descWrapper">
           <div className="prodDesc">
-            <div className="descLabel">— DETAILS</div>
             <h2 className="descTitle">{product.name}</h2>
-            <p className="descText">{tabContent[activeTab]}</p>
+            <p className="descText">{product.description}</p>
             <div className="price">
               {product.price} <span className="currency">INR</span>
             </div>
 
-            {/* Added Add to Bag Button styled exactly like the reference primary btn */}
-            <div
-              className="reviewActions"
-              style={{ justifyContent: "flex-start", marginTop: "20px" }}
-            >
+            {/* <div className="productActions">
+              <button
+                className={`action-btn1 wishlist ${
+                  isInWishlist ? "active" : ""
+                }`}
+                onClick={() => addToWishlist(product)}
+              >
+                <Heart
+                  size={18}
+                  fill={isInWishlist ? "#860204" : "none"}
+                  color={isInWishlist ? "#860204" : "currentColor"}
+                />
+              </button>
+              <button
+                className="action-btn1 cart"
+                onClick={() => addToCart(product, selectedSize)}
+              >
+                <ShoppingBag size={18} /> Add to Bag
+              </button>
+            </div> */}
+
+            <div className="productActions">
+              <button
+                className={`btnSecondary ${isInWishlist ? "active" : ""}`}
+                onClick={() => addToWishlist(product)}
+              >
+                <Heart
+                  size={20}
+                  fill={isInWishlist ? "var(--primary)" : "none"}
+                  color={isInWishlist ? "var(--primary)" : "currentColor"}
+                />
+              </button>
               <button
                 className="btnPrimary"
                 onClick={() => addToCart(product, selectedSize)}
               >
+                <ShoppingBag size={18} style={{ marginRight: "8px" }} />
                 Add to Bag
               </button>
             </div>
           </div>
-
-          <div className="infoTabs" role="region">
-            <div className="tabButtons" role="tablist">
-              {tabs.map((t) => (
-                <button
-                  key={t}
-                  role="tab"
-                  aria-selected={activeTab === t}
-                  tabIndex={0}
-                  className={`tabButton ${activeTab === t ? "active" : ""}`}
-                  onClick={() => setActiveTab(t)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") setActiveTab(t);
-                  }}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* 3. GALLERY SECTION */}
         <div className="gallery">
           <div className="mainImage">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={activeImgIndex} 
-                // Logic: Click normal thumbnail [index], show PNG [index] in main view
-                src={product.galleryPNG?.[activeImgIndex] || product.img}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.24 }}
-                alt={product.name}
-              />
-            </AnimatePresence>
+            <img src={selectedImage} alt={product.name} />
           </div>
 
           <div className="thumbs">
-            {product.galleryNormal?.map(
-              (img, i) =>
-                img && (
-                  <button
-                    key={i}
-                    className={`thumb ${activeImgIndex === i ? "active" : ""}`}
-                    onClick={() => setActiveImgIndex(i)}
-                  >
-                    <img src={img} alt={`Thumbnail ${i}`} />
-                  </button>
-                )
-            )}
+            {product.galleryNormal?.map((img, i) => (
+              <button
+                key={i}
+                className={`thumb ${
+                  selectedImage === product.galleryPNG?.[i] ? "active" : ""
+                }`}
+                onClick={() => setSelectedImage(product.galleryPNG?.[i])}
+              >
+                <img src={img} alt={`Thumbnail ${i}`} />
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* REVIEWS SECTION - EXACT REPLICATION */}
       <div className="reviewsSection">
         <h3 className="reviewsTitle">Customer Reviews</h3>
 
@@ -216,6 +199,7 @@ export default function ProductPage() {
               </svg>
             </div>
           </div>
+
           <div className="reviewRight">
             <div className="ratingInput">
               {[1, 2, 3, 4, 5].map((n) => (
@@ -229,6 +213,7 @@ export default function ProductPage() {
                 </button>
               ))}
             </div>
+
             <textarea
               className="reviewInput"
               placeholder="Write your review..."
@@ -236,6 +221,7 @@ export default function ProductPage() {
               onChange={(e) => setNewComment(e.target.value)}
               rows={3}
             />
+
             <div className="reviewActions">
               <button
                 type="submit"
@@ -250,16 +236,13 @@ export default function ProductPage() {
 
         <ul className="reviewList">
           {reviews.map((r) => {
-            const date =
-              r.createdAt && typeof r.createdAt.toDate === "function"
-                ? r.createdAt.toDate()
-                : r.createdAt
-                ? new Date(r.createdAt)
-                : null;
+            const dateStr = r.createdAt?.toDate
+              ? r.createdAt.toDate().toLocaleDateString()
+              : "";
             return (
               <li className="reviewItem" key={r.id}>
                 <div className="avatar">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <svg viewBox="0 0 24 24">
                     <circle cx="12" cy="8" r="3.2" />
                     <path d="M4 20c0-3.3 3.1-6 8-6s8 2.7 8 6" />
                   </svg>
@@ -267,7 +250,7 @@ export default function ProductPage() {
                 <div className="reviewBody">
                   <div className="reviewHeader">
                     <div className="reviewUser">{r.userName}</div>
-                    <div className="reviewStars" aria-hidden>
+                    <div className="reviewStars">
                       {[...Array(5)].map((_, i) => (
                         <span
                           key={i}
@@ -282,14 +265,11 @@ export default function ProductPage() {
                 </div>
 
                 <div className="reviewMeta">
-                  <div className="reviewDate">
-                    {date ? date.toLocaleDateString() : ""}
-                  </div>
-                  {activeUser && activeUser.uid === r.userId && (
+                  <div className="reviewDate">{dateStr}</div>
+                  {activeUser?.uid === r.userId && (
                     <button
                       className="deleteBtn"
                       onClick={() => handleDeleteReview(r.id)}
-                      aria-label="Delete review"
                     >
                       Delete
                     </button>
