@@ -188,6 +188,19 @@
   color: #5b3a3a;
 }
 
+.cart-sidebar,
+.profile-sidebar {
+  z-index: 9998 !important; /* Ensure this is higher than the Navbar (9999) */
+}
+
+.close-btn {
+  position: relative;
+  z-index: 9999 !important; /* Ensure the button is above the sidebar content */
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
 .cart-badge-container {
   position: relative;
 }

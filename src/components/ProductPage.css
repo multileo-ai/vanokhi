@@ -29,7 +29,7 @@
   color: rgba(0, 0, 0, 0.06);
   position: absolute;
   left: 140px;
-  top: 100px;
+  top: 80px;
   z-index: -1;
   pointer-events: none;
   line-height: 0.9;
@@ -162,7 +162,7 @@
 
 .reviewsSection {
   margin: 3.5rem 6rem 6rem;
-  padding: 1.25rem;
+  padding: 4.25rem;
   border-radius: 14px;
   /* background: linear-gradient(180deg, rgba(217,197,170,0.06), rgba(217,197,170,0.03)); */
   border: 1px solid rgba(154, 0, 2, 0.06);
@@ -175,7 +175,7 @@
 .reviewsTitle {
   font-family: "myMontserrat", serif;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   margin: 0;
   color: var(--primary);
   letter-spacing: 0.6px;
@@ -213,7 +213,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1rem;
 }
 
 .ratingInput {
@@ -250,8 +250,6 @@
 
 /* --- New Action Buttons --- */
 
-
-
 .productActions {
   display: flex !important;
   flex-direction: row !important; /* Forces side-by-side */
@@ -263,7 +261,7 @@
 }
 
 /* Make "Add to Bag" take more space than "Wishlist" */
-.btnPrimary {
+/* .btnPrimary {
   flex: 5;
   display: flex;
   align-items: center;
@@ -272,30 +270,104 @@
   color: rgb(225, 215, 215);
   border: none;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 50px;
   font-weight: 800;
   cursor: pointer;
-  white-space: nowrap; /* Prevents text wrapping */
+  white-space: nowrap; 
+} */
+
+.btnPrimary {
+  flex: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Glassmorphism Logic */
+  background: rgba(
+    154,
+    0,
+    2,
+    0
+  ); /* Translucent version of your --primary red */
+  backdrop-filter: blur(10px); /* The frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+
+  /* Border helps define the glass edge against white backgrounds */
+  border: 1px solid rgba(232, 232, 232, 0.4);
+
+  color: #5b5b5b;
+  padding: 14px;
+  border-radius: 50px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+
+  /* Add a subtle shadow to make it "float" over the white background */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.074);
+  transition: all 0.3s ease;
 }
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.055);
+  /* box-shadow: 0 12px 40px 0 rgba(232, 232, 232, 0.10); */
+}
+
 /* Outline style for Wishlist */
-.btnSecondary {
+/* .btnSecondary {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: white;
   color: var(--primary);
   border: 2px solid var(--primary);
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 50px;
   font-weight: 800;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transition: all 0.2s ease;
+} */
+
+.btnSecondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Glassmorphism Logic */
+  background: rgba(
+    154,
+    0,
+    2,
+    0
+  ); /* Translucent version of your --primary red */
+  backdrop-filter: blur(10px); /* The frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+
+  /* Border helps define the glass edge against white backgrounds */
+  border: 1px solid rgba(232, 232, 232, 0.4);
+
+  padding: 12px;
+  border-radius: 50px;
+  font-weight: 800;
+  cursor: pointer;
+
+  /* Add a subtle shadow to make it "float" over the white background */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.074);
+  transition: all 0.3s ease;
 }
 
 .btnSecondary.active {
   /* background: var(--primary); */
   color: white;
+}
+
+.btnSecondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.055);
+  /* box-shadow: 0 12px 40px 0 rgba(232, 232, 232, 0.10); */
 }
 
 /* MOBILE FIX: Ensure they don't stack on small screens */
@@ -317,7 +389,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .reviewItem {
@@ -348,6 +420,7 @@
 .reviewText {
   color: #444;
   margin-top: 6px;
+  font-size: 1.2rem;
 }
 
 .reviewMeta {

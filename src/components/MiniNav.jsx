@@ -150,10 +150,19 @@ const MiniNav = () => {
         )}
       </div>
 
-      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartSidebar
+        isOpen={cartOpen}
+        onClose={(e) => {
+          if (e) e.stopPropagation(); // Prevents the click from bubbling up
+          setCartOpen(false);
+        }}
+      />
       <ProfileSidebar
         isOpen={profileOpen}
-        onClose={() => setProfileOpen(false)}
+        onClose={(e) => {
+          if (e) e.stopPropagation();
+          setProfileOpen(false);
+        }}
       />
     </>
   );

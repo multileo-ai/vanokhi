@@ -18,7 +18,7 @@ const CollectionPage = () => {
       {/* 1. Fixed Back Button (Banner View Only) */}
       {!expanded && (
         <button className="cp-back-home" onClick={() => navigate("/")}>
-          <ArrowLeft size={24} /> <span>Home</span>
+          <ArrowLeft size={24} />
         </button>
       )}
 

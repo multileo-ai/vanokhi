@@ -24,6 +24,7 @@ export default function ProductPage() {
     user,
     currentUser,
     liveProducts,
+    liveCollections,
     userData,
   } = useAuth();
   const activeUser = user || currentUser;
@@ -38,6 +39,12 @@ export default function ProductPage() {
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const currentCollection = liveCollections.find(
+    (col) => col.id === product?.collectionId
+  );
+  const categoryName = currentCollection
+    ? currentCollection.title
+    : "Collection";
 
   useEffect(() => {
     if (liveProducts.length > 0) {
@@ -99,7 +106,7 @@ export default function ProductPage() {
   return (
     <div className="pdWrapper">
       {/* Exact UI matching reference */}
-      <h1 className="catName">{product.name}</h1>
+      <h1 className="catName">{categoryName}</h1>
 
       <div className="prodMainCont">
         <div className="sizes">
@@ -159,7 +166,7 @@ export default function ProductPage() {
                 className="btnPrimary"
                 onClick={() => addToCart(product, selectedSize)}
               >
-                <ShoppingBag size={18} style={{ marginRight: "8px" }} />
+                <ShoppingBag   size={18} style={{ marginRight: "8px" }} />
                 Add to Bag
               </button>
             </div>

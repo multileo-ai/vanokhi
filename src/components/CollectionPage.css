@@ -236,7 +236,7 @@
 
 .action-btn {
   border: none;
-  border-radius: 10px;
+  border-radius: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -249,14 +249,21 @@
 .action-btn.wishlist {
   width: 45px;
   height: 45px;
-  background: white;
-  color: #333;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  /* color: #333; */
 }
 .action-btn.cart {
   flex: 1;
-  background: #860204; /* Restored Vanokhi Red */
+  /* background: rgba(255, 255, 255, 0.1); */
+  background: rgba(154, 0, 2, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   gap: 8px;
+  
 }
 
 .cp-product-info {

@@ -52,12 +52,12 @@ const HomePage = ({
     <div ref={categoryRef}>
       <Category />
     </div>
-    <div ref={newArrivalsRef}>
-      <NewArivals />
-    </div>
 
     {/* Trigger for HIDING navbar */}
     <div ref={hideSectionRef}>
+    <div ref={newArrivalsRef}>
+      <NewArivals />
+    </div>
       <InstagramGrid />
       <TestimonialsGrid />
     </div>
