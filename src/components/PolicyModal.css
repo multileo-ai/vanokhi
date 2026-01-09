@@ -57,6 +57,18 @@
   font-size: 1rem;
 }
 
+.policy-text-content strong {
+  display: block; /* Ensures the heading is on its own line */
+  margin-top: 1.5rem; /* Adds space above the heading */
+  margin-bottom: 0.5rem; /* Adds space below the heading */
+  font-weight: 800; /* Makes it extra bold */
+  color: #151312; /* Optional: darker color for headings */
+}
+
+.policy-text-content strong:first-child {
+  margin-top: 0;
+}
+
 .policy-modal-footer {
   padding: 20px;
   border-top: 1px solid #eee;
