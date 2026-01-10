@@ -167,6 +167,8 @@
 
 .quick-view:hover {
   /* background: linear-gradient(135deg, #b40003, #d50004); */
+  background: rgba(154, 0, 2, 0.2);
+  color: white;
   transform: translateY(-2px);
   /* box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); */
 }

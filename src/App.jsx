@@ -55,9 +55,9 @@ const HomePage = ({
 
     {/* Trigger for HIDING navbar */}
     <div ref={hideSectionRef}>
-    <div ref={newArrivalsRef}>
-      <NewArivals />
-    </div>
+      <div ref={newArrivalsRef}>
+        <NewArivals />
+      </div>
       <InstagramGrid />
       <TestimonialsGrid />
     </div>
@@ -203,20 +203,26 @@ function AppContent() {
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
                 <li>Email: support@nishorama.com</li>
-                <li
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginTop: "10px",
-                  }}
-                >
-                  <img
-                    src="/instagram.png"
-                    alt="Insta"
-                    style={{ width: "20px" }}
-                  />
-                  @vanokhi.in
+                <li>
+                  <a
+                    href="https://www.instagram.com/vanokhi.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <img
+                      src="/instagram.png"
+                      alt="Insta"
+                      style={{ width: "20px" }}
+                    />
+                    @vanokhi.in
+                  </a>
                 </li>
               </ul>
             </div>

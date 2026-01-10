@@ -25,7 +25,7 @@
   background-color: transparent; /* Keep it transparent by default */
 
   /* Smooth transition for both sliding and color changes */
-  /* transition: transform 0.4s ease-in-out, background-color 0.3s ease; */
+  transition: transform 0.6s ease-in-out, background-color 0.3s ease;
 }
 
 .vanokhi-navbar.nav-hidden {
@@ -40,7 +40,7 @@
   margin-top: 20px;
   line-height: 1;
   font-weight: 500;
-  /* transition: color 0.3s ease; */
+  transition: all 0.3s ease;
   letter-spacing: 0 !important;
 }
 
