@@ -43,10 +43,11 @@ export default function CartSidebar({ isOpen, onClose }) {
       return;
     }
 
-    // 2. Razorpay Integration
+    // 2. Razorpay Integration amount: subtotal * 100,
     const options = {
-      key: "YOUR_RAZORPAY_KEY_ID", // Get from Razorpay Dashboard
-      amount: subtotal * 100, // Amount in paise
+      key: "rzp_test_S25neF9uAy6S82", // Get from Razorpay Dashboard
+      amount: 1,
+      
       currency: "INR",
       name: "Vanokhi",
       description: "Order Payment",

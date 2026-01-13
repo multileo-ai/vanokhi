@@ -1,162 +1,55 @@
-/* BrandStory: red band + typing slider */
-
-:root {
-  /* Variables for easy adjustment */
-  --bs-font-size: 2.5rem;
-  --bs-mobile-font-size: 1.6rem;
-  --bs-slider-height: 4rem;
-  --bs-padding: 110px 0; /* Increased padding for more height */
-}
+/* src/components/BrandStory.css */
 
 .brand-story-box {
   width: 100%;
-  background: #9a0002; /* accent */
+  /* Using the signature red from your project */
+  background: #9a0002;
   color: #faecd9;
-  padding: var(--bs-padding);
-  box-sizing: border-box;
-  border-top: 6px solid rgba(217, 197, 170, 0.12);
-  transform: translateZ(0);
-  border: 0.5px solid #ffffffc7;
-  /* Flexbox to vertically center the content if height grows */
+
+  /* Providing substantial height as requested */
+  padding: 120px 0;
+  min-height: 250px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  /* Matching the subtle border from your original code */
+  border-top: 6px solid rgba(217, 197, 170, 0.12);
+  border-bottom: 0.5px solid #ffffffc7;
+  text-align: center;
 }
 
 .brand-story-inner {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px;
 }
 
-/* Typing slider */
-.typing-slider {
-  position: relative;
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-  display: block;
-  min-height: var(--bs-slider-height);
-  height: var(--bs-slider-height);
+.typing-container {
+  /* Using your website's main font */
+  font-family: "myMontserrat", sans-serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+  display: inline-block;
+  width: 100%;
 }
 
-/* Center each paragraph */
-.typing-slider p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: block;
-  margin: 0;
-  padding: 0 10px;
-  white-space: nowrap;
-
-  /* Text Styling */
-  font-size: var(--bs-font-size);
-  letter-spacing: 2px;
-  opacity: 0; /* Hidden by default */
-
-  /* Slide Animation: Controls visibility of the entire word */
-  animation: slide 15s linear infinite;
+/* Style for the blinking cursor */
+.typing-container .react-type-animation-cursor {
+  color: #faecd9;
 }
 
-/* Cursor / Mask (The block that covers/reveals text) */
-.typing-slider p::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%; /* Starts covering the text */
-  border-left: 3px solid #d9c5aa;
-  background-color: #9a0002;
-
-  /* Typing Animation: Controls the reveal (wipe) effect */
-  animation: typing 5s ease-in-out infinite;
-  box-sizing: border-box;
-}
-
-/* Stagger the animations for each slide (Total Cycle: 15s) */
-
-/* Slide 1: 0s - 5s */
-.typing-slider p:nth-child(1) {
-  animation-delay: 0s;
-}
-.typing-slider p:nth-child(1)::after {
-  animation-delay: 0s;
-}
-
-/* Slide 2: 5s - 10s */
-.typing-slider p:nth-child(2) {
-  animation-delay: 5s;
-}
-.typing-slider p:nth-child(2)::after {
-  animation-delay: 5s;
-}
-
-/* Slide 3: 10s - 15s */
-.typing-slider p:nth-child(3) {
-  animation-delay: 10s;
-}
-.typing-slider p:nth-child(3)::after {
-  animation-delay: 10s;
-}
-
-/* --- Keyframes --- */
-
-/* SLIDE: Controls when the text is actually rendered/visible */
-@keyframes slide {
-  0% {
-    opacity: 1;
-    z-index: 1;
-  }
-  28% {
-    opacity: 1; /* Stay fully visible */
-  }
-  33.33% {
-    opacity: 0; /* Fade out just before the next slide starts */
-    z-index: -1;
-  }
-  100% {
-    opacity: 0;
-    z-index: -1;
-  }
-}
-
-/* TYPING: Controls the red block wiping away to reveal text */
-@keyframes typing {
-  0% {
-    width: 100%; /* Fully covered */
-  }
-  15% {
-    width: 0%; /* Fast reveal (approx 0.75s) */
-  }
-  85% {
-    width: 0%; /* Stay revealed (Reading time) */
-  }
-  95% {
-    width: 0%; /* Start reset */
-    border-color: transparent; /* Hide cursor while fading out */
-  }
-  100% {
-    width: 100%; /* Reset to covered for next loop */
-    border-color: transparent;
-  }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 920px) {
+/* Mobile Adjustments */
+@media (max-width: 768px) {
   .brand-story-box {
-    padding: 40px 12px;
+    padding: 60px 15px;
+    min-height: 220px;
   }
 
-  .typing-slider p {
-    font-size: var(--bs-mobile-font-size);
-  }
-
-  .typing-slider {
-    min-height: 2.5rem;
-    height: 2.5rem;
+  .typing-container {
+    font-size: 1.6rem;
   }
 }
