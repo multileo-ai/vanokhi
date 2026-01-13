@@ -14,15 +14,15 @@ export default function BrandStory() {
             key={resetKey} // Forces component to re-render from scratch when key changes
             sequence={[
               "Distinct in identity",
-              800,
+              500,
               "Distinct in identity, rooted in culture reimagined",
-              800,
+              500,
               "Distinct in identity, rooted in culture reimagined — that's Vaanokhi.",
-              800,
+              500,
               () => setResetKey((prev) => prev + 1), // At the very end, change the key to reset
             ]}
             wrapper="span"
-            speed={50}
+            speed={150}
             cursor={true}
             repeat={0} // We handle the "repeat" manually via the key for a clean reset
           />
