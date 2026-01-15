@@ -9,6 +9,7 @@ import {
 import "./App.css";
 import { db } from "./firebase"; // Adjust path to your firebase config file
 import { doc, onSnapshot } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -30,6 +31,8 @@ import PolicyModal from "./components/PolicyModal";
 import AllProducts from "./components/AllProducts";
 import FAQModal from "./components/FaqModal";
 import OrdersPage from "./components/OrdersPage";
+import OurStory from "./components/OurStory";
+import ScrollToTop from "./components/ScrollToTop";
 
 const HomePage = ({
   whiteSectionRef,
@@ -182,6 +185,7 @@ function AppContent() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/our-story" element={<OurStory />} />
       </Routes>
 
       {!isCollectionPage && (
@@ -229,7 +233,14 @@ function AppContent() {
             <div className="footer-column">
               <h3>SUPPORT</h3>
               <ul>
-                <li>About Us</li>
+                <li>
+                  <Link
+                    to="/our-story"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    About Us
+                  </Link>
+                </li>
                 <li
                   onClick={() => setFaqOpen(true)}
                   style={{ cursor: "pointer" }}
@@ -281,6 +292,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <AppContent />
     </Router>
   );

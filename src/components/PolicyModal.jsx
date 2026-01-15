@@ -190,19 +190,23 @@ export default function PolicyModal({ isOpen, onClose, policyTitle }) {
         <div className="policy-overlay" onClick={onClose}>
           <motion.div
             className="policy-modal"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="policy-modal-header">
-              <h2>{policyTitle}</h2>
+              <div className="header-title">
+                <span className="subtitle">Our Policies</span>
+                <h2>{policyTitle}</h2>
+              </div>
               <button className="policy-close-btn" onClick={onClose}>
-                <X size={24} />
+                <X size={28} />
               </button>
             </div>
+
             <div className="policy-modal-body">
-              <p
+              <div
                 className="policy-text-content"
                 dangerouslySetInnerHTML={{
                   __html:
@@ -210,10 +214,11 @@ export default function PolicyModal({ isOpen, onClose, policyTitle }) {
                 }}
               />
             </div>
+
             <div className="policy-modal-footer">
-              <button className="policy-accept-btn" onClick={onClose}>
-                Close
-              </button>
+              <p>
+                Have more questions? <span>Contact Support</span>
+              </p>
             </div>
           </motion.div>
         </div>

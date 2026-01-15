@@ -1,0 +1,150 @@
+.story-page-wrapper {
+  padding: 0 0 5rem 0; /* Top padding is 0 to let banner touch top */
+  font-family: "myMontserrat", sans-serif;
+  background-color: #fff;
+}
+
+.story-row {
+  margin-bottom: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Banner Container Styles */
+.full-banner,
+.split-grid-50,
+.split-grid-30-70 {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 6rem;
+}
+
+.full-banner img {
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+}
+
+/* 50/50 Split */
+.split-grid-50 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.split-grid-50 img {
+  width: 100%;
+  height: 60vh;
+  object-fit: cover;
+}
+
+/* 30/70 Split */
+.split-grid-30-70 {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.split-grid-30-70 img {
+  width: 100%;
+  height: 50vh;
+  object-fit: cover;
+}
+
+/* Text Block Styling */
+.story-text-block {
+  max-width: 800px;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.story-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: var(--primary); /* Vanokhi Red */
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.story-text-block p {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.final-text {
+  font-family: "Bodoni Moda", serif;
+  font-size: 2rem;
+  font-style: italic;
+  margin-top: 2rem;
+  color: var(--primary);
+}
+
+.sub-final {
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  color: #999;
+}
+
+/* Mobile Adjustments */
+/* Mobile Adjustments - Maintaining Side-by-Side Layout */
+@media (max-width: 768px) {
+  /* Prevent the 50/50 split from stacking */
+  .split-grid-50 {
+    grid-template-columns: 1fr 1fr !important; /* Forces side-by-side */
+    gap: 5px; /* Tighter gap for smaller screens */
+  }
+
+  /* Prevent the 30/70 split from stacking */
+  .split-grid-30-70 {
+    grid-template-columns: 30% 70% !important; /* Forces side-by-side */
+    gap: 5px;
+    padding: 0 5px;
+  }
+  .full-banner,
+  .split-grid-50,
+  .split-grid-30-70 {
+    margin-bottom: 3rem;
+  }
+
+  /* Adjust heights for 9:16 mobile view to keep images proportional */
+  .full-banner img {
+    height: 35vh;
+  }
+
+  .split-grid-50 img {
+    height: 30vh;
+  }
+
+  .split-grid-30-70 img {
+    height: 25vh;
+  }
+
+  /* Scale down typography for mobile */
+  .story-title {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .story-text-block {
+    padding: 2rem 1.2rem;
+  }
+
+  .story-text-block p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .story-row {
+    margin-bottom: 3rem; /* Reduced spacing for mobile */
+  }
+
+  .final-text {
+    font-size: 1.5rem;
+  }
+}

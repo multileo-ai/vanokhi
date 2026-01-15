@@ -200,7 +200,6 @@
   border-radius: 15px;
   overflow: hidden;
   background: #f9f9f9;
-  
 }
 
 .cp-img-container img {
@@ -208,14 +207,11 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  
 }
 
 .cp-product-card:hover .cp-img-container img {
   transform: scale(1.08);
 }
-
-
 
 .cp-product-actions {
   position: absolute;
@@ -263,7 +259,14 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   gap: 8px;
-  
+}
+
+.action-btn.cart:hover {
+  border-radius: 50px;
+  background: rgba(154, 0, 2, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
 .cp-product-info {

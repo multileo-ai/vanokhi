@@ -59,7 +59,8 @@
   transition: transform 0.2s;
 }
 .close-btn:hover {
-  color: #9a0002;
+  background: #860204;
+  color: white;
   transform: rotate(90deg);
 }
 

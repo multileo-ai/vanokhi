@@ -90,6 +90,7 @@ const MiniNav = () => {
   const getPath = (item) => {
     if (item === "Collections") return "/collections";
     if (item === "All Products") return "/all-products";
+    if (item === "Our Story") return "/our-story";
     return "/";
   };
 

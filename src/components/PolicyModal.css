@@ -1,8 +1,8 @@
 .policy-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(5px);
+  background: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,76 +11,107 @@
 }
 
 .policy-modal {
-  background: #fff;
+  background: #ffffff;
   width: 100%;
-  max-width: 600px;
-  max-height: 80vh;
-  border-radius: 4px;
+  max-width: 650px;
+  max-height: 85vh;
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  position: relative;
-  border-top: 4px solid #860204;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .policy-modal-header {
-  padding: 25px;
+  padding: 40px 40px 20px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
+  align-items: flex-start;
 }
 
-.policy-modal-header h2 {
-  font-family: "Bodoni Moda", serif;
+.header-title .subtitle {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
   color: #860204;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.header-title h2 {
+  font-family: "VanokhiSerif", serif;
+  font-size: 2.5rem;
   margin: 0;
-  font-size: 1.8rem;
+  color: #1a1a1a;
+  letter-spacing: 0px !important;
 }
 
 .policy-close-btn {
-  background: none;
+  background: #f5f5f5;
   border: none;
+  padding: 10px;
+  border-radius: 50%;
   cursor: pointer;
-  color: #333;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-close-btn:hover {
+  background: #860204;
+  color: white;
+  transform: rotate(90deg);
 }
 
 .policy-modal-body {
-  padding: 30px;
+  padding: 0 40px 30px;
   overflow-y: auto;
-  font-family: "Work Sans", sans-serif;
-  line-height: 1.6;
-  color: #444;
 }
 
 .policy-text-content {
-  white-space: pre-wrap;
+  font-family: "Work Sans", sans-serif;
+  color: #666;
+  line-height: 1.7;
   font-size: 1rem;
 }
 
+/* Maintain your custom strong tag styling for headers within the policy text */
 .policy-text-content strong {
-  display: block; /* Ensures the heading is on its own line */
-  margin-top: 1.5rem; /* Adds space above the heading */
-  margin-bottom: 0.5rem; /* Adds space below the heading */
-  font-weight: 800; /* Makes it extra bold */
-  color: #151312; /* Optional: darker color for headings */
-}
-
-.policy-text-content strong:first-child {
-  margin-top: 0;
+  display: block;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+  color: #151312;
 }
 
 .policy-modal-footer {
-  padding: 20px;
-  border-top: 1px solid #eee;
-  text-align: right;
+  padding: 25px 40px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+  text-align: center;
 }
 
-.policy-accept-btn {
-  background: #860204;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  cursor: pointer;
+.policy-modal-footer p {
+  margin: 0;
   font-family: "Montserrat", sans-serif;
-  letter-spacing: 1px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.policy-modal-footer span {
+  color: #860204;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Custom Scrollbar to match FAQ */
+.policy-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.policy-modal-body::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
 }
