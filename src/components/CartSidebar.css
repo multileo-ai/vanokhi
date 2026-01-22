@@ -62,6 +62,9 @@
   background: #860204;
   color: white;
   transform: rotate(90deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-items {

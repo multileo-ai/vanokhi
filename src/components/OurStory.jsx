@@ -10,12 +10,16 @@ export default function OurStory() {
           <img src="/banner.png" alt="Vanokhi Banner" />
         </div>
         <div className="story-text-block">
-          <h1 className="story-title">OUR LEGACY</h1>
+          <h1 className="story-title">OUR STORY & PHILOSOPHY</h1>
           <p>
-            Inspired by the philosophy of The Art of Living Well, Vanokhi
-            appreciates the finer things in life and finding joy in everyday.
-            Our brand is more than just a label; it's a sweet way of living
-            life, cultivating connections, and embracing imperfections.
+            🌸 Vaanokhi - The Waah Moment In a world obsessed with trends,
+            Vaanokhi chooses to stand apart. Born from the idea of “Vastra ka
+            Anokhapan,” it celebrates the many cultures of India in a way that
+            feels fresh, youthful, and unapologetically original. Each
+            collection reflects a new perspective — where Indian identity meets
+            modern expression. Vaanokhi is for those who don't follow trends,
+            but set their own rhythm. Because true style isn't copied, it's felt
+            — in that one Waah Moment.
           </p>
         </div>
       </section>
@@ -27,12 +31,11 @@ export default function OurStory() {
           <img src="/newarivals.png" alt="Heritage" />
         </div>
         <div className="story-text-block">
-          <h2 className="story-title">MODERN HERITAGE</h2>
+          <h2 className="story-title">Culture Reimagined</h2>
           <p>
-            Our design ethos is inspired by contemporary aesthetics presenting
-            clothing that is both current and classic. Each piece is designed to
-            reflect modern Indian sensibilities, bringing forth an expression
-            that is cultured and sophisticated.
+            Each collection draws inspiration from India’s diverse cultures,
+            reinterpreted in a way that speaks to today’s generation — bold,
+            curious, and creative.
           </p>
         </div>
       </section>
@@ -43,11 +46,10 @@ export default function OurStory() {
           <img src="/brand-ad.jpg" alt="Philosophy Banner" />
         </div>
         <div className="story-text-block">
-          <h2 className="story-title">CRAFTED FOR YOU</h2>
+          <h2 className="story-title">Distinct Identity</h2>
           <p>
-            We believe in creating clothing that resonates with your unique
-            identity and style. Designed for individuals with a strong belief in
-            tradition, yet possessing a progressive outlook.
+            Vaanokhi stands apart from fast fashion by creating original,
+            seasonless designs that reflect individuality rather than trends.
           </p>
         </div>
       </section>

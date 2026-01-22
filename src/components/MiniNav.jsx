@@ -91,6 +91,8 @@ const MiniNav = () => {
     if (item === "Collections") return "/collections";
     if (item === "All Products") return "/all-products";
     if (item === "Our Story") return "/our-story";
+    if (item === "New Arrivals") return "/new-arrivals";
+    if (item === "Most Wanted") return "/most-wanted";
     return "/";
   };
 

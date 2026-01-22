@@ -295,7 +295,7 @@ Features lace edging on the top hem and dupatta`}
               <div className="reviewActions">
                 <button
                   type="submit"
-                  className="btnPrimary"
+                  className="revbtnPrimary"
                   disabled={submitting}
                 >
                   {submitting ? "Posting..." : "Post review"}

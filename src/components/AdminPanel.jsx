@@ -4,15 +4,18 @@ import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import {
   collection,
+  collectionGroup,
   addDoc,
   doc,
   deleteDoc,
   updateDoc,
+  serverTimestamp,
   arrayUnion,
   onSnapshot,
   query,
   orderBy,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import {
   Plus,
@@ -29,12 +32,19 @@ import {
   Check,
   Ban,
   AlertTriangle,
+  Instagram,
+  MessageSquare,
+  Trash,
+  ExternalLink,
+  MoreVertical,
 } from "lucide-react";
 import "./AdminPanel.css";
 
 export default function AdminPanel() {
   const { userData, liveProducts, liveCollections } = useAuth();
   const [activeTab, setActiveTab] = useState("inventory");
+
+  const [mostWantedIds, setMostWantedIds] = useState([]);
 
   // --- STATE: INVENTORY ---
   const [newColl, setNewColl] = useState({ title: "", tagline: "", img: "" });
@@ -54,6 +64,21 @@ export default function AdminPanel() {
     galleryNormal: Array(4).fill(""), // Changed to parallel array structure
     galleryPNG: Array(4).fill(""), // Changed to parallel array structure
   });
+
+  // --- STATE: INSTAGRAM FEED ---
+  const [instaPosts, setInstaPosts] = useState([]);
+  const [newInsta, setNewInsta] = useState({
+    img: "",
+    instalink: "",
+    likes: "",
+    comments: "",
+    type: "image",
+  });
+  const [editingInsta, setEditingInsta] = useState(null);
+
+  // --- STATE: REVIEWS MODERATION ---
+  const [allReviews, setAllReviews] = useState([]);
+
   const [editingProd, setEditingProd] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -95,8 +120,67 @@ export default function AdminPanel() {
   // --- STATE: SITE CONTENT ---
   const [heroData, setHeroData] = useState({ bannerUrl: "", tagline: "" });
 
+  const toggleMostWanted = async (productId) => {
+    const docRef = doc(db, "siteSettings", "mostWanted");
+    const isCurrentlyWanted = mostWantedIds.includes(productId);
+    
+    const updatedIds = isCurrentlyWanted
+      ? mostWantedIds.filter((id) => id !== productId)
+      : [...mostWantedIds, productId];
+
+    try {
+      await setDoc(docRef, { productIds: updatedIds }, { merge: true });
+      setMostWantedIds(updatedIds); // Update local state for instant UI feedback
+    } catch (err) {
+      console.error("Error updating Most Wanted:", err);
+      alert("Failed to update list.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchMostWanted = async () => {
+      const docRef = doc(db, "siteSettings", "mostWanted");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setMostWantedIds(docSnap.data().productIds || []);
+      }
+    };
+    if (userData?.isAdmin) fetchMostWanted();
+  }, [userData]);
+
   useEffect(() => {
     if (!userData?.isAdmin) return;
+
+    // Listen to Instagram Posts
+    const qInsta = query(
+      collection(db, "instagramPosts"),
+      orderBy("createdAt", "desc")
+    );
+    const unsubInsta = onSnapshot(qInsta, (snap) => {
+      setInstaPosts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+    });
+
+    const qReviews = query(
+      collectionGroup(db, "reviews"),
+      orderBy("createdAt", "desc")
+    );
+
+    const unsubReviews = onSnapshot(qReviews, (snap) => {
+      setAllReviews(
+        snap.docs.map((d) => {
+          const data = d.data();
+          // d.ref.parent is the 'reviews' collection
+          // d.ref.parent.parent is the 'product' document
+          const parentProdId = d.ref.parent.parent?.id;
+
+          return {
+            id: d.id,
+            productId: parentProdId, // Ensure this key matches what you use in deleteReview
+            ...data,
+          };
+        })
+      );
+    });
 
     const qOrders = query(
       collection(db, "orders"),
@@ -113,7 +197,11 @@ export default function AdminPanel() {
     };
     fetchHero();
 
-    return () => unsubOrders();
+    return () => {
+      unsubOrders();
+      unsubInsta();
+      unsubReviews();
+    };
   }, [userData]);
 
   if (!userData?.isAdmin)
@@ -124,6 +212,61 @@ export default function AdminPanel() {
     await addDoc(collection(db, "collections"), { ...newColl, productIds: [] });
     alert("Collection Created!");
     setNewColl({ title: "", subtitle: "", img: "" });
+  };
+
+  // --- INSTAGRAM ACTIONS ---
+  const handleAddInsta = async (e) => {
+    e.preventDefault();
+    await addDoc(collection(db, "instagramPosts"), {
+      ...newInsta,
+      likes: parseInt(newInsta.likes) || 0,
+      comments: parseInt(newInsta.comments) || 0,
+      createdAt: serverTimestamp(),
+    });
+    setNewInsta({
+      img: "",
+      instalink: "",
+      likes: "",
+      comments: "",
+      type: "image",
+    });
+  };
+
+  const handleUpdateInsta = async (e) => {
+    e.preventDefault();
+    const docRef = doc(db, "instagramPosts", editingInsta.id);
+    await updateDoc(docRef, {
+      ...editingInsta,
+      likes: parseInt(editingInsta.likes),
+      comments: parseInt(editingInsta.comments),
+    });
+    setEditingInsta(null);
+  };
+
+  const deleteInsta = async (id) => {
+    if (window.confirm("Delete this post?"))
+      await deleteDoc(doc(db, "instagramPosts", id));
+  };
+
+  // --- REVIEW ACTIONS ---
+  const deleteReview = async (productId, reviewId) => {
+    // Debugging logs to see which one is undefined
+    console.log("Deleting Review:", { productId, reviewId });
+
+    if (!productId || !reviewId) {
+      alert("Error: Missing Product ID or Review ID");
+      return;
+    }
+
+    if (window.confirm("Delete this review?")) {
+      try {
+        // Path: products/{productId}/reviews/{reviewId}
+        const reviewRef = doc(db, "products", productId, "reviews", reviewId);
+        await deleteDoc(reviewRef);
+      } catch (error) {
+        console.error("Error deleting review:", error);
+      }
+    }
   };
 
   const handleUpdateProduct = async (e) => {
@@ -189,6 +332,12 @@ export default function AdminPanel() {
             onClick={() => setActiveTab("content")}
           >
             <ImageIcon size={18} /> Site Content
+          </button>
+          <button
+            className={activeTab === "social" ? "active" : ""}
+            onClick={() => setActiveTab("social")}
+          >
+            <Instagram size={18} /> Social & Reviews
           </button>
         </div>
       </div>
@@ -379,6 +528,14 @@ export default function AdminPanel() {
                       </small>
                     </div>
                     <div className="item-actions">
+                      <button 
+                        className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""}`}
+                        onClick={() => toggleMostWanted(p.id)}
+                        title="Toggle Most Wanted"
+                      >
+                        <Star size={16} fill={mostWantedIds.includes(p.id) ? "#dd8512" : "none"} />
+                      </button>
+                      
                       <button
                         onClick={() =>
                           setEditingProd({
@@ -517,6 +674,185 @@ export default function AdminPanel() {
                 <h1 style={{ fontFamily: "Bodoni Moda" }}>
                   {heroData.tagline}
                 </h1>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "social" && (
+          <div className="admin-grid">
+            {/* Instagram Manager */}
+            <div className="admin-card glass-morph">
+              <h2>
+                <Instagram />{" "}
+                {editingInsta ? "Edit Post" : "Add Instagram Post"}
+              </h2>
+              <form
+                onSubmit={editingInsta ? handleUpdateInsta : handleAddInsta}
+              >
+                <input
+                  placeholder="Image URL"
+                  value={editingInsta ? editingInsta.img : newInsta.img}
+                  onChange={(e) =>
+                    editingInsta
+                      ? setEditingInsta({
+                          ...editingInsta,
+                          img: e.target.value,
+                        })
+                      : setNewInsta({ ...newInsta, img: e.target.value })
+                  }
+                />
+                <input
+                  placeholder="Instagram Link"
+                  value={
+                    editingInsta ? editingInsta.instalink : newInsta.instalink
+                  }
+                  onChange={(e) =>
+                    editingInsta
+                      ? setEditingInsta({
+                          ...editingInsta,
+                          instalink: e.target.value,
+                        })
+                      : setNewInsta({ ...newInsta, instalink: e.target.value })
+                  }
+                />
+                <div className="form-row">
+                  <input
+                    type="number"
+                    placeholder="Likes"
+                    value={editingInsta ? editingInsta.likes : newInsta.likes}
+                    onChange={(e) =>
+                      editingInsta
+                        ? setEditingInsta({
+                            ...editingInsta,
+                            likes: e.target.value,
+                          })
+                        : setNewInsta({ ...newInsta, likes: e.target.value })
+                    }
+                  />
+                  <input
+                    type="number"
+                    placeholder="Comments"
+                    value={
+                      editingInsta ? editingInsta.comments : newInsta.comments
+                    }
+                    onChange={(e) =>
+                      editingInsta
+                        ? setEditingInsta({
+                            ...editingInsta,
+                            comments: e.target.value,
+                          })
+                        : setNewInsta({ ...newInsta, comments: e.target.value })
+                    }
+                  />
+                </div>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    type="submit"
+                    className="admin-btn publish"
+                    style={{ flex: 1 }}
+                  >
+                    {editingInsta ? "Update Post" : "Add to Grid"}
+                  </button>
+                  {editingInsta && (
+                    <button
+                      onClick={() => setEditingInsta(null)}
+                      className="admin-btn"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
+
+              <div className="product-list-mini" style={{ marginTop: "20px" }}>
+                {instaPosts.map((post) => (
+                  <div key={post.id} className="mini-item">
+                    <img src={post.img} alt="" />
+                    <div className="item-info">
+                      <span>{post.likes} Likes</span>
+                      <small>{post.instalink.slice(0, 30)}...</small>
+                    </div>
+                    <div className="item-actions">
+                      <button
+                        onClick={() => setEditingInsta(post)}
+                        className="edit-icon"
+                      >
+                        <Edit3 size={14} />
+                      </button>
+                      <button
+                        onClick={() => deleteInsta(post.id)}
+                        className="edit-icon"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Review Moderation */}
+            <div className="admin-card glass-morph">
+              <h2>
+                <MessageSquare /> Global Review Moderation
+              </h2>
+              <div className="product-list-mini" style={{ maxHeight: "600px" }}>
+                {allReviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="mini-item"
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      <strong>{review.userName}</strong>
+                      <button
+                        onClick={() =>
+                          deleteReview(review.productId, review.id)
+                        } // Uses the productId we mapped above
+                        className="delete-btn"
+                        style={{
+                          color: "#860204",
+                          border: "none",
+                          background: "none",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Trash size={16} />
+                      </button>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        color: "#ffc107",
+                        margin: "5px 0",
+                      }}
+                    >
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={12}
+                          fill={i < review.rating ? "#ffc107" : "none"}
+                        />
+                      ))}
+                    </div>
+                    <p style={{ fontSize: "0.85rem", margin: "5px 0" }}>
+                      {review.comment}
+                    </p>
+                    <small style={{ color: "#999" }}>
+                      Product ID: {review.productId}
+                    </small>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

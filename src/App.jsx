@@ -33,6 +33,8 @@ import FAQModal from "./components/FaqModal";
 import OrdersPage from "./components/OrdersPage";
 import OurStory from "./components/OurStory";
 import ScrollToTop from "./components/ScrollToTop";
+import NewArrivalsPage from "./components/NewArrivalsPage";
+import MostWantedPage from "./components/MostWantedPage";
 
 const HomePage = ({
   whiteSectionRef,
@@ -124,16 +126,16 @@ function AppContent() {
       const shouldHide = hasReachedInstagram || passedNewArrivals;
 
       // Debug logs to help diagnose why behavior may not be triggering
-      console.log("NAV SCROLL DEBUG", {
-        hasReachedInstagram,
-        passedNewArrivals,
-        isHeaderInWhiteSection,
-        nearTitle,
-        hideRect,
-        naRect,
-        whiteRect,
-        titleRect,
-      });
+      // console.log("NAV SCROLL DEBUG", {
+      //   hasReachedInstagram,
+      //   passedNewArrivals,
+      //   isHeaderInWhiteSection,
+      //   nearTitle,
+      //   hideRect,
+      //   naRect,
+      //   whiteRect,
+      //   titleRect,
+      // });
 
       setNavHidden(shouldHide);
       setNavWhite(isHeaderInWhiteSection);
@@ -186,6 +188,8 @@ function AppContent() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/our-story" element={<OurStory />} />
+        <Route path="/new-arrivals" element={<NewArrivalsPage />} />
+        <Route path="/most-wanted" element={<MostWantedPage />} />
       </Routes>
 
       {!isCollectionPage && (
@@ -206,7 +210,7 @@ function AppContent() {
               <h3>CONTACT US</h3>
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
-                <li>Email: support@nishorama.com</li>
+                <li>Email: Vanokhi.in@gmail.com</li>
                 <li>
                   <a
                     href="https://www.instagram.com/vanokhi.in/"
