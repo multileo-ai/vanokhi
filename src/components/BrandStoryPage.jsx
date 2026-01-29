@@ -1,14 +1,31 @@
-import React from 'react';
-import './BrandStoryPage.css';
-
-// REPLACE THESE WITH YOUR ACTUAL IMAGE PATHS
-// Example: import walkingImage from './assets/walking-woman.jpg';
-const walkingImagePlaceholder = "/Rectangle 3.png";
-const portraitImagePlaceholder = "/image 2.png";
-
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+import "./BrandStoryPage.css";
 
 const BrandStoryPage = () => {
-  // We create a long string of Lorem Ipsum to match the visual density of the text block.
+  const [images, setImages] = useState({
+    img1: "/Rectangle 3.png", // Fallback to your original placeholder
+    img2: "/image 2.png", // Fallback to your original placeholder
+  });
+
+  useEffect(() => {
+    // Listen to the specific document in siteSettings
+    const unsub = onSnapshot(
+      doc(db, "siteSettings", "brandStory"),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setImages({
+            img1: data.img1 || "/Rectangle 3.png",
+            img2: data.img2 || "/image 2.png",
+          });
+        }
+      },
+    );
+    return () => unsub();
+  }, []);
+
   const loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
@@ -20,26 +37,24 @@ Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, ad
       {/* Left Section: Red Background & Text */}
       <div className="text-content">
         <h1 className="brand-title">Brand Story</h1>
-        <p className="brand-body-text">
-          {loremIpsumText}
-        </p>
+        <p className="brand-body-text">{loremIpsumText}</p>
       </div>
 
       {/* Right Section: Background Image */}
       <div className="right-image-container">
-        <img 
-          src={walkingImagePlaceholder} 
-          alt="Woman walking in city" 
-          className="background-image" 
+        <img
+          src={images.img1}
+          alt="Brand background"
+          className="background-image"
         />
       </div>
 
       {/* The Overlapping Foreground Image */}
       <div className="overlap-image-container">
-        <img 
-          src={portraitImagePlaceholder} 
-          alt="Portrait of woman in tweed" 
-          className="foreground-image" 
+        <img
+          src={images.img2}
+          alt="Brand overlap"
+          className="foreground-image"
         />
       </div>
     </div>

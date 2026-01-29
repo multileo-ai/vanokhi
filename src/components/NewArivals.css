@@ -4,29 +4,27 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  /* padding-top: 80px; */  
 }
 
 .brand-image-viewport1 {
-  /* This area overlays the site background (banner) */
-  min-height: 95vh; /* adjust to taste (was 100vh previously) */
   width: 100%;
+  aspect-ratio: 16 / 9; /* Forces 16:9 ratio on all devices */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  background-image: url(/newarivals.png);
   background-repeat: no-repeat;
-  /* background-position: center; */
-    background-size: cover;
+  background-position: center;
+  background-size: cover;
+  /* Removed min-height: 95vh to allow aspect-ratio to control height */
 }
 
 .hero-overlay1 {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.06));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
   pointer-events: none;
   z-index: 1;
 }
@@ -46,10 +44,9 @@
   transform: translateY(6px);
 } */
 
-.hero-center-badge1{
+.hero-center-badge1 {
   position: absolute;
   bottom: 15%;
-  left: 50% - 50px;
   z-index: 2;
   display: inline-flex;
   align-items: center;
@@ -60,17 +57,21 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  gap: 10px;
   cursor: pointer;
-  text-transform: uppercase;
   transition: 0.3s ease;
 }
 
 .badge-text1 {
-  font-size: 2rem;
+  font-size: clamp(1rem, 4vw, 2rem); /* Responsive font size */
   color: #ffffff;
   letter-spacing: 4px;
   text-transform: uppercase;
   margin: 0;
 }
 
+@media (max-width: 768px) {
+  .hero-center-badge1 {
+    padding: 8px 24px;
+    bottom: 10%;
+  }
+}

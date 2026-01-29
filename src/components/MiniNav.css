@@ -9,7 +9,8 @@
 
 .mini-nav {
   width: 100%;
-  color: #9a0002;
+  /* color: #9a0002; */
+  color:#faecd9;
   display: flex;
   justify-content: center;
   align-items: center;

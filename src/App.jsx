@@ -45,7 +45,12 @@ const HomePage = ({
   bannerUrl,
 }) => (
   <>
-    <img src={bannerUrl || "/banner.png"} className="bgbanner" alt="Banner" />
+    <img
+      src={bannerUrl || "/banner.png"}
+      className="bgbanner"
+      alt="Banner"
+      key={bannerUrl} // Adding a key forces a re-render when the URL changes
+    />
     <BrandImage scrollToCategory={scrollToCategory} />
     <BrandStory />
 

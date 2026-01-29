@@ -119,11 +119,13 @@ export default function AdminPanel() {
 
   // --- STATE: SITE CONTENT ---
   const [heroData, setHeroData] = useState({ bannerUrl: "", tagline: "" });
+  const [newArrivalPoster, setNewArrivalPoster] = useState("");
+  const [storyImages, setStoryImages] = useState({ img1: "", img2: "" });
 
   const toggleMostWanted = async (productId) => {
     const docRef = doc(db, "siteSettings", "mostWanted");
     const isCurrentlyWanted = mostWantedIds.includes(productId);
-    
+
     const updatedIds = isCurrentlyWanted
       ? mostWantedIds.filter((id) => id !== productId)
       : [...mostWantedIds, productId];
@@ -154,7 +156,7 @@ export default function AdminPanel() {
     // Listen to Instagram Posts
     const qInsta = query(
       collection(db, "instagramPosts"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
     );
     const unsubInsta = onSnapshot(qInsta, (snap) => {
       setInstaPosts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -162,7 +164,7 @@ export default function AdminPanel() {
 
     const qReviews = query(
       collectionGroup(db, "reviews"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
     );
 
     const unsubReviews = onSnapshot(qReviews, (snap) => {
@@ -178,13 +180,13 @@ export default function AdminPanel() {
             productId: parentProdId, // Ensure this key matches what you use in deleteReview
             ...data,
           };
-        })
+        }),
       );
     });
 
     const qOrders = query(
       collection(db, "orders"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
     );
     const unsubOrders = onSnapshot(qOrders, (snap) => {
       setOrders(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -197,12 +199,55 @@ export default function AdminPanel() {
     };
     fetchHero();
 
+    const fetchPoster = async () => {
+      const docRef = doc(db, "siteSettings", "posters");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists())
+        setNewArrivalPoster(docSnap.data().newArrivalsUrl || "");
+    };
+    fetchPoster();
+
+    const fetchStoryContent = async () => {
+      const docRef = doc(db, "siteSettings", "brandStory");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setStoryImages(docSnap.data());
+      }
+    };
+    fetchStoryContent();
+
     return () => {
       unsubOrders();
       unsubInsta();
       unsubReviews();
     };
   }, [userData]);
+
+  const updateNewArrivalPoster = async (e) => {
+    e.preventDefault();
+    try {
+      const docRef = doc(db, "siteSettings", "posters");
+      await setDoc(
+        docRef,
+        { newArrivalsUrl: newArrivalPoster },
+        { merge: true },
+      );
+      alert("New Arrivals Poster Updated!");
+    } catch (err) {
+      alert("Error updating poster: " + err.message);
+    }
+  };
+
+  const updateStoryContent = async (e) => {
+    e.preventDefault();
+    try {
+      const docRef = doc(db, "siteSettings", "brandStory");
+      await setDoc(docRef, storyImages, { merge: true });
+      alert("Brand Story Images Updated!");
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
+  };
 
   if (!userData?.isAdmin)
     return <div className="admin-denied">Admin Access Required.</div>;
@@ -307,7 +352,7 @@ export default function AdminPanel() {
   };
 
   const filteredProducts = liveProducts.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -528,14 +573,19 @@ export default function AdminPanel() {
                       </small>
                     </div>
                     <div className="item-actions">
-                      <button 
+                      <button
                         className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""}`}
                         onClick={() => toggleMostWanted(p.id)}
                         title="Toggle Most Wanted"
                       >
-                        <Star size={16} fill={mostWantedIds.includes(p.id) ? "#dd8512" : "none"} />
+                        <Star
+                          size={16}
+                          fill={
+                            mostWantedIds.includes(p.id) ? "#dd8512" : "none"
+                          }
+                        />
                       </button>
-                      
+
                       <button
                         onClick={() =>
                           setEditingProd({
@@ -650,6 +700,65 @@ export default function AdminPanel() {
               </form>
             </div>
 
+            <div className="admin-card glass-morph full-width">
+              <h2>
+                <ImageIcon size={20} /> New Arrivals Poster
+              </h2>
+              <form onSubmit={updateNewArrivalPoster}>
+                <div className="form-row">
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "5px",
+                      flex: 1,
+                    }}
+                  >
+                    <label style={{ fontSize: "0.8rem", fontWeight: "bold" }}>
+                      Poster Image URL (16:9 Aspect Ratio)
+                    </label>
+                    <input
+                      placeholder="https://..."
+                      value={newArrivalPoster}
+                      onChange={(e) => setNewArrivalPoster(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="admin-btn publish"
+                  style={{ marginTop: "10px" }}
+                >
+                  <Save size={18} /> Update New Arrivals Poster
+                </button>
+              </form>
+            </div>
+
+            <div className="admin-card glass-morph full-width">
+              <h2>Brand Story Images</h2>
+              <form onSubmit={updateStoryContent}>
+                <div className="form-row">
+                  <input
+                    placeholder="Left Image URL"
+                    value={storyImages.img1}
+                    onChange={(e) =>
+                      setStoryImages({ ...storyImages, img1: e.target.value })
+                    }
+                  />
+                  <input
+                    placeholder="Right Image URL"
+                    value={storyImages.img2}
+                    onChange={(e) =>
+                      setStoryImages({ ...storyImages, img2: e.target.value })
+                    }
+                  />
+                </div>
+                <button type="submit" className="admin-btn publish">
+                  Update Story Images
+                </button>
+              </form>
+            </div>
+
             {/* Preview Section */}
             <div
               className="admin-card glass-morph full-width"
@@ -674,6 +783,33 @@ export default function AdminPanel() {
                 <h1 style={{ fontFamily: "Bodoni Moda" }}>
                   {heroData.tagline}
                 </h1>
+              </div>
+            </div>
+
+            <div
+              className="admin-card glass-morph full-width"
+              style={{ opacity: 0.8 }}
+            >
+              <h2 style={{ fontSize: "0.9rem" }}>
+                New Arrivals Preview (16:9)
+              </h2>
+              <div
+                style={{
+                  width: "100%",
+                  aspectRatio: "16 / 9", // Maintains 16:9 ratio in preview
+                  backgroundImage: `url(${newArrivalPoster})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                }}
+              >
+                {!newArrivalPoster && (
+                  <span style={{ color: "#999" }}>No image URL provided</span>
+                )}
               </div>
             </div>
           </div>

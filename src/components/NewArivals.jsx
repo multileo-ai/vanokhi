@@ -1,26 +1,33 @@
 // src/components/NewArivals.jsx
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 import "./NewArivals.css";
 
-const NewArivals = () => {
+export default function NewArivals() {
+  const [posterUrl, setPosterUrl] = useState("/newarivals.png"); // Default image
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "siteSettings", "posters"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().newArrivalsUrl) {
+        setPosterUrl(docSnap.data().newArrivalsUrl);
+      }
+    });
+    return () => unsub();
+  }, []);
+
   return (
-    <section className="brand-image-outer1" aria-label="Brand image">
+    <div className="brand-image-outer1">
+      {/* Inline style overrides the hardcoded CSS image */}
       <div
         className="brand-image-viewport1"
-        role="img"
-        aria-label="Vanokhi brand image"
+        style={{ backgroundImage: `url(${posterUrl})` }}
       >
         <div className="hero-overlay1" />
-        <div className="hero-center-badge1" aria-hidden>
-          {/* Wrap the text in a Link and point it to your route */}
-          <Link to="/new-arrivals" className="badge-text1" style={{ textDecoration: 'none', color: 'inherit' }}>
-            NEW ARRIVALS
-          </Link>
+        <div className="hero-center-badge1">
+          <h2 className="badge-text1">New Arrivals</h2>
         </div>
       </div>
-    </section>
+    </div>
   );
-};
-
-export default NewArivals;
+}

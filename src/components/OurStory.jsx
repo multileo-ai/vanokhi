@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase"; // Ensure this path is correct
+import { doc, onSnapshot } from "firebase/firestore";
 import "./OurStory.css";
 
 export default function OurStory() {
+  const [bannerUrl, setBannerUrl] = useState("");
+
+  useEffect(() => {
+    const heroDocRef = doc(db, "siteSettings", "hero");
+    const unsubscribe = onSnapshot(heroDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.bannerUrl) {
+          setBannerUrl(data.bannerUrl);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
   return (
     <div className="story-page-wrapper">
       {/* 1st: Big Banner + Text */}
       <section className="story-row">
         <div className="full-banner">
-          <img src="/banner.png" alt="Vanokhi Banner" />
+          <img src={bannerUrl || "/banner.png"} alt="Vanokhi Banner" />
         </div>
         <div className="story-text-block">
           <h1 className="story-title">OUR STORY & PHILOSOPHY</h1>

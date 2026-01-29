@@ -36,7 +36,7 @@
   font-family: "VanokhiSerif", serif !important;
   font-size: clamp(3.5rem, 8vw, 5rem);
   text-transform: uppercase;
-  color: #7a0001; /* Default Red color */
+  color: #faecd9; /* Default Red color */
   margin-top: 20px;
   line-height: 1;
   font-weight: 500;
@@ -45,7 +45,7 @@
 }
 
 .vanokhi-navbar.nav-white .nav-logo {
-  color: #ffffff !important;
+  color: #faecd9 !important;
 }
 
 /* .vanokhi-navbar.nav-red .nav-logo {
