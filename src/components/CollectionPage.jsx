@@ -39,7 +39,7 @@ const CollectionPage = () => {
                 whileInView={{ opacity: 0.8, y: 0 }}
                 className="cp-subtitle"
               >
-                {col.subtitle}
+                {col.tagline}
               </motion.p>
               <motion.h2
                 initial={{ opacity: 0, scale: 0.95 }}

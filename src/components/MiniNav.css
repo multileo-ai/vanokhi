@@ -10,7 +10,7 @@
 .mini-nav {
   width: 100%;
   /* color: #9a0002; */
-  color:#faecd9;
+  /* color:#faecd9; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,6 +18,22 @@
   z-index: 900;
   position: relative;
   background: transparent;
+  transition: color 0.3s ease;
+}
+
+.mini-nav.landing-mini {
+  color: #faecd9;
+}
+.mini-nav.landing-mini .mini-icon {
+  color: #faecd9;
+}
+
+/* Other Pages Colors */
+.mini-nav.other-mini {
+  color: #9a0002;
+}
+.mini-nav.other-mini .mini-icon {
+  color: #9a0002;
 }
 
 /* --- DESKTOP LAYOUT --- */
@@ -46,7 +62,9 @@
   font-size: 1.55rem;
   letter-spacing: 0.5px;
   cursor: pointer;
-  transition: transform 0.2s, color 0.2s;
+  transition:
+    transform 0.2s,
+    color 0.2s;
 }
 
 .mini-link-item:hover {

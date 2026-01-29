@@ -54,6 +54,7 @@ export default function AdminPanel() {
     img: "",
     collectionId: "",
     stock: 0,
+    overview: "",
     description: "",
     sizes: "XS,S,M,L,XL",
     colors: "#860204,#000000,#ffffff",
@@ -98,16 +99,24 @@ export default function AdminPanel() {
     e.preventDefault();
     try {
       // Save arrays while maintaining positions
-      await addDoc(collection(db, "products"), {
+      const docRef = await addDoc(collection(db, "products"), {
         ...newProd,
         price: `₹${newProd.price}`,
         sizes: newProd.sizes.split(","),
         colors: newProd.colors.split(","),
         details: newProd.details.split("\n"),
         stock: parseInt(newProd.stock),
+        overview: newProd.overview,
         galleryNormal: newProd.galleryNormal,
         galleryPNG: newProd.galleryPNG,
       });
+
+      if (newProd.collectionId) {
+        const collectionRef = doc(db, "collections", newProd.collectionId);
+        await updateDoc(collectionRef, {
+          productIds: arrayUnion(docRef.id),
+        });
+      }
       alert("Product Published!");
     } catch (err) {
       alert(err.message);
@@ -502,6 +511,15 @@ export default function AdminPanel() {
                     </div>
                   ))}
                 </div>
+
+                <textarea
+                  placeholder="Overview (Short Summary)"
+                  required
+                  value={newProd.overview}
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, overview: e.target.value })
+                  }
+                />
 
                 <textarea
                   placeholder="Description"

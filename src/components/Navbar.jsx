@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar({ isWhite, isHidden, isRed }) {
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
   return (
     <nav
       className={`vanokhi-navbar ${isWhite ? "nav-white" : ""} ${
         isRed ? "nav-red" : ""
-      } ${isHidden ? "nav-hidden" : ""}`}
+      } ${isHidden ? "nav-hidden" : ""} ${isLandingPage ? "landing-nav" : "other-nav"}`}
       role="navigation"
       aria-label="Main"
     >
@@ -29,3 +31,4 @@ export default function Navbar({ isWhite, isHidden, isRed }) {
     </nav>
   );
 }
+

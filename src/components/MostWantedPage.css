@@ -1,0 +1,440 @@
+@font-face {
+  font-family: "VanokhiSerif";
+  src: url(/fonts/Carina.ttf);
+}
+
+/* 1. Define the Fragor Font */
+@font-face {
+  font-family: "Fragor";
+  src: url("/fonts/Fragor-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "myMontserrat";
+  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900; /* Supports all weights */
+}
+
+.cp-viewport {
+  width: 100vw;
+  height: 100vh;
+  /* background: #FAECD9; */
+  background: #d9c5aa;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-back-home {
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+}
+
+.cp-back-home:hover {
+  background: rgba(154, 0, 2, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cp-back-home span {
+  font-family: "myMontserrat" !important;
+}
+
+.cp-snap-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+
+.cp-section {
+  height: 100vh;
+  width: 100vw;
+  scroll-snap-align: start;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.cp-bg-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.cp-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.cp-content h2 {
+  font-family: "VanokhiSerif" !important;
+  font-size: 8vw;
+  margin: 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0px !important;
+}
+
+/* List View Subtitle */
+.cp-content p {
+  font-family: "myMontserrat", serif; /* Current font */
+  font-style: italic; /* Current style */
+  font-size: 1.5rem; /* Edit this to change size */
+  color: white; /* Edit this to change color */
+  opacity: 0.8; /* Added for a more refined look */
+  margin-top: 5px;
+}
+
+/* SHRUNK HEADER DESIGN */
+.cp-shrunk-header {
+  height: 45vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-shrunk-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cp-shrunk-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5);
+}
+
+.cp-header-overlay {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 0px !important;
+}
+
+.cp-header-overlay h1 {
+  font-family: "VanokhiSerif" !important;
+  font-size: 5rem;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+  pointer-events: none;
+}
+
+.cp-close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.cp-close:hover {
+  transform: rotate(90deg);
+  background: rgba(154, 0, 2, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* PRODUCT GRID STYLES */
+.cp-expanded-view1 {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 100; /* Highest Z-index */
+  overflow-y: auto;
+}
+
+.cp-prod-link {
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 60px 8%;
+}
+
+.cp-product-card {
+  position: relative;
+}
+
+.cp-img-container {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #f9f9f9;
+}
+
+.cp-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-product-card:hover .cp-img-container img {
+  transform: scale(1.08);
+}
+
+.cp-product-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.cp-product-card:hover .cp-product-actions {
+  transform: translateY(0);
+}
+
+.action-btn {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins";
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.action-btn.wishlist {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  /* color: #333; */
+}
+.action-btn.cart {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(154, 0, 2, 0.2); */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  gap: 8px;
+}
+
+.action-btn.cart:hover {
+  border-radius: 50px;
+  background: rgba(154, 0, 2, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cp-product-info {
+  padding-top: 15px;
+}
+.cp-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.cp-product-info h3 {
+  font-family: "Bodoni Moda";
+  font-size: 1.2rem;
+  margin: 0;
+  color: #1a1a1a;
+}
+.cp-price {
+  font-family: "Lora";
+  font-weight: 600;
+  color: #dd8512;
+}
+
+.cp-color-swatches {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* @media (max-width: 1024px) {
+  .cp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .cp-grid {
+    grid-template-columns: 1fr;
+    padding: 40px 10%;
+  }
+  .cp-header-overlay h1 {
+    font-size: 2.5rem;
+  }
+} */
+
+/* KEEP ALL YOUR PC STYLES UNTOUCHED */
+
+/* ... (Pre-existing @font-face and base styles) ... */
+
+@media (max-width: 768px) {
+  /* MOBILE OVERRIDES */
+
+  .cp-back-home {
+    top: 20px; /* Moved closer to the edge */
+    left: 20px; /* Moved closer to the edge */
+    padding: 6px 14px; /* Shrunk padding */
+    gap: 6px; /* Reduced gap between icon and text */
+  }
+
+  .cp-back-home span {
+    font-size: 0.75rem; /* Smaller text */
+    letter-spacing: 1px;
+  }
+
+  /* Target the Lucide icon specifically if needed */
+  .cp-back-home svg {
+    width: 18px; /* Smaller icon */
+    height: 18px;
+  }
+
+  /* Disable snap scrolling for the split-view feel */
+  .cp-snap-container {
+    scroll-snap-type: none;
+    overflow-y: auto;
+  }
+
+  /* Force banners to 16:9 ratio and split screen height */
+  .cp-section {
+    height: auto;
+    width: 100vw;
+    aspect-ratio: 16 / 9; /* Professional 16:9 ratio on mobile */
+    margin-bottom: 2px; /* Subtle line between banners */
+  }
+
+  .cp-content h2 {
+    font-size: 2.2rem; /* Adjusted for smaller header */
+  }
+
+  .cp-content p {
+    font-size: 1rem;
+  }
+
+  /* Expanded View Adjustments */
+  .cp-shrunk-header.mobile-16-9 {
+    height: auto !important; /* Overrides the 45vh set in desktop */
+    width: 100vw;
+    aspect-ratio: 16 / 9;
+    min-height: auto;
+  }
+
+  /* Ensure the background image covers the ratio correctly */
+  .cp-shrunk-header.mobile-16-9 .cp-shrunk-bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Optional: Adjust title size slightly to fit the 16:9 box better */
+  .cp-header-overlay h1 {
+    font-size: 1.8rem;
+    padding: 0 20px;
+  }
+
+  .cp-close {
+    top: 15px;
+    right: 15px;
+    padding: 8px;
+  }
+
+  /* Mobile Grid - 2 columns for a better e-commerce look */
+  .cp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px 4%;
+  }
+
+  .cp-product-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .cp-price {
+    font-size: 0.85rem;
+  }
+
+  .cp-rating-tag {
+    top: 10px;
+    left: 10px;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+  }
+
+  /* Keep product actions visible or simplify for touch */
+  .cp-product-actions {
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+
+  .action-btn.cart {
+    font-size: 0.7rem;
+    padding: 8px;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import real data
 import "./MiniNav.css";
 import { User, ShoppingCart, Search, X } from "lucide-react";
@@ -8,6 +8,9 @@ import ProfileSidebar from "./ProfileSidebar";
 
 const MiniNav = () => {
   const { userData } = useAuth(); // Access global state
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
+
   const menuItems = [
     "Collections",
     "All Products",
@@ -98,7 +101,10 @@ const MiniNav = () => {
 
   return (
     <>
-      <div className="mini-nav" role="navigation">
+      <div
+        className={`mini-nav ${isLandingPage ? "landing-mini" : "other-mini"}`}
+        role="navigation"
+      >
         <button
           className="hamburger-btn"
           onClick={(e) => {

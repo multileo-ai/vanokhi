@@ -25,7 +25,9 @@
   background-color: transparent; /* Keep it transparent by default */
 
   /* Smooth transition for both sliding and color changes */
-  transition: transform 0.6s ease-in-out, background-color 0.3s ease;
+  transition:
+    transform 0.6s ease-in-out,
+    background-color 0.3s ease;
 }
 
 .vanokhi-navbar.nav-hidden {
@@ -36,12 +38,21 @@
   font-family: "VanokhiSerif", serif !important;
   font-size: clamp(3.5rem, 8vw, 5rem);
   text-transform: uppercase;
-  color: #faecd9; /* Default Red color */
+  /* color: #faecd9; */
   margin-top: 20px;
   line-height: 1;
   font-weight: 500;
   transition: all 0.3s ease;
   letter-spacing: 0 !important;
+}
+
+.vanokhi-navbar.landing-nav .nav-logo {
+  color: #faecd9;
+}
+
+/* Other Pages Color */
+.vanokhi-navbar.other-nav .nav-logo {
+  color: #9a0002;
 }
 
 .vanokhi-navbar.nav-white .nav-logo {

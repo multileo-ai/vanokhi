@@ -40,7 +40,7 @@ export default function ProductPage() {
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const currentCollection = liveCollections.find(
-    (col) => col.id === product?.collectionId
+    (col) => col.id === product?.collectionId,
   );
   const categoryName = currentCollection
     ? currentCollection.title
@@ -56,11 +56,11 @@ export default function ProductPage() {
         // Fetch Reviews from Database
         const q = query(
           collection(db, `products/${id}/reviews`),
-          orderBy("createdAt", "desc")
+          orderBy("createdAt", "desc"),
         );
         const unsubscribe = onSnapshot(q, (snapshot) => {
           setReviews(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
           );
         });
         return () => unsubscribe();
@@ -125,7 +125,7 @@ export default function ProductPage() {
         <div className="descWrapper">
           <div className="prodDesc">
             <h2 className="descTitle">{product.name}</h2>
-            <p className="descText">{product.description}</p>
+            <p className="prodOverview">{product.overview}</p>
             <div className="price">
               {product.price} <span className="currency">INR</span>
             </div>
@@ -201,12 +201,11 @@ export default function ProductPage() {
           <div className="accordion">
             <details className="accordionItem">
               <summary className="accordionHeader">
-                Manufacturing <span className="icon">+</span>
+                Description <span className="icon">+</span>
               </summary>
               <div className="accordionContent preserve-space">
-                {`Country of Origin: India
-
-Manufactured and Marketed by - NISHORAMA, 1143, Rustomjee Eaze Zone Mall, Mumbai Maharashtra 400064 India`}
+                {/* Show the Detailed Description here */}
+                {product.description}
               </div>
             </details>
 
@@ -237,20 +236,12 @@ All orders will be refunded via gift cards, as payouts are currently on hold in 
 
             <details className="accordionItem">
               <summary className="accordionHeader">
-                Precautions <span className="icon">+</span>
+                Manufacturing <span className="icon">+</span>
               </summary>
               <div className="accordionContent preserve-space">
-                {`Composition:
-Silk Blend with Metallic Finish
+                {`Country of Origin: India
 
-Fit:
-Fitted halter neck top paired with a relaxed straight-cut skirt
-
-Print:
-A natural shimmer texture
-
-Technical Details:
-Features lace edging on the top hem and dupatta`}
+Manufactured and Marketed by - VANOKHI, Kharadi Bypass, Pune, Maharashtra 411014 India`}
               </div>
             </details>
           </div>
