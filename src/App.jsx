@@ -1,5 +1,5 @@
 /* src/App.jsx */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,12 +21,12 @@ import Category from "./components/Category";
 import NewArivals from "./components/NewArivals";
 import InstagramGrid from "./components/InstagramGrid";
 import TestimonialsGrid from "./components/TestimonialsGrid";
-import CollectionPage from "./components/CollectionPage";
+// import CollectionPage from "./components/CollectionPage";
 import { Toaster } from "react-hot-toast";
 import WishlistPage from "./components/WishlistPage";
 import SettingsPage from "./components/SettingsPage";
-import ProductPage from "./components/ProductPage";
-import AdminPanel from "./components/AdminPanel";
+// import ProductPage from "./components/ProductPage";
+// import AdminPanel from "./components/AdminPanel";
 import PolicyModal from "./components/PolicyModal";
 import AllProducts from "./components/AllProducts";
 import FAQModal from "./components/FaqModal";
@@ -35,6 +35,10 @@ import OurStory from "./components/OurStory";
 import ScrollToTop from "./components/ScrollToTop";
 import NewArrivalsPage from "./components/NewArrivalsPage";
 import MostWantedPage from "./components/MostWantedPage";
+
+const AdminPanel = lazy(() => import("./components/AdminPanel"));
+const ProductPage = lazy(() => import("./components/ProductPage"));
+const CollectionPage = lazy(() => import("./components/CollectionPage"));
 
 const HomePage = ({
   whiteSectionRef,
@@ -170,32 +174,33 @@ function AppContent() {
           <MiniNav />
         </>
       )}
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              whiteSectionRef={whiteSectionRef}
-              categoryRef={categoryRef}
-              hideSectionRef={hideSectionRef}
-              newArrivalsRef={newArrivalsRef}
-              scrollToCategory={scrollToCategory}
-              bannerUrl={bannerUrl}
-            />
-          }
-        />
-        <Route path="/collections" element={<CollectionPage />} />
-        <Route path="/all-products" element={<AllProducts />} />
-        <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/our-story" element={<OurStory />} />
-        <Route path="/new-arrivals" element={<NewArrivalsPage />} />
-        <Route path="/most-wanted" element={<MostWantedPage />} />
-      </Routes>
+      <Suspense fallback={<div className="loading-spinner">Loading...</div>}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                whiteSectionRef={whiteSectionRef}
+                categoryRef={categoryRef}
+                hideSectionRef={hideSectionRef}
+                newArrivalsRef={newArrivalsRef}
+                scrollToCategory={scrollToCategory}
+                bannerUrl={bannerUrl}
+              />
+            }
+          />
+          <Route path="/collections" element={<CollectionPage />} />
+          <Route path="/all-products" element={<AllProducts />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/our-story" element={<OurStory />} />
+          <Route path="/new-arrivals" element={<NewArrivalsPage />} />
+          <Route path="/most-wanted" element={<MostWantedPage />} />
+        </Routes>
+      </Suspense>
 
       {!isCollectionPage && (
         <footer className="vanokhi-footer">

@@ -175,7 +175,7 @@ export default function ProductPage() {
 
         <div className="gallery">
           <div className="mainImage">
-            <img src={selectedImage} alt={product.name} />
+            <img src={selectedImage} alt={product.name} fetchpriority="high" />
           </div>
 
           <div className="thumbs">
@@ -187,7 +187,7 @@ export default function ProductPage() {
                 }`}
                 onClick={() => setSelectedImage(product.galleryPNG?.[i])}
               >
-                <img src={img} alt={`Thumbnail ${i}`} />
+                <img src={img} alt={`Thumbnail ${i}`} fetchpriority="high" />
               </button>
             ))}
           </div>

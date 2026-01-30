@@ -16,7 +16,7 @@
   position: relative;
   overflow: visible;
   min-height: 100vh;
-  padding: 18px 0 40px 0;
+  padding: 0 0 40px 0;
   box-sizing: border-box;
 }
 
@@ -39,9 +39,9 @@
 
 .prodMainCont {
   display: grid;
-  grid-template-columns: 80px minmax(320px, 520px) minmax(420px, 1fr);
+  grid-template-columns: 80px minmax(320px, 420px) minmax(320px, 1fr);
   align-items: start;
-  gap: 2rem;
+  /* gap: 2rem; */
   /* margin-top: 4rem; */
   padding: 0 6rem;
   min-height: calc(100vh - 120px);
@@ -123,11 +123,12 @@
 }
 
 .mainImage img {
-  height: 80vh;
-  max-width: 100%; /* Added to maintain layout integrity */
+  height: 100vh;
+  min-width: 100%;
+  max-width: auto !important; /* Added to maintain layout integrity */
   object-fit: cover;
   display: block;
-  transform: translateY(-4%);
+  transform: translateY(-20%);
   transition:
     opacity 240ms ease,
     transform 260ms ease;

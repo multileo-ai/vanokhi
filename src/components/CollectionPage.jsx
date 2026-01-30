@@ -93,14 +93,19 @@ const CollectionPage = () => {
                 if (!item) return null;
 
                 const isInWishlist = userData?.wishlist?.some(
-                  (w) => w.id === item.id
+                  (w) => w.id === item.id,
                 );
 
                 return (
                   <div key={item.id} className="cp-product-card">
                     <div className="cp-img-container">
                       <Link to={`/product/${item.id}`}>
-                        <img src={item.img} alt={item.name} />
+                        <img
+                          src={item.img}
+                          alt={item.name}
+                          loading="lazy" // Adds native lazy loading
+                          decoding="async" // Helps prevent animation lag during decode
+                        />
                       </Link>
 
                       {/* <div className="cp-rating-tag">
@@ -130,7 +135,7 @@ const CollectionPage = () => {
                             e.stopPropagation();
                             addToCart(
                               item,
-                              item.colors ? item.colors[0] : null
+                              item.colors ? item.colors[0] : null,
                             );
                           }}
                         >
