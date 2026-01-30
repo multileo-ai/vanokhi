@@ -31,7 +31,7 @@ const MostWantedPage = () => {
     >
       <div className="cp-shrunk-header mobile-16-9">
         <div className="cp-shrunk-bg">
-          <img src="/DSC00618.JPG" alt="Most Wanted" />
+          <img src="/DSC00618.avif" alt="Most Wanted" />
         </div>
         <div className="cp-header-overlay">
           <h1>Most Wanted</h1>

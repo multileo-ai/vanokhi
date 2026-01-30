@@ -17,7 +17,7 @@ const NewArrivalsPage = () => {
     <div className="cp-expanded-view" style={{ position: "relative", minHeight: "100vh" }}>
       <div className="cp-shrunk-header mobile-16-9">
         <div className="cp-shrunk-bg">
-          <img src="/newarivals.png" alt="New Arrivals" />
+          <img src="/DSC00618.avif" alt="New Arrivals" />
         </div>
         <div className="cp-header-overlay">
           <h1>New Arrivals</h1>
