@@ -6,6 +6,7 @@ import {
   onSnapshot,
   updateDoc,
   collection,
+  addDoc,
 } from "firebase/firestore";
 import {
   onAuthStateChanged,
