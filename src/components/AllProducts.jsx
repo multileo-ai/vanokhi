@@ -1,8 +1,10 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { ALL_PRODUCTS } from "../data";
+import { db } from "../firebase"; // Import the Firestore database instance
+import { collection, getDocs } from "firebase/firestore"; // Import Firestore methods
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -11,14 +13,39 @@ import "swiper/css/navigation";
 import "./AllProducts.css";
 
 const AllProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsArray = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray);
+      } catch (error) {
+        console.error("Error fetching products from Firestore: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div className="loading-container">Loading Products...</div>;
+  }
+
   return (
     <div className="all-products-container">
-      {/* <h1 className="heading">All Products</h1> */}
-
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
+        // Only loop if there are enough products to avoid Swiper warnings
         loop={true}
         slidesPerView={"auto"}
         coverflowEffect={{
@@ -37,11 +64,17 @@ const AllProducts = () => {
         modules={[EffectCoverflow, Pagination, Navigation]}
         className="swiper_container"
       >
-        {ALL_PRODUCTS.map((product) => (
+        {products.map((product) => (
           <SwiperSlide key={product.id}>
             <div className="product-slide-content">
               <Link to={`/product/${product.id}`}>
-                <img src={product.pngimg} alt={product.name} />
+                {/* Matches your data.js structure: uses pngimg if available, 
+                  falls back to standard img or gallery array if necessary 
+                */}
+                <img 
+                  src={product.pngimg || (product.galleryPNG && product.galleryPNG[0]) || product.img} 
+                  alt={product.name} 
+                />
               </Link>
               <div className="product-details-overlay">
                 <h3>{product.name}</h3>
@@ -51,15 +84,7 @@ const AllProducts = () => {
           </SwiperSlide>
         ))}
 
-        {/* <div className="slider-controler">
-          <div className="swiper-button-next slider-arrow">
-             <ion-icon name="arrow-forward-outline"></ion-icon>
-          </div>
-          <div className="swiper-button-prev slider-arrow">
-             <ion-icon name="arrow-back-outline"></ion-icon>
-          </div>
-          <div className="swiper-pagination"></div>
-        </div> */}
+        <div className="swiper-pagination"></div>
       </Swiper>
     </div>
   );

@@ -26,11 +26,15 @@ const BrandStoryPage = () => {
     return () => unsub();
   }, []);
 
-  const loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+  const loremIpsumText = `🌸 Vaanokhi - The Waah Moment
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
+In a world obsessed with trends, Vaanokhi chooses to stand apart.
+Born from the idea of “Vastra ka Anokhapan,” it celebrates the many cultures of India in a way that feels fresh, youthful, and unapologetically original.
 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?`;
+Each collection reflects a new perspective — where Indian identity meets modern expression.
+Vaanokhi is for those who don't follow trends, but set their own rhythm.
+
+Because true style isn't copied, it's felt — in that one Waah Moment.`;
 
   return (
     <div className="brand-story-container">

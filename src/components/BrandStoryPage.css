@@ -37,7 +37,8 @@
 }
 
 .brand-body-text {
-  font-size: 1.2rem;
+  margin-top: 30px;
+  font-size: 1.7rem;
   line-height: 1.8; /* Loose line height for elegance */
   font-weight: 300;
   text-align: justify; /* Crucial: makes the text block square */

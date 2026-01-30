@@ -1,10 +1,12 @@
 // src/components/NewArivals.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { db } from "../firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import "./NewArivals.css";
 
 export default function NewArivals() {
+  const navigate = useNavigate();
   const [posterUrl, setPosterUrl] = useState("/newarivals.png"); // Default image
 
   useEffect(() => {
@@ -24,7 +26,10 @@ export default function NewArivals() {
         style={{ backgroundImage: `url(${posterUrl})` }}
       >
         <div className="hero-overlay1" />
-        <div className="hero-center-badge1">
+        <div
+          className="hero-center-badge1"
+          onClick={() => navigate("/new-arrivals")}
+        >
           <h2 className="badge-text1">New Arrivals</h2>
         </div>
       </div>
