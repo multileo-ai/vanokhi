@@ -1,5 +1,12 @@
 {
   "appId": "com.vanokhi.app",
   "appName": "Vanokhi",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": ["profile", "email"],
+      "serverClientId": "399331187738-eflpp9q55b7u250g7kudg85j9j4f801o.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    }
+  }
 }

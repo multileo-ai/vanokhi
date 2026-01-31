@@ -33,7 +33,7 @@ export default function LoginPage({ onClose }) {
         // Don't close immediately, let them know verification was sent
         setActiveTab("login");
         setMessage(
-          "Account created! Please check your email to verify your account."
+          "Account created! Please check your email to verify your account.",
         );
         setLoading(false);
         return;
@@ -62,12 +62,33 @@ export default function LoginPage({ onClose }) {
   async function handleGoogleLogin() {
     setError("");
     try {
-      await googleLogin();
-      onClose();
+      // 1. Trigger the native bottom-sheet picker
+      const user = await GoogleAuth.signIn();
+
+      // 2. Create the Firebase credential using the token from native login
+      const credential = GoogleAuthProvider.credential(
+        user.authentication.idToken,
+      );
+
+      // 3. Sign into your Firebase project
+      await signInWithCredential(auth, credential);
+
+      onClose(); // Close the modal on success
     } catch (err) {
-      handleError(err);
+      console.error("Native Login Error:", err);
+      setError("Google Sign-In failed. Please try again.");
     }
   }
+
+  // async function handleGoogleLogin() {
+  //   setError("");
+  //   try {
+  //     await googleLogin();
+  //     onClose();
+  //   } catch (err) {
+  //     handleError(err);
+  //   }
+  // }
 
   function handleError(err) {
     console.error(err);
