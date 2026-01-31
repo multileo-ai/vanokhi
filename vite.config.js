@@ -4,6 +4,13 @@ import { VitePWA } from "vite-plugin-pwa"; // 1. Import the plugin
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    headers: {
+      // Allows the Google login popup to interact with your app
+      "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+      "Cross-Origin-Embedder-Policy": "unsafe-none",
+    },
+  },
   plugins: [
     react(),
     VitePWA({

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
-import { X, ArrowLeft } from "lucide-react"; // Added ArrowLeft
+import { X, ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { Capacitor } from "@capacitor/core"; // 1. Add this import
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function LoginPage({ onClose }) {
   const { login, signup, googleLogin, resetPassword } = useAuth();
@@ -62,20 +66,26 @@ export default function LoginPage({ onClose }) {
   async function handleGoogleLogin() {
     setError("");
     try {
-      // 1. Trigger the native bottom-sheet picker
-      const user = await GoogleAuth.signIn();
+      // 2. Check if running on a native device (Android/iOS)
+      if (Capacitor.isNativePlatform()) {
+        // Trigger the native bottom-sheet picker
+        const user = await GoogleAuth.signIn();
 
-      // 2. Create the Firebase credential using the token from native login
-      const credential = GoogleAuthProvider.credential(
-        user.authentication.idToken,
-      );
+        // Create Firebase credential using the native token
+        const credential = GoogleAuthProvider.credential(
+          user.authentication.idToken,
+        );
 
-      // 3. Sign into your Firebase project
-      await signInWithCredential(auth, credential);
+        // Sign into Firebase project
+        await signInWithCredential(auth, credential);
+      } else {
+        // 3. Fallback for standard web browser testing
+        await googleLogin();
+      }
 
-      onClose(); // Close the modal on success
+      onClose(); // Close modal on success
     } catch (err) {
-      console.error("Native Login Error:", err);
+      console.error("Login Error:", err);
       setError("Google Sign-In failed. Please try again.");
     }
   }
