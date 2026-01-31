@@ -7,6 +7,7 @@
   text-decoration: none !important;
   color: inherit !important; /* Inherits the red/white you had */
   display: block;
+  pointer-events: auto;
 }
 
 .vanokhi-navbar {
@@ -23,7 +24,7 @@
   height: 76px;
   box-sizing: border-box;
   background-color: transparent; /* Keep it transparent by default */
-
+  pointer-events: none;
   /* Smooth transition for both sliding and color changes */
   transition:
     transform 0.6s ease-in-out,

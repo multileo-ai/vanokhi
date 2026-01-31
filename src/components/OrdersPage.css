@@ -1,0 +1,303 @@
+/* OrdersPage.css */
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap");
+
+:root {
+  --accent: #860204;
+  --text-main: #1a1a1a;
+  --text-muted: #757575;
+  --bg-light: #fbfbfb;
+  --border-color: #ededed;
+}
+.orders-wrapper {
+  max-width: 1100px;
+  /* Reduced margin-top from 120px to 60px */
+  margin: 60px auto 120px;
+  padding: 0 20px;
+  font-family: "Inter", sans-serif;
+  color: var(--text-main);
+}
+
+/* Header Styles */
+.hero-header {
+  text-align: center;
+  /* Reduced margin-bottom from 80px to 40px */
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-family: "Bodoni Moda", serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  margin-bottom: 10px; /* Reduced margin-bottom */
+  letter-spacing: -2px;
+}
+
+.hero-line {
+  width: 60px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto 15px; /* Reduced margin */
+}
+
+.hero-subtitle {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Card Styles */
+.premium-order-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  margin-bottom: 60px;
+  transition: transform 0.3s ease;
+}
+
+.card-meta-bar {
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-light);
+}
+
+.meta-label {
+  font-size: 0.6rem;
+  display: block;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.meta-id {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Wide Item Row */
+.wide-item-row {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  height: 220px; /* Larger fixed height for the wide look */
+}
+
+.item-visual {
+  width: 200px; /* Larger image area */
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.item-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.wide-item-row:hover .item-visual img {
+  transform: scale(1.05);
+}
+
+.item-content {
+  flex: 1;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.item-brand-name {
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.item-price-tag {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.item-details-grid {
+  display: flex;
+  gap: 40px;
+}
+
+.detail-box label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.detail-box span {
+  font-weight: 500;
+}
+
+/* Tracking Area */
+.card-action-area {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 250px; /* Slightly wider for summary */
+  gap: 60px;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+}
+
+.tracking-wrapper {
+  width: 100%;
+}
+
+.tracker-container {
+  padding: 20px 10px 0 10px; /* Add padding to prevent text cutoff at edges */
+}
+
+.tracking-status-label {
+  font-size: 0.85rem;
+  margin-bottom: 25px;
+}
+
+.modern-tracker {
+  position: relative;
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tracker-bg-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #eee;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.progress-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-dot {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dot-core {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.step-dot.active .dot-core {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(134, 2, 4, 0.1);
+}
+
+.step-text {
+  position: absolute;
+  top: 25px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  /* opacity: 0; */
+}
+
+.step-dot.active .step-text {
+  color: var(--text-main);
+  font-weight: 700;
+  opacity: 100;
+}
+
+.order-summary {
+  text-align: right;
+  border-left: 1px solid var(--border-color);
+  padding-left: 40px;
+}
+
+.summary-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: block;
+  text-transform: uppercase;
+}
+
+.summary-amount {
+  font-family: "Bodoni Moda", serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Loading State */
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-text {
+  font-family: "Bodoni Moda", serif;
+  font-size: 3rem;
+  letter-spacing: 10px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wide-item-row {
+    flex-direction: column;
+    height: auto;
+  }
+  .item-visual {
+    width: 100%;
+    height: 250px;
+  }
+  .card-action-area {
+    grid-template-columns: 1fr;
+  }
+  .order-summary {
+    text-align: left;
+    padding-left: 0;
+    border-left: none;
+  }
+}

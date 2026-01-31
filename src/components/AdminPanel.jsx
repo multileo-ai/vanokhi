@@ -37,12 +37,16 @@ import {
   Trash,
   ExternalLink,
   MoreVertical,
+  Box,
+  Truck,
+  CheckCircle,
 } from "lucide-react";
 import "./AdminPanel.css";
 
 export default function AdminPanel() {
   const { userData, liveProducts, liveCollections } = useAuth();
   const [activeTab, setActiveTab] = useState("inventory");
+  const [allOrders, setAllOrders] = useState([]);
 
   const [mostWantedIds, setMostWantedIds] = useState([]);
 
@@ -158,6 +162,24 @@ export default function AdminPanel() {
     };
     if (userData?.isAdmin) fetchMostWanted();
   }, [userData]);
+
+  useEffect(() => {
+    const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setAllOrders(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const updateStatus = async (orderId, newStatus) => {
+    try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, { status: newStatus });
+      toast.success(`Updated to ${newStatus}`);
+    } catch (err) {
+      toast.error("Failed to update status");
+    }
+  };
 
   useEffect(() => {
     if (!userData?.isAdmin) return;
@@ -626,42 +648,69 @@ export default function AdminPanel() {
         )}
 
         {activeTab === "orders" && (
-          <div className="admin-orders-list">
-            {orders.length === 0 ? (
-              <p>No orders found.</p>
-            ) : (
-              orders.map((order) => (
-                <div
-                  key={order.id}
-                  className="admin-card order-card glass-morph"
-                >
-                  <div className="order-header">
-                    <div>
-                      <strong>Order #{order.id.slice(-6)}</strong>
-                      <p>{order.customerName}</p>
+        <div className="admin-orders-container">
+          <div className="admin-card full-width">
+            <h2><ShoppingCart /> Customer Orders ({allOrders.length})</h2>
+            <div className="admin-orders-list">
+              {allOrders.map(order => (
+                <div key={order.id} className="admin-order-item">
+                  <div className="order-main-info">
+                    <div className="order-customer">
+                      <span className="order-id">#{order.id.slice(-8).toUpperCase()}</span>
+                      <h4>{order.customerName || order.userName || "Anonymous"}</h4>
+                      <p className="order-email">{order.email}</p>
                     </div>
-                    <select
-                      className={`status-select ${order.status}`}
-                      value={order.status}
-                      onChange={(e) =>
-                        updateOrderStatus(order.id, e.target.value)
-                      }
-                    >
-                      <option value="Processing">Processing</option>
-                      <option value="Shipped">Shipped</option>
-                      <option value="Delivered">Delivered</option>
-                    </select>
+                    <div className="order-summary">
+                      <p>Items: {order.items?.length || 0}</p>
+                      <p className="order-total-price">₹{order.totalAmount || order.total}</p>
+                    </div>
                   </div>
-                  <div className="order-details">
-                    <small>
-                      {order.items?.length} items — Total: {order.total}
-                    </small>
+
+                  <div className="status-management">
+                    <p className="status-label">Update Shipment Progress:</p>
+                    <div className="status-buttons">
+                      {[
+                        { label: "Order Placed", icon: <Box size={14} /> },
+                        { label: "Shipped", icon: <Truck size={14} /> },
+                        { label: "Out for Delivery", icon: <Truck size={14} /> },
+                        { label: "Delivered", icon: <CheckCircle size={14} /> }
+                      ].map(status => (
+                        <button 
+                          key={status.label}
+                          className={`status-btn ${order.status === status.label ? "btn-active" : ""}`}
+                          onClick={() => updateStatus(order.id, status.label)}
+                        >
+                          {status.icon} {status.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              ))
-            )}
+              ))}
+            </div>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editingProd && (
+        <div className="edit-overlay">
+          <div className="edit-modal admin-card">
+            <div className="modal-header">
+              <h3>Edit Product</h3>
+              <button onClick={() => setEditingProd(null)} className="close-btn"><X /></button>
+            </div>
+            <form onSubmit={handleUpdateProduct}>
+              <input value={editingProd.name} onChange={(e) => setEditingProd({...editingProd, name: e.target.value})} />
+              <input value={editingProd.price} onChange={(e) => setEditingProd({...editingProd, price: e.target.value})} />
+              <input value={editingProd.img} onChange={(e) => setEditingProd({...editingProd, img: e.target.value})} />
+              <textarea value={editingProd.description} onChange={(e) => setEditingProd({...editingProd, description: e.target.value})} />
+              <button type="submit" className="admin-btn"><Save size={18}/> Update</button>
+            </form>
+          </div>
+        </div>
+      )}
+
 
         {activeTab === "content" && (
           <div className="admin-grid">

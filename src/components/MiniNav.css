@@ -25,7 +25,7 @@
   color: #faecd9;
 }
 .mini-nav.landing-mini .mini-icon {
-  color: #faecd9;
+  color: #ffffff;
 }
 
 /* Other Pages Colors */
@@ -121,17 +121,19 @@
 /* --- MOBILE SPECIFIC --- */
 .hamburger-btn {
   display: none;
-  background: transparent;
+  background: transparent; /* Ensures no background */
   border: none;
   padding: 8px;
   cursor: pointer;
+  outline: none; /* Removes focus ring if preferred */
+  -webkit-tap-highlight-color: transparent; /* Removes mobile tap highlight */
 }
 
 .hamburger-lines {
   display: inline-block;
   width: 20px;
   height: 2px;
-  background: #4a2b1f;
+  background: #ffffff;
   position: relative;
 }
 .hamburger-lines::before,
@@ -159,7 +161,7 @@
   color: #4a2b1f;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  z-index: 1200;
+  z-index: 10000 !important;
   padding: 16px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -248,13 +250,62 @@
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000;
-    background: rgba(253, 248, 242, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Increased z-index to be higher than Navbar's 9000 */
+    z-index: 10000 !important;
+    /* Removed background, border-radius, and box-shadow */
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none;
     width: 40px;
     height: 40px;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    pointer-events: auto !important;
   }
+
+  .mini-mobile-menu {
+    /* Increase z-index higher than CollectionPage headers */
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: 90px;
+    background: rgba(253, 248, 242, 0.98); /* Cream background */
+    color: #4a2b1f;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 20000 !important;
+    padding: 16px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  /* Ensure the lines are visible against your background */
+  .mini-nav.landing-mini .hamburger-lines {
+    background: #faecd9; /* Light color for landing page */
+  }
+
+  .mini-nav.other-mini .hamburger-lines {
+    background: #9a0002; /* Red color for other pages */
+  }
+
+  .hamburger-icon-svg {
+    color: inherit;
+    width: 24px;
+    height: 24px;
+    z-index: 20001; /* Ensure X is above the menu background */
+  }
+
+  .mini-nav.landing-mini .hamburger-icon-svg {
+    color: #faecd9; /* For the X icon */
+  }
+
+  /* Color for Other Pages (Red) */
+  .mini-nav.other-mini .hamburger-icon-svg {
+    color: #9a0002; /* For the X icon */
+  }
+
+  .mini-nav.landing-mini .mini-icon {
+  color: #9a0002;
+}
 }

@@ -74,3 +74,62 @@
   cursor: pointer;
   filter: none !important; /* Remove any arrow shadows */
 }
+
+/* AllProducts.css - Mobile View Enhancements */
+
+@media (max-width: 768px) {
+  .all-products-container {
+    padding: 1rem 0;
+    overflow: hidden; /* Prevents horizontal scrollbar */
+  }
+
+  .swiper_container {
+    height: 32rem; /* Reduced height for mobile */
+    padding-top: 2rem;
+  }
+
+  .swiper-slide {
+    /* Set width so exactly 1 full + 2 partial slides fit the screen */
+    width: 70vw !important;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product-slide-content {
+    width: 100%;
+  }
+
+  .product-slide-content img {
+    max-height: 22rem; /* Keep image within container */
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .product-details-overlay h3 {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+
+  .product-details-overlay p {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #9a0002;
+  }
+
+  /* Keep the pagination dots within the view */
+  .swiper-pagination {
+    bottom: 0px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper-slide {
+    width: 16rem; /* Even narrower for very small phones */
+  }
+
+  .swiper_container {
+    height: 30rem;
+  }
+}

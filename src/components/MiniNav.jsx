@@ -112,7 +112,11 @@ const MiniNav = () => {
             setOpen(!open);
           }}
         >
-          {open ? <X color="#4a2b1f" /> : <span className="hamburger-lines" />}
+          {open ? (
+            <X className="hamburger-icon-svg" />
+          ) : (
+            <span className="hamburger-lines" />
+          )}
         </button>
 
         {/* Desktop View */}

@@ -7,6 +7,7 @@ import {
   updateDoc,
   collection,
   addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import {
   onAuthStateChanged,
@@ -225,8 +226,8 @@ export function AuthProvider({ children }) {
       const orderRef = await addDoc(collection(db, "orders"), {
         ...orderData,
         userId: currentUser.uid,
-        status: "Processing",
-        createdAt: new Date().toISOString(),
+        status: "Order Placed",
+        createdAt: serverTimestamp(),
       });
 
       // 2. Clear user's cart in Firebase

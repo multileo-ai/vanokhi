@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
@@ -45,15 +44,32 @@ const AllProducts = () => {
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
-        // Only loop if there are enough products to avoid Swiper warnings
         loop={true}
+        loopAdditionalSlides={10}
         slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
           depth: 100,
           modifier: 2.5,
-          slideShadows: false, // CRITICAL: This removes the black boxes
+          slideShadows: false,
+        }}
+        /* ADD BREAKPOINTS HERE */
+        breakpoints={{
+          // Mobile: optimized for 3 visible images
+          320: {
+            coverflowEffect: {
+              depth: 80, // Keeps side images closer
+              modifier: 1.2, // Prevents extreme overlap that pushes images off-screen
+            },
+          },
+          // Desktop: your original aesthetic
+          768: {
+            coverflowEffect: {
+              depth: 100,
+              modifier: 2.5,
+            },
+          },
         }}
         pagination={{ el: ".swiper-pagination", clickable: true }}
         navigation={{
@@ -71,9 +87,13 @@ const AllProducts = () => {
                 {/* Matches your data.js structure: uses pngimg if available, 
                   falls back to standard img or gallery array if necessary 
                 */}
-                <img 
-                  src={product.pngimg || (product.galleryPNG && product.galleryPNG[0]) || product.img} 
-                  alt={product.name} 
+                <img
+                  src={
+                    product.pngimg ||
+                    (product.galleryPNG && product.galleryPNG[0]) ||
+                    product.img
+                  }
+                  alt={product.name}
                 />
               </Link>
               <div className="product-details-overlay">

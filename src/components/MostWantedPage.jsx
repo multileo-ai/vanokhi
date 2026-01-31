@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import AverageRating from "./AverageRating";
-import "./CollectionPage.css";
+// import "./CollectionPage.css";
 import "./MostWantedPage.css";
 
 const MostWantedPage = () => {

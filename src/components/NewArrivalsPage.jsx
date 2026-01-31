@@ -4,7 +4,8 @@ import { X, ShoppingBag, ArrowLeft, Heart } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AverageRating from "./AverageRating";
-import "./CollectionPage.css"; // Reuse your existing CSS
+// import "./CollectionPage.css";
+import "./MostWantedPage.css";
 
 const NewArrivalsPage = () => {
   const { addToCart, addToWishlist, userData, liveProducts } = useAuth();
@@ -14,7 +15,7 @@ const NewArrivalsPage = () => {
   const products = [...liveProducts].reverse().slice(0, 8);
 
   return (
-    <div className="cp-expanded-view" style={{ position: "relative", minHeight: "100vh" }}>
+    <div className="cp-expanded-view1" style={{ position: "relative", minHeight: "100vh" }}>
       <div className="cp-shrunk-header mobile-16-9">
         <div className="cp-shrunk-bg">
           <img src="/DSC00618.avif" alt="New Arrivals" />
