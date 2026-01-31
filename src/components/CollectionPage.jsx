@@ -34,13 +34,6 @@ const CollectionPage = () => {
               <img src={col.img} alt={col.title} />
             </div>
             <div className="cp-content">
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 0.8, y: 0 }}
-                className="cp-subtitle"
-              >
-                {col.tagline}
-              </motion.p>
               <motion.h2
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}

@@ -39,6 +39,7 @@ export default function ProductPage() {
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showSizeChart, setShowSizeChart] = useState(false);
   const currentCollection = liveCollections.find(
     (col) => col.id === product?.collectionId,
   );
@@ -110,6 +111,25 @@ export default function ProductPage() {
 
       <div className="prodMainCont">
         <div className="sizes">
+          <div
+            className="sizeChartCircle"
+            onClick={() => setShowSizeChart(true)}
+            title="View Size Chart"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              fill="none"
+            >
+              <path d="M21 16H3a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2z" />
+              <line x1="7" y1="8" x2="7" y2="11" />
+              <line x1="12" y1="8" x2="12" y2="13" />
+              <line x1="17" y1="8" x2="17" y2="11" />
+            </svg>
+          </div>
           {product.sizes?.map((sz) => (
             <div
               key={sz}
@@ -342,6 +362,66 @@ Manufactured and Marketed by - VANOKHI, Kharadi Bypass, Pune, Maharashtra 411014
           </ul>
         </div>
       </div>
+
+      {showSizeChart && (
+        <div
+          className="sizeModalOverlay"
+          onClick={() => setShowSizeChart(false)}
+        >
+          <div
+            className="sizeModalContent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="closeModal"
+              onClick={() => setShowSizeChart(false)}
+            >
+              &times;
+            </button>
+            <h3>Size Guide</h3>
+            <table className="sizeTable">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Chest (in)</th>
+                  <th>Waist (in)</th>
+                  <th>Length (in)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>S</td>
+                  <td>38</td>
+                  <td>34</td>
+                  <td>27</td>
+                </tr>
+                <tr>
+                  <td>M</td>
+                  <td>40</td>
+                  <td>36</td>
+                  <td>28</td>
+                </tr>
+                <tr>
+                  <td>L</td>
+                  <td>42</td>
+                  <td>38</td>
+                  <td>29</td>
+                </tr>
+                <tr>
+                  <td>XL</td>
+                  <td>44</td>
+                  <td>40</td>
+                  <td>30</td>
+                </tr>
+              </tbody>
+            </table>
+            <p className="sizeNote">
+              * All measurements are in inches and subject to +/- 0.5"
+              tolerance.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

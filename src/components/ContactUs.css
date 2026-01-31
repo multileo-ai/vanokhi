@@ -1,0 +1,184 @@
+/* src/components/ContactUs.css */
+.contact-luxury-wrapper {
+  background-color: #ffffff; /* Clean white background as requested */
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 60px 8% 80px;
+}
+
+/* Infinite Parallax Background Text */
+.infinite-text-container {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  width: 200%;
+  pointer-events: none;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+.parallax-bg-text {
+  font-family: "Fragor", serif; /* */
+  font-size: 15vw;
+  color: rgba(134, 2, 4, 0.03); /* Extremely faint Vanokhi Red */
+  text-transform: uppercase;
+  letter-spacing: -2px;
+}
+
+.contact-main-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Typography & Content */
+.section-tag {
+  font-family: "myMontserrat", sans-serif; /* */
+  font-size: 0.75rem;
+  letter-spacing: 5px;
+  color: #860204;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.contact-hero-title {
+  font-family: "Fragor", serif; /* */
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  line-height: 0.95;
+  color: #111;
+  text-transform: uppercase;
+  margin-bottom: 50px;
+}
+
+.floating-contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.detail-item h4 {
+  font-family: "myMontserrat", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.detail-item p {
+  font-family: "myMontserrat", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #111;
+}
+
+/* Form Panel */
+.modern-editorial-form {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.input-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #eee;
+  transition: border-color 0.4s ease;
+}
+
+.input-field-wrapper:focus-within {
+  border-color: #860204;
+}
+
+.input-field-wrapper label {
+  font-family: "myMontserrat", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.input-field-wrapper input,
+.input-field-wrapper textarea {
+  border: none;
+  background: transparent;
+  padding: 10px 0 20px;
+  font-family: "myMontserrat", sans-serif;
+  font-size: 1.1rem;
+  color: #111;
+  outline: none;
+}
+
+/* Magnetic Button Animation */
+.magnetic-submit-btn {
+  position: relative;
+  background: #860204; 
+  border: none;
+  height: 50px;
+  width: 160px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* box-shadow: 0 20px 40px rgba(134, 2, 4, 0.15); */
+  border-radius: 50px;
+  background: rgba(154, 0, 2, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.magnetic-submit-btn:hover{
+  background: rgba(154, 0, 2, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+
+
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+  color: #ffffff; /* Vanokhi Cream */
+  font-family: "myMontserrat", sans-serif;
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+}
+
+.btn-fill {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* .magnetic-submit-btn:hover .btn-fill {
+  transform: translateY(-100%);
+} */
+
+/* Responsive Scaling */
+@media (max-width: 1024px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .contact-luxury-wrapper {
+    padding-top: 50px;
+  }
+
+  .modern-editorial-form{
+    gap:20px;
+  }
+}

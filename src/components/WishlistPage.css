@@ -1,123 +1,272 @@
-.wishlist-page {
-  padding: 140px 5% 80px;
-  background-color: #fffcf7;
-  min-height: 100vh;
+/* src/components/WishlistPage.css */
+
+/* 1. Brand Fonts */
+@font-face {
+  font-family: "VanokhiSerif";
+  src: url(/fonts/Carina.ttf);
+}
+@font-face {
+  font-family: "Fragor";
+  src: url("/fonts/Fragor-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "myMontserrat";
+  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
 }
 
-.wishlist-header h1 {
-  font-family: "Bodoni Moda", serif;
-  font-size: 2.8rem;
-  text-align: center;
-  color: #1a1a1a;
-  margin-bottom: 50px;
+/* 2. Page Container */
+.cp-expanded-view1 {
+  /* CHANGE THIS: from position: fixed to relative */
+  position: relative;
+
+  /* REMOVE THIS: inset: 0; */
+  /* inset: 0; */
+
+  /* ADD THIS: padding to clear the navbar if necessary */
+  min-height: 100vh;
+  width: 100%;
+
+  /* Standard flow */
+  overflow: visible;
+  z-index: 1;
+}
+
+/* 3. Header Section */
+.cp-shrunk-header1 {
+  /* height: 45vh; */
+  width: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
 }
 
-.wishlist-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 40px;
-}
-
-.wishlist-card {
-  background: #fff;
-  border: 1px solid #eee;
-  transition: transform 0.4s ease;
-}
-
-.wishlist-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.wishlist-img-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.wishlist-card img {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  display: block;
-}
-
-.remove-wish-overlay {
+.cp-shrunk-bg {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: white;
-  border: none;
-  padding: 8px;
+  inset: 0;
+  z-index: 1;
+}
+
+.cp-shrunk-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5);
+}
+
+.cp-header-overlay {
+  margin-top: 160px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.cp-header-overlay h1 {
+  font-family: "VanokhiSerif" !important;
+  font-size: 5rem;
+  color: white;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cp-header-overlay h1 span {
+  color: #860204; /* Brand Red accent */
+}
+
+.cp-close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  opacity: 0.8;
-  transition: all 0.3s;
+  z-index: 10;
+  transition: all 0.3s ease;
 }
 
-.remove-wish-overlay:hover {
-  background: #9a0002;
-  color: white;
-  opacity: 1;
+.cp-close:hover {
+  transform: rotate(90deg);
+  background: rgba(154, 0, 2, 0.4);
 }
 
-.wish-info {
-  padding: 20px;
-  text-align: center;
+/* 4. Product Grid & Cards */
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 60px 8%;
 }
 
-.wish-info h3 {
-  font-family: "Montserrat", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
+.cp-product-card {
+  position: relative;
 }
 
-.wish-price {
-  font-family: "Bodoni Moda", serif;
-  font-weight: 600;
-  color: #9a0002;
-  font-size: 1.1rem;
+.cp-img-container {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f9f9f9;
 }
 
-.move-to-bag-btn {
-  margin-top: 15px;
+.cp-img-container img {
   width: 100%;
-  padding: 14px;
-  background: transparent;
-  border: 1px solid #1a1a1a;
-  font-family: "Work Sans", sans-serif;
-  font-weight: 500;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-product-card:hover .cp-img-container img {
+  transform: scale(1.08);
+}
+
+/* 5. Hover Actions - DITTO Glassmorphism */
+.cp-product-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.cp-product-card:hover .cp-product-actions {
+  transform: translateY(0);
+}
+
+.action-btn {
+  border: none;
+  border-radius: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  font-family: "myMontserrat";
+  font-weight: 700;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.action-btn.wishlist {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #860204; /* Show as active/remove in wishlist context */
+}
+
+.action-btn.cart {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.action-btn.cart:hover {
+  background: rgba(154, 0, 2, 0.4);
+}
+
+/* 6. Product Info */
+.cp-product-info {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.cp-product-info h3 {
+  font-family: "myMontserrat";
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cp-price {
+  font-family: "Fragor";
+  font-size: 1.3rem;
+  color: #1a1a1a;
+}
+
+/* 7. Empty State (Luxury Design) */
+.no-orders-luxury {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.empty-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  color: var(--primary);
+}
+
+.no-orders-luxury h3 {
+  font-family: "VanokhiSerif", serif;
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.shop-link-btn {
+  background: #151312;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-family: "myMontserrat";
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 20px;
   transition: 0.3s;
 }
 
-.move-to-bag-btn:hover {
-  background: #1a1a1a;
-  color: #fff;
+.shop-link-btn:hover {
+  background: #860204;
+  transform: scale(1.05);
 }
 
-.empty-state {
-  text-align: center;
-  padding: 100px 0;
-  color: #888;
-}
+/* Mobile Overrides (Ditto match) */
+@media (max-width: 768px) {
+  .cp-shrunk-header.mobile-16-9 {
+    height: auto !important;
+    width: 100vw;
+    aspect-ratio: 16 / 9;
+  }
 
-.explore-btn {
-  margin-top: 20px;
-  padding: 12px 30px;
-  background: #9a0002;
-  color: white;
-  border: none;
-  font-family: "Montserrat", sans-serif;
-  cursor: pointer;
+  .cp-header-overlay h1 {
+    font-size: 2.2rem;
+  }
+
+  .cp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px 4%;
+  }
+
+  .cp-product-actions {
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
 }

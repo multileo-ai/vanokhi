@@ -40,6 +40,7 @@ import {
   Box,
   Truck,
   CheckCircle,
+  Mail,
 } from "lucide-react";
 import "./AdminPanel.css";
 
@@ -47,8 +48,10 @@ export default function AdminPanel() {
   const { userData, liveProducts, liveCollections } = useAuth();
   const [activeTab, setActiveTab] = useState("inventory");
   const [allOrders, setAllOrders] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
 
   const [mostWantedIds, setMostWantedIds] = useState([]);
+  const [requests, setRequests] = useState([]);
 
   // --- STATE: INVENTORY ---
   const [newColl, setNewColl] = useState({ title: "", tagline: "", img: "" });
@@ -86,6 +89,17 @@ export default function AdminPanel() {
 
   const [editingProd, setEditingProd] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "returnRequests"), (snap) => {
+      setRequests(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    });
+    return unsub;
+  }, []);
+
+  const handleUpdateStatus = async (id, newStatus) => {
+    await updateDoc(doc(db, "returnRequests", id), { status: newStatus });
+  };
 
   const handleGalleryChange = (type, index, value) => {
     if (type === "normal") {
@@ -131,7 +145,11 @@ export default function AdminPanel() {
   const [orders, setOrders] = useState([]);
 
   // --- STATE: SITE CONTENT ---
-  const [heroData, setHeroData] = useState({ bannerUrl: "", tagline: "" });
+  const [heroData, setHeroData] = useState({
+    bannerUrl: "",
+    mobileBannerUrl: "",
+    tagline: "",
+  });
   const [newArrivalPoster, setNewArrivalPoster] = useState("");
   const [storyImages, setStoryImages] = useState({ img1: "", img2: "" });
 
@@ -376,15 +394,66 @@ export default function AdminPanel() {
     await updateDoc(doc(db, "orders", orderId), { status: newStatus });
   };
 
-  const updateHero = async (e) => {
+  const handleUpdateHero = async (e) => {
     e.preventDefault();
-    await updateDoc(doc(db, "siteSettings", "hero"), heroData);
-    alert("Landing Page Banner Updated!");
+    try {
+      // This updates the 'hero' document in 'siteSettings' collection
+      await updateDoc(doc(db, "siteSettings", "hero"), {
+        bannerUrl: heroData.bannerUrl,
+        mobileBannerUrl: heroData.mobileBannerUrl,
+        tagline: heroData.tagline,
+      });
+      alert("Banner updated successfully!");
+    } catch (err) {
+      console.error("Error updating banner:", err);
+      alert("Failed to update banner.");
+    }
   };
 
   const filteredProducts = liveProducts.filter((p) =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  useEffect(() => {
+    if (!userData?.isAdmin) return;
+
+    // 1. Correct Collection Name: 'contactSubmissions'
+    // 2. Correct Order Field: 'timestamp' (matching ContactUs.jsx)
+    const qSubmissions = query(
+      collection(db, "contactSubmissions"),
+      orderBy("timestamp", "desc"),
+    );
+
+    const unsubSubmissions = onSnapshot(
+      qSubmissions,
+      (snap) => {
+        const fetchedSubmissions = snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
+        setSubmissions(fetchedSubmissions);
+      },
+      (error) => {
+        console.error("Error fetching submissions:", error);
+      },
+    );
+
+    return () => {
+      unsubSubmissions();
+      // ... include your other unsubs here
+    };
+  }, [userData]);
+
+  const deleteSubmission = async (id) => {
+    if (window.confirm("Are you sure you want to delete this message?")) {
+      try {
+        await deleteDoc(doc(db, "contactSubmissions", id));
+        alert("Submission deleted.");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   return (
     <div className="admin-page">
@@ -414,6 +483,12 @@ export default function AdminPanel() {
             onClick={() => setActiveTab("social")}
           >
             <Instagram size={18} /> Social & Reviews
+          </button>
+          <button
+            className={activeTab === "messages" ? "active" : ""}
+            onClick={() => setActiveTab("messages")}
+          >
+            <Mail size={18} /> Messages
           </button>
         </div>
       </div>
@@ -648,69 +723,192 @@ export default function AdminPanel() {
         )}
 
         {activeTab === "orders" && (
-        <div className="admin-orders-container">
-          <div className="admin-card full-width">
-            <h2><ShoppingCart /> Customer Orders ({allOrders.length})</h2>
-            <div className="admin-orders-list">
-              {allOrders.map(order => (
-                <div key={order.id} className="admin-order-item">
-                  <div className="order-main-info">
-                    <div className="order-customer">
-                      <span className="order-id">#{order.id.slice(-8).toUpperCase()}</span>
-                      <h4>{order.customerName || order.userName || "Anonymous"}</h4>
-                      <p className="order-email">{order.email}</p>
+          <div className="admin-orders-container">
+            <div className="admin-card full-width">
+              <h2>
+                <ShoppingCart /> Customer Orders ({allOrders.length})
+              </h2>
+              <div className="admin-orders-list">
+                {allOrders.map((order) => (
+                  <div key={order.id} className="admin-order-item">
+                    <div className="order-main-info">
+                      <div className="order-customer">
+                        <span className="order-id">
+                          #{order.orderNumber.toUpperCase()}
+                        </span>
+                        <h4>
+                          {order.customerName || order.userName || "Anonymous"}
+                        </h4>
+                        <p className="order-email">{order.email}</p>
+                      </div>
+                      <div className="order-summary">
+                        <p>Items: {order.items?.length || 0}</p>
+                        <p className="order-total-price">
+                          ₹{order.totalAmount || order.total}
+                        </p>
+                      </div>
                     </div>
-                    <div className="order-summary">
-                      <p>Items: {order.items?.length || 0}</p>
-                      <p className="order-total-price">₹{order.totalAmount || order.total}</p>
+
+                    <div className="status-management">
+                      <p className="status-label">Update Shipment Progress:</p>
+                      <div className="status-buttons">
+                        {[
+                          { label: "Order Placed", icon: <Box size={14} /> },
+                          { label: "Shipped", icon: <Truck size={14} /> },
+                          {
+                            label: "Out for Delivery",
+                            icon: <Truck size={14} />,
+                          },
+                          {
+                            label: "Delivered",
+                            icon: <CheckCircle size={14} />,
+                          },
+                        ].map((status) => (
+                          <button
+                            key={status.label}
+                            className={`status-btn ${order.status === status.label ? "btn-active" : ""}`}
+                            onClick={() => updateStatus(order.id, status.label)}
+                          >
+                            {status.icon} {status.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
-
-                  <div className="status-management">
-                    <p className="status-label">Update Shipment Progress:</p>
-                    <div className="status-buttons">
-                      {[
-                        { label: "Order Placed", icon: <Box size={14} /> },
-                        { label: "Shipped", icon: <Truck size={14} /> },
-                        { label: "Out for Delivery", icon: <Truck size={14} /> },
-                        { label: "Delivered", icon: <CheckCircle size={14} /> }
-                      ].map(status => (
-                        <button 
-                          key={status.label}
-                          className={`status-btn ${order.status === status.label ? "btn-active" : ""}`}
-                          onClick={() => updateStatus(order.id, status.label)}
+                ))}
+              </div>
+            </div>
+            <div
+              className="admin-card glass-morph full-width"
+              style={{ marginTop: "2rem" }}
+            >
+              <h2>
+                <AlertTriangle
+                  size={20}
+                  style={{ marginRight: "10px", color: "var(--primary)" }}
+                />
+                Pending Returns & Exchanges ({requests.length})
+              </h2>
+              <div className="admin-table-wrapper">
+                <table className="admin-table-custom">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Type</th>
+                      <th>Reason</th>
+                      <th>Current Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {requests.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          style={{
+                            textAlign: "center",
+                            padding: "2rem",
+                            color: "#999",
+                          }}
                         >
-                          {status.icon} {status.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                          No pending return or exchange requests.
+                        </td>
+                      </tr>
+                    ) : (
+                      requests.map((req) => (
+                        <tr key={req.id}>
+                          <td className="bold-text">#{req.orderNumber}</td>
+                          <td>
+                            <span
+                              className={`badge ${req.type === "Return" ? "badge-red" : "badge-gold"}`}
+                            >
+                              {req.type}
+                            </span>
+                          </td>
+                          <td className="reason-cell">{req.reason}</td>
+                          <td>
+                            <span
+                              className={`status-pill ${req.status.toLowerCase()}`}
+                            >
+                              {req.status}
+                            </span>
+                          </td>
+                          <td className="action-buttons-cell">
+                            <button
+                              className="status-btn approve"
+                              onClick={() =>
+                                handleUpdateStatus(req.id, "Approved")
+                              }
+                            >
+                              <Check size={14} /> Approve
+                            </button>
+                            <button
+                              className="status-btn reject"
+                              onClick={() =>
+                                handleUpdateStatus(req.id, "Rejected")
+                              }
+                            >
+                              <Ban size={14} /> Reject
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Edit Modal */}
-      {editingProd && (
-        <div className="edit-overlay">
-          <div className="edit-modal admin-card">
-            <div className="modal-header">
-              <h3>Edit Product</h3>
-              <button onClick={() => setEditingProd(null)} className="close-btn"><X /></button>
+        {/* Edit Modal */}
+        {editingProd && (
+          <div className="edit-overlay">
+            <div className="edit-modal admin-card">
+              <div className="modal-header">
+                <h3>Edit Product</h3>
+                <button
+                  onClick={() => setEditingProd(null)}
+                  className="close-btn"
+                >
+                  <X />
+                </button>
+              </div>
+              <form onSubmit={handleUpdateProduct}>
+                <input
+                  value={editingProd.name}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, name: e.target.value })
+                  }
+                />
+                <input
+                  value={editingProd.price}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, price: e.target.value })
+                  }
+                />
+                <input
+                  value={editingProd.img}
+                  onChange={(e) =>
+                    setEditingProd({ ...editingProd, img: e.target.value })
+                  }
+                />
+                <textarea
+                  value={editingProd.description}
+                  onChange={(e) =>
+                    setEditingProd({
+                      ...editingProd,
+                      description: e.target.value,
+                    })
+                  }
+                />
+                <button type="submit" className="admin-btn">
+                  <Save size={18} /> Update
+                </button>
+              </form>
             </div>
-            <form onSubmit={handleUpdateProduct}>
-              <input value={editingProd.name} onChange={(e) => setEditingProd({...editingProd, name: e.target.value})} />
-              <input value={editingProd.price} onChange={(e) => setEditingProd({...editingProd, price: e.target.value})} />
-              <input value={editingProd.img} onChange={(e) => setEditingProd({...editingProd, img: e.target.value})} />
-              <textarea value={editingProd.description} onChange={(e) => setEditingProd({...editingProd, description: e.target.value})} />
-              <button type="submit" className="admin-btn"><Save size={18}/> Update</button>
-            </form>
           </div>
-        </div>
-      )}
-
+        )}
 
         {activeTab === "content" && (
           <div className="admin-grid">
@@ -718,51 +916,48 @@ export default function AdminPanel() {
               <h2>
                 <Star /> Landing Page Hero
               </h2>
-              <form onSubmit={updateHero}>
-                <div className="form-row">
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "5px",
-                    }}
-                  >
-                    <label style={{ fontSize: "0.8rem", fontWeight: "bold" }}>
-                      Banner Image URL
-                    </label>
-                    <input
-                      placeholder="https://..."
-                      value={heroData.bannerUrl}
-                      onChange={(e) =>
-                        setHeroData({ ...heroData, bannerUrl: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "5px",
-                    }}
-                  >
-                    <label style={{ fontSize: "0.8rem", fontWeight: "bold" }}>
-                      Main Tagline
-                    </label>
-                    <input
-                      placeholder="Elevate Your Style"
-                      value={heroData.tagline}
-                      onChange={(e) =>
-                        setHeroData({ ...heroData, tagline: e.target.value })
-                      }
-                    />
-                  </div>
+              <form onSubmit={handleUpdateHero}>
+                <div className="form-group">
+                  <label>Desktop Banner URL</label>
+                  <input
+                    type="text"
+                    placeholder="Image URL for large screens"
+                    value={heroData.bannerUrl}
+                    onChange={(e) =>
+                      setHeroData({ ...heroData, bannerUrl: e.target.value })
+                    }
+                  />
                 </div>
-                <button
-                  type="submit"
-                  className="admin-btn publish"
-                  style={{ marginTop: "10px" }}
-                >
-                  <Save size={18} /> Update Hero Section
+
+                {/* NEW MOBILE INPUT FIELD */}
+                <div className="form-group">
+                  <label>Mobile Banner URL (Vertical/Small screens)</label>
+                  <input
+                    type="text"
+                    placeholder="Image URL for mobile screens"
+                    value={heroData.mobileBannerUrl}
+                    onChange={(e) =>
+                      setHeroData({
+                        ...heroData,
+                        mobileBannerUrl: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Tagline</label>
+                  <input
+                    type="text"
+                    placeholder="Vanokhi Tagline"
+                    value={heroData.tagline}
+                    onChange={(e) =>
+                      setHeroData({ ...heroData, tagline: e.target.value })
+                    }
+                  />
+                </div>
+                <button type="submit" className="admin-btn update">
+                  <Save size={18} /> Save Banner Settings
                 </button>
               </form>
             </div>
@@ -1058,6 +1253,47 @@ export default function AdminPanel() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === "messages" && (
+          <div className="admin-messages-container">
+            {submissions.length === 0 ? (
+              <p className="no-data">No contact submissions yet.</p>
+            ) : (
+              <div className="submissions-grid">
+                {submissions.map((sub) => (
+                  <div
+                    key={sub.id}
+                    className="admin-card glass-morph submission-card"
+                  >
+                    <div className="submission-header">
+                      <div>
+                        <h3>{sub.name}</h3>
+                        <span className="sub-email">{sub.email}</span>
+                      </div>
+                      <button
+                        onClick={() => deleteSubmission(sub.id)}
+                        className="delete-icon-btn"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                    <div className="submission-body">
+                      {/* Using optional chaining for safety */}
+                      <p className="sub-msg">{sub.message}</p>
+                    </div>
+                    <div className="submission-footer">
+                      <small>
+                        {sub.timestamp?.toDate
+                          ? sub.timestamp.toDate().toLocaleString()
+                          : "Date unavailable"}
+                      </small>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

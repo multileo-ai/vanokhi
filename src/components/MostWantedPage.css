@@ -286,6 +286,7 @@
 
 .cp-product-info {
   padding-top: 15px;
+  text-align: left;
 }
 .cp-info-header {
   display: flex;

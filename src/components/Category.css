@@ -48,18 +48,18 @@
 /* --- Track animation --- */
 .track {
   display: flex;
-  gap: var(--card-gap);
-  align-items: center;
-  height: 450px;
+  width: max-content; /* Ensures the track grows with its content */
+  gap: var(--card-gap); /* Uses your existing gap variable */
   animation: scroll var(--scroll-speed) linear infinite;
-  will-change: transform;
+  will-change: transform; /* Performance optimization for smooth scrolling */
 }
 
 @keyframes scroll {
-  0% {
+  from {
     transform: translateX(0);
   }
-  100% {
+  to {
+    /* Translate exactly half the width of the duplicated track */
     transform: translateX(-50%);
   }
 }
@@ -72,6 +72,7 @@
 /* --- Card design --- */
 .card {
   flex: 0 0 auto;
+  flex-shrink: 0;
   width: var(--card-w);
   height: 450px;
   aspect-ratio: 9 / 16;
@@ -80,8 +81,12 @@
   position: relative;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(6px);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15), 0 8px 15px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+  box-shadow:
+    0 8px 15px rgba(0, 0, 0, 0.15),
+    0 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 50px;
 }
 
@@ -229,6 +234,10 @@
   }
   .quick-view {
     font-size: 0.85rem;
+  }
+  .category-section{
+    padding-top: 100px;
+    padding-bottom: 100px;
   }
 }
 

@@ -35,6 +35,8 @@ import OurStory from "./components/OurStory";
 import ScrollToTop from "./components/ScrollToTop";
 import NewArrivalsPage from "./components/NewArrivalsPage";
 import MostWantedPage from "./components/MostWantedPage";
+import ContactUs from "./components/ContactUs";
+import ReturnPortal from "./components/ReturnPortal";
 
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
 const ProductPage = lazy(() => import("./components/ProductPage"));
@@ -47,20 +49,27 @@ const HomePage = ({
   newArrivalsRef,
   scrollToCategory,
   bannerUrl,
+  mobileBannerUrl,
 }) => (
   <>
     <img
       src={bannerUrl || "/banner.png"}
       className="bgbanner"
       alt="Banner"
-      key={bannerUrl} // Adding a key forces a re-render when the URL changes
+      key={bannerUrl || ""} // Adding a key forces a re-render when the URL changes
+    />
+    <img
+      src={mobileBannerUrl || "/banner.png"}
+      className="bgbanner1"
+      alt="Banner"
+      key={mobileBannerUrl || " "} // Adding a key forces a re-render when the URL changes
     />
     <BrandImage scrollToCategory={scrollToCategory} />
     <BrandStory />
 
     {/* Trigger for WHITE color */}
     <div ref={whiteSectionRef}>
-      <BrandStoryPage />
+      {/* <BrandStoryPage /> */}
     </div>
 
     <div ref={categoryRef}>
@@ -84,6 +93,8 @@ function AppContent() {
   const [navWhite, setNavWhite] = useState(false);
   const [navRed, setNavRed] = useState(false);
   const [bannerUrl, setBannerUrl] = useState("");
+  const [mobileBannerUrl, setMobileBannerUrl] = useState("");
+
   const [faqOpen, setFaqOpen] = useState(false);
 
   const location = useLocation();
@@ -106,6 +117,9 @@ function AppContent() {
         const data = docSnap.data();
         if (data.bannerUrl) {
           setBannerUrl(data.bannerUrl); // Update state with the URL from Admin Panel
+        }
+        if (data.mobileBannerUrl) {
+          setMobileBannerUrl(data.mobileBannerUrl); // Update state with the URL from Admin Panel
         }
       }
     });
@@ -186,6 +200,7 @@ function AppContent() {
                 newArrivalsRef={newArrivalsRef}
                 scrollToCategory={scrollToCategory}
                 bannerUrl={bannerUrl}
+                mobileBannerUrl={mobileBannerUrl}
               />
             }
           />
@@ -199,6 +214,8 @@ function AppContent() {
           <Route path="/our-story" element={<OurStory />} />
           <Route path="/new-arrivals" element={<NewArrivalsPage />} />
           <Route path="/most-wanted" element={<MostWantedPage />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/return-portal" element={<ReturnPortal />} />
         </Routes>
       </Suspense>
 
@@ -261,7 +278,22 @@ function AppContent() {
                 >
                   FAQ'S
                 </li>
-                <li>Return/Exchange My Order</li>
+                <li>
+                  <Link
+                    to="/contact"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/return-portal"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Return/Exchange My Order
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="footer-column">

@@ -114,7 +114,7 @@ export function AuthProvider({ children }) {
 
     let newCart = [...(userData.cart || [])];
     const existingIndex = newCart.findIndex(
-      (item) => item.id === product.id && item.color === selectedColor
+      (item) => item.id === product.id && item.color === selectedColor,
     );
 
     if (existingIndex > -1) {
@@ -144,7 +144,7 @@ export function AuthProvider({ children }) {
   const removeFromCart = async (id, color) => {
     if (!currentUser) return;
     const newCart = userData.cart.filter(
-      (item) => !(item.id === id && item.color === color)
+      (item) => !(item.id === id && item.color === color),
     );
     await updateFirebase({ cart: newCart });
     toast.error("Removed from Bag");
@@ -158,7 +158,7 @@ export function AuthProvider({ children }) {
     }
 
     const isAlreadyInWishlist = (userData.wishlist || []).some(
-      (item) => item.id === product.id
+      (item) => item.id === product.id,
     );
 
     let newWishlist;
@@ -181,7 +181,7 @@ export function AuthProvider({ children }) {
     let newCart = [...userData.cart];
     if (existingInCart) {
       newCart = newCart.map((c) =>
-        c.id === item.id ? { ...c, qty: c.qty + 1 } : c
+        c.id === item.id ? { ...c, qty: c.qty + 1 } : c,
       );
     } else {
       newCart.push({
@@ -200,12 +200,12 @@ export function AuthProvider({ children }) {
 
     // 1. Remove from Cart
     const newCart = userData.cart.filter(
-      (c) => !(c.id === item.id && c.color === item.color)
+      (c) => !(c.id === item.id && c.color === item.color),
     );
 
     // 2. Add to Wishlist (check if it's already there first to avoid duplicates)
     const isAlreadyInWishlist = (userData.wishlist || []).some(
-      (w) => w.id === item.id
+      (w) => w.id === item.id,
     );
 
     let newWishlist = [...(userData.wishlist || [])];
@@ -222,18 +222,26 @@ export function AuthProvider({ children }) {
   const createOrder = async (orderData) => {
     if (!currentUser) return;
     try {
+      const orderNumber = `VK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
       // 1. Add order to 'orders' collection
       const orderRef = await addDoc(collection(db, "orders"), {
         ...orderData,
+        orderNumber: orderNumber,
         userId: currentUser.uid,
+        customerEmail: currentUser.email,
+        customerName:
+          `${userData.profile.firstName || ""} ${userData.profile.lastName || ""}`.trim() ||
+          currentUser.displayName ||
+          "Valued Customer",
         status: "Order Placed",
         createdAt: serverTimestamp(),
+        totalAmount: orderData.total || orderData.totalAmount,
       });
 
       // 2. Clear user's cart in Firebase
       await updateFirebase({ cart: [] });
 
-      return orderRef.id;
+      return { id: orderRef.id, orderNumber };
     } catch (error) {
       console.error("Error creating order:", error);
       throw error;

@@ -78,7 +78,22 @@
 
 @media (max-width: 768px) {
   .hero-center-badge1 {
-    padding: 8px 24px;
-    bottom: 10%;
+    bottom: 15%; /* lift badge higher on smaller screens */
+    padding: 10px 25px;
+  }
+  .badge-text1 {
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-center-badge1 {
+    bottom: 15%;
+    padding: 8px 15px;
+  }
+  .badge-text1 {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
   }
 }

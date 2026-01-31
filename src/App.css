@@ -189,7 +189,25 @@ video {
   z-index: -1;
   top: 0;
   left: 0;
+  display: block;
+  min-height: 400px;
+  opacity: 100;
 }
+
+.bgbanner1 {
+  position: fixed; /* Changed from absolute to fixed */
+  width: 100vw;
+  height: 100vh; /* Ensure it covers the full viewport */
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  display: block;
+  min-height: 400px;
+  opacity: 0;
+}
+
 
 .footer-glow {
   position: absolute;
@@ -394,6 +412,14 @@ video {
     grid-template-columns: repeat(2, 1fr);
     gap: 3rem 2rem;
     padding: 0 1.5rem;
+  }
+
+  .bgbanner {
+    opacity: 0;
+  }
+
+  .bgbanner1 {
+    opacity: 100;
   }
 
   .footer-column {

@@ -26,7 +26,7 @@ const OrdersPage = () => {
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const ordersData = snapshot.docs.map((doc) => ({
-        id: doc.id,
+        id: doc.id, 
         ...doc.data(),
       }));
       setOrders(ordersData);
@@ -79,7 +79,7 @@ const OrdersPage = () => {
                 <div className="meta-left">
                   <span className="meta-label">IDENTIFIER</span>
                   <span className="meta-id">
-                    #{order.id.slice(-8).toUpperCase()}
+                    #{order.orderNumber.toUpperCase()}
                   </span>
                 </div>
                 <div className="meta-right">
