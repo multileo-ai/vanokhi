@@ -16,8 +16,9 @@ const MiniNav = () => {
     "All Products",
     // "Return & Exchange",
     "New Arrivals",
-    "Most Wanted",
+    // "Most Wanted",
     "Our Story",
+    "Contact",
   ];
 
   const [open, setOpen] = useState(false);
@@ -96,6 +97,7 @@ const MiniNav = () => {
     if (item === "Our Story") return "/our-story";
     if (item === "New Arrivals") return "/new-arrivals";
     if (item === "Most Wanted") return "/most-wanted";
+    if (item === "Contact") return "/contact";
     return "/";
   };
 

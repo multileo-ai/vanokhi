@@ -1,135 +1,181 @@
-.all-products-container {
-  padding: 4rem 0;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-/* 
-.heading{
+/* src/components/AllProducts.css */
+
+.ap-main-container4 {
+  /* FIX 1: Change position to relative so footer is visible. 
+     FIX 2: Add padding-top (approx 120px-140px) so Navbar doesn't overlap the banner.
+  */
+  position: relative;
   width: 100%;
-  text-align: center;
-} */
+  min-height: 100vh;
+  padding-top: 40px;
+  overflow-x: hidden;
+  z-index: 1;
+}
 
-.swiper_container {
-  height: 52rem;
-  padding: 2rem 0;
+/* Header Ditto Match */
+.cp-shrunk-header4 {
   position: relative;
-}
-
-.swiper-slide {
-  width: 37rem;
-  height: 42rem;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Grayscale for inactive slides */
-  filter: grayscale(100%);
-  transition: filter 0.4s ease;
-  background: transparent !important; /* Ensure no background colors */
-}
-
-/* Only the active slide is colorful */
-.swiper-slide-active {
-  filter: grayscale(0%);
-}
-
-.product-slide-content img {
+  /* height: 45vh; */
   width: 100%;
-  height: auto;
-  max-height: 42rem;
-  object-fit: contain; /* Better for PNG silhouettes */
-  border-radius: 2rem;
-  /* Double-check to remove any remaining shadows */
-  box-shadow: none !important;
-  filter: drop-shadow(0 0 0 transparent) !important;
-}
-
-.product-details-overlay {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.product-details-overlay h3 {
-  font-family: "Bodoni Moda", serif;
-  font-size: 1.5rem;
-  color: #1a1a1a;
-  margin-bottom: 0.5rem;
-}
-
-.product-details-overlay p {
-  color: #860204;
-  font-weight: 600;
-}
-
-/* Adjustments for the arrows - removed drop-shadows */
-.slider-controler {
-  position: relative;
-  bottom: 2rem;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.slider-arrow {
-  cursor: pointer;
-  filter: none !important; /* Remove any arrow shadows */
+.cp-shrunk-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-/* AllProducts.css - Mobile View Enhancements */
+
+.cp-header-overlay4 {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.cp-header-overlay4 h1 {
+  font-family: "VanokhiSerif", serif !important;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: #860204;
+
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cp-header-overlay4 h1 span {
+  color: #860204;
+}
+
+/* Grid & Items Ditto Match */
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 60px 8%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cp-product-card {
+  position: relative;
+}
+
+.cp-img-container {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #f9f9f9;
+}
+
+.cp-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-product-card:hover .cp-img-container img {
+  transform: scale(1.08);
+}
+
+/* Ditto Hover Actions with Glassmorphism */
+.cp-product-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.cp-product-card:hover .cp-product-actions {
+  transform: translateY(0);
+}
+
+.action-btn {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "myMontserrat", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.action-btn.wishlist {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.action-btn.cart {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.action-btn:hover {
+  background: rgba(154, 0, 2, 0.4);
+}
+
+/* Typography ditto match */
+.cp-product-info {
+  padding-top: 15px;
+  text-align: left;
+}
+
+.cp-product-info h3 {
+  font-family: "myMontserrat", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.cp-price {
+  font-family: "Fragor", serif;
+  font-size: 1.3rem;
+  color: #dd8512;
+}
 
 @media (max-width: 768px) {
-  .all-products-container {
-    padding: 1rem 0;
-    overflow: hidden; /* Prevents horizontal scrollbar */
+  .ap-main-container {
+    padding-top: 100px; /* Reduced space for mobile navbars */
   }
 
-  .swiper_container {
-    height: 32rem; /* Reduced height for mobile */
-    padding-top: 2rem;
+  .cp-shrunk-header.mobile-16-9 {
+    height: auto !important;
+    aspect-ratio: 16 / 9;
   }
 
-  .swiper-slide {
-    /* Set width so exactly 1 full + 2 partial slides fit the screen */
-    width: 70vw !important;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .cp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px 4%;
   }
 
-  .product-slide-content {
-    width: 100%;
-  }
-
-  .product-slide-content img {
-    max-height: 22rem; /* Keep image within container */
-    width: 100%;
-    object-fit: contain;
-  }
-
-  .product-details-overlay h3 {
-    font-size: 1.2rem;
-    margin-top: 10px;
-  }
-
-  .product-details-overlay p {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #9a0002;
-  }
-
-  /* Keep the pagination dots within the view */
-  .swiper-pagination {
-    bottom: 0px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .swiper-slide {
-    width: 16rem; /* Even narrower for very small phones */
-  }
-
-  .swiper_container {
-    height: 30rem;
+  .cp-product-actions {
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
   }
 }

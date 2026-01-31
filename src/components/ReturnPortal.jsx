@@ -180,7 +180,7 @@ export default function ReturnPortal() {
       <div className="return-header-section">
         <span className="fragor-label">Concierge</span>
         <h1 className="vanokhi-title">
-          Returns & <span>Exchanges</span>
+          <span>Returns & Exchanges</span>
         </h1>
         <p className="montserrat-sub">
           Resolution portal for your Vanokhi essentials
