@@ -109,7 +109,79 @@ export default function ProductPage() {
       {/* Exact UI matching reference */}
       <h1 className="catName">{categoryName}</h1>
 
-      <div className="prodMainCont">
+      {/* --- MOBILE ONLY HERO SECTION --- */}
+      <div className="mobileHeroContainer">
+        <div className="mobileMainImg">
+          <img src={selectedImage} alt={product.name} />
+        </div>
+
+        <div className="mobileThumbVertical">
+          {product.galleryNormal?.map((img, i) => (
+            <div
+              key={i}
+              className={`mobThumb ${
+                selectedImage === product.galleryPNG?.[i] ? "active" : ""
+              }`}
+              onClick={() => setSelectedImage(product.galleryPNG?.[i])}
+            >
+              <img src={img} alt="" />
+            </div>
+          ))}
+        </div>
+
+        <div className="mobileActionPanel">
+          <h2 className="mobTitle">{product.name}</h2>
+          <div className="mobPrice">
+            {product.price} <span className="currency">INR</span>
+          </div>
+
+          <div className="mobSizeSelector">
+            <div className="mobSizeHeader">
+              <span>Select Size</span>
+              <span
+                className="mobSizeLink"
+                onClick={() => setShowSizeChart(true)}
+              >
+                Size Chart
+              </span>
+            </div>
+            <div className="mobSizeGrid">
+              {product.sizes?.map((sz) => (
+                <button
+                  key={sz}
+                  className={`mobSizeBtn ${
+                    selectedSize === sz ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedSize(sz)}
+                >
+                  {sz}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mobButtons">
+            <button
+              className="mobBtn wishlist"
+              onClick={() => addToWishlist(product)}
+            >
+              <Heart
+                size={20}
+                fill={isInWishlist ? "var(--primary)" : "none"}
+              />
+            </button>
+            <button
+              className="mobBtn cart"
+              onClick={() => addToCart(product, selectedSize)}
+            >
+              <ShoppingBag size={20} /> Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* --- DESKTOP MAIN CONTAINER (Untouched for Desktop) --- */}
+      <div className="prodMainCont desktopOnlyView">
         <div className="sizes">
           <div
             className="sizeChartCircle"

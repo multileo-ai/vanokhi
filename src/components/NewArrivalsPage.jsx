@@ -21,7 +21,7 @@ const NewArrivalsPage = () => {
           <img src="/DSC00618.avif" alt="New Arrivals" />
         </div>
         <div className="cp-header-overlay">
-          <h1>New Arrivals</h1>
+          <h1>Gajara</h1>
         </div>
       </div>
 

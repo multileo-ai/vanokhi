@@ -135,6 +135,18 @@
     background: transparent;
   }
 
+  .mobile-hidden-search .mini-search-icon {
+    display: none !important;
+  }
+
+  .mini-nav.landing-mini .logo-text {
+    color: #faecd9;
+  }
+
+  .mini-nav.other-mini .logo-text {
+    color: #9a0002;
+  }
+
   .nav-actions-container {
     display: flex;
     align-items: center;
@@ -156,7 +168,8 @@
     width: 22px;
     height: 2px;
     position: relative;
-    background: #ffffff;
+    background: currentColor;
+    transition: background-color 0.3s ease;
   }
   .hamburger-lines::before,
   .hamburger-lines::after {
@@ -238,8 +251,8 @@
     width: 100%;
   }
 
-  .hamburger-icon-svg{
-    color: white;
+  .hamburger-icon-svg {
+    color: currentColor;
   }
 }
 

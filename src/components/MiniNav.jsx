@@ -25,6 +25,8 @@ const MiniNav = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const themeClass = isLandingPage ? "landing-mini" : "other-mini";
+
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
 
@@ -106,15 +108,11 @@ const MiniNav = () => {
 
   return (
     <>
-      <div
-        className={`mini-nav ${isLandingPage ? "landing-mini" : "other-mini"}`}
-      >
+      <div className={`mini-nav ${themeClass}`}>
+        {/* 1. Dynamic Hamburger Color */}
         <button
-          className="hamburger-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpen(!open);
-          }}
+          className={`mini-hamburger ${themeClass}`}
+          onClick={() => setOpen(!open)}
         >
           {open ? (
             <X className="hamburger-icon-svg" />
@@ -137,7 +135,14 @@ const MiniNav = () => {
         </div>
 
         <div className="nav-actions-container">
-          <ActionIcons />
+          {/* 2. Search visible ONLY on Landing Page in Mobile */}
+          {!isLandingPage ? (
+            <div className="mobile-hidden-search">
+              <ActionIcons hideSearchOnMobile={true} />
+            </div>
+          ) : (
+            <ActionIcons />
+          )}
         </div>
 
         {open && (
