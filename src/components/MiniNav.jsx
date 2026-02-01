@@ -1,22 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Import real data
+import { useAuth } from "../context/AuthContext";
 import "./MiniNav.css";
 import { User, ShoppingCart, Search, X } from "lucide-react";
 import CartSidebar from "./CartSidebar";
 import ProfileSidebar from "./ProfileSidebar";
 
 const MiniNav = () => {
-  const { userData } = useAuth(); // Access global state
+  const { userData } = useAuth();
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
 
   const menuItems = [
     "Collections",
     "All Products",
-    // "Return & Exchange",
     "New Arrivals",
-    // "Most Wanted",
     "Our Roots",
     "Contact",
   ];
@@ -30,7 +28,6 @@ const MiniNav = () => {
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Sync real cart count
   const cartItemCount = userData.cart.reduce((acc, item) => acc + item.qty, 0);
 
   useEffect(() => {
@@ -48,64 +45,69 @@ const MiniNav = () => {
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
 
-  // Reusable Icon Component to maintain UI consistency
-  const ActionIcons = () => (
-    <div className="nav-action-group">
-      <div className={`search-wrapper ${searchOpen ? "active" : ""}`}>
-        <input
-          ref={searchInputRef}
-          type="text"
-          className="search-input"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button className="icon-btn" onClick={() => setSearchOpen(!searchOpen)}>
-          <Search className="mini-icon" strokeWidth={1.3} />
+  const ActionIcons = () => {
+    // Add a check for window width to keep search open on mobile
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth <= 768);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return (
+      <div className="nav-action-group">
+        {/* Search wrapper is now ALWAYS active if isMobile is true */}
+        <div
+          className={`search-wrapper ${searchOpen || isMobile ? "active" : ""}`}
+        >
+          <input
+            ref={searchInputRef}
+            type="text"
+            className="search-input"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            className="icon-btn search-trigger"
+            onClick={() => !isMobile && setSearchOpen(!searchOpen)}
+          >
+            <Search className="mini-icon" strokeWidth={1.3} />
+          </button>
+        </div>
+
+        {/* Profile and Cart buttons remain the same */}
+        <button className="icon-btn" onClick={() => setProfileOpen(true)}>
+          <User className="mini-icon" strokeWidth={1.3} />
+        </button>
+        <button className="icon-btn" onClick={() => setCartOpen(true)}>
+          <div className="cart-badge-container">
+            <ShoppingCart className="mini-icon" strokeWidth={1.3} />
+            {cartItemCount > 0 && (
+              <span className="cart-count">{cartItemCount}</span>
+            )}
+          </div>
         </button>
       </div>
-      <button
-        className="icon-btn"
-        onClick={() => {
-          setProfileOpen(true);
-          setOpen(false);
-        }}
-      >
-        <User className="mini-icon" strokeWidth={1.3} />
-      </button>
-      <button
-        className="icon-btn"
-        onClick={() => {
-          setCartOpen(true);
-          setOpen(false);
-        }}
-      >
-        <div className="cart-badge-container">
-          <ShoppingCart className="mini-icon" strokeWidth={1.3} />
-          {cartItemCount > 0 && (
-            <span className="cart-count">{cartItemCount}</span>
-          )}
-        </div>
-      </button>
-    </div>
-  );
+    );
+  };
 
-  // Helper function to handle routing logic
   const getPath = (item) => {
-    if (item === "Collections") return "/collections";
-    if (item === "All Products") return "/all-products";
-    if (item === "Our Story") return "/our-story";
-    if (item === "New Arrivals") return "/new-arrivals";
-    if (item === "Most Wanted") return "/most-wanted";
-    if (item === "Contact") return "/contact";
-    return "/";
+    const paths = {
+      Collections: "/collections",
+      "All Products": "/all-products",
+      "Our Roots": "/our-story",
+      "New Arrivals": "/new-arrivals",
+      Contact: "/contact",
+    };
+    return paths[item] || "/";
   };
 
   return (
     <>
       <div
         className={`mini-nav ${isLandingPage ? "landing-mini" : "other-mini"}`}
-        role="navigation"
       >
         <button
           className="hamburger-btn"
@@ -121,34 +123,30 @@ const MiniNav = () => {
           )}
         </button>
 
-        {/* Desktop View */}
         <div className="mini-desktop-nav">
           <div className="desktop-spacer" />
           <ul className="desktop-links">
             {menuItems.map((item, index) => (
               <li key={index} className="mini-link-item">
-                <Link
-                  to={getPath(item)} // Use helper for correct pathing
-                  className="nav-route-link"
-                >
+                <Link to={getPath(item)} className="nav-route-link">
                   {item}
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="desktop-icons">
-            <ActionIcons />
-          </div>
         </div>
 
-        {/* Mobile Menu Content */}
+        <div className="nav-actions-container">
+          <ActionIcons />
+        </div>
+
         {open && (
           <div ref={menuRef} className="mini-mobile-menu">
             <ul>
               {menuItems.map((item, i) => (
                 <li key={i}>
                   <Link
-                    to={getPath(item)} // Use helper for correct pathing
+                    to={getPath(item)}
                     className="mini-link-nav"
                     onClick={() => setOpen(false)}
                   >
@@ -157,27 +155,14 @@ const MiniNav = () => {
                 </li>
               ))}
             </ul>
-            {/* Action icons placed in a single line inside the menu */}
-            <div className="mobile-menu-icons">
-              <ActionIcons />
-            </div>
           </div>
         )}
       </div>
 
-      <CartSidebar
-        isOpen={cartOpen}
-        onClose={(e) => {
-          if (e) e.stopPropagation(); // Prevents the click from bubbling up
-          setCartOpen(false);
-        }}
-      />
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       <ProfileSidebar
         isOpen={profileOpen}
-        onClose={(e) => {
-          if (e) e.stopPropagation();
-          setProfileOpen(false);
-        }}
+        onClose={() => setProfileOpen(false)}
       />
     </>
   );

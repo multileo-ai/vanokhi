@@ -190,6 +190,7 @@
   cursor: pointer;
   transition: background 0.3s;
   text-transform: uppercase;
+  border-radius: 50px;
 }
 
 .checkout-btn:hover {
