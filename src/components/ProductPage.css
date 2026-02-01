@@ -961,7 +961,7 @@
   /* Bottom Panel for Info */
   .mobileActionPanel {
     position: absolute;
-    bottom: 90px;
+    bottom: 30px;
     left: 20px;
     width: 80%;
     z-index: 10;
