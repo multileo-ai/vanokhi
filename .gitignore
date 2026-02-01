@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Keystores and security keys
+*.keystore
+*.jks
+*.p12

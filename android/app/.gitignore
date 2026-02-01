@@ -1,2 +1,11 @@
 /build/*
 !/build/.npmkeep
+
+# Keystores and security keys
+*.keystore
+*.jks
+*.p12
+*.bin
+
+# Google Services configuration (Only ignore if you want to keep your Firebase keys private)
+google-services.json

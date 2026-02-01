@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginPage.css";
 import { X, ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -21,6 +21,15 @@ export default function LoginPage({ onClose }) {
   const [error, setError] = useState("");
   const [message, setMessage] = useState(""); // For success messages
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      GoogleAuth.initialize({
+        clientId:
+          "399331187738-eflpp9q55b7u250g7kudg85j9j4f801o.apps.googleusercontent.com",
+      });
+    }
+  }, []);
 
   // Handle Login / Signup
   async function handleSubmit(e) {
