@@ -132,6 +132,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   filter: brightness(0.5);
 }
 
@@ -338,6 +339,13 @@
 @media (max-width: 768px) {
   /* MOBILE OVERRIDES */
 
+  .cp-shrunk-header.mobile-16-9 {
+    width: 100vw;
+    aspect-ratio: 16 / 9;
+    height: auto !important;
+    min-height: auto;
+  }
+
   .cp-back-home {
     top: 20px; /* Moved closer to the edge */
     left: 20px; /* Moved closer to the edge */
@@ -394,8 +402,11 @@
 
   /* Optional: Adjust title size slightly to fit the 16:9 box better */
   .cp-header-overlay h1 {
-    font-size: 1.8rem;
+    font-size: 2.8rem;
     padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cp-close {

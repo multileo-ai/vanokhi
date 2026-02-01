@@ -52,6 +52,7 @@
   gap: var(--card-gap); /* Uses your existing gap variable */
   animation: scroll var(--scroll-speed) linear infinite;
   will-change: transform; /* Performance optimization for smooth scrolling */
+  /* padding-bottom: 20px; */
 }
 
 @keyframes scroll {
@@ -84,6 +85,7 @@
   transition: transform 0.35s ease, box-shadow 0.35s ease;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15), 0 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 50px;
+  
 }
 
 /* --- Image --- */
@@ -218,7 +220,7 @@
   .card {
     border-radius: 40px;
     height: 320px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: none;
   }
   .overlay {
     border-radius: 40px;

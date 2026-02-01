@@ -37,6 +37,7 @@ import NewArrivalsPage from "./components/NewArrivalsPage";
 import MostWantedPage from "./components/MostWantedPage";
 import ContactUs from "./components/ContactUs";
 import ReturnPortal from "./components/ReturnPortal";
+import SearchResults from "./components/SearchResults";
 
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
 const ProductPage = lazy(() => import("./components/ProductPage"));
@@ -68,9 +69,7 @@ const HomePage = ({
     <BrandStory />
 
     {/* Trigger for WHITE color */}
-    <div ref={whiteSectionRef}>
-      {/* <BrandStoryPage /> */}
-    </div>
+    <div ref={whiteSectionRef}>{/* <BrandStoryPage /> */}</div>
 
     <div ref={categoryRef}>
       <Category />
@@ -216,6 +215,7 @@ function AppContent() {
           <Route path="/most-wanted" element={<MostWantedPage />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/return-portal" element={<ReturnPortal />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </Suspense>
 

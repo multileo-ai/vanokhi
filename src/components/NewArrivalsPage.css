@@ -1,0 +1,203 @@
+/* src/components/NewArrivalsPage.css */
+
+.na-main-wrapper {
+  width: 100%;
+  background: #fff;
+  padding-bottom: 100px;
+}
+
+/* Header */
+.na-header-section {
+  position: relative;
+  width: 100%;
+  /* Fix: Force 16:9 ratio on all screens */
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 50px;
+  /* Remove height: 40vh to let aspect-ratio control it */
+}
+
+.na-header-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.na-header-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.na-header-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.na-header-text h1 {
+  font-family: "Fragor", serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: white;
+  letter-spacing: 6px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Grid Logic: 3 Items per row */
+.na-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Force 3 items */
+  gap: 30px;
+  padding: 0 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Item Card & Glassmorphism */
+.na-glass-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 25px; /* Significant border radius */
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.na-card-top {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #f8f8f8;
+  border-radius: 25px; /* Rounded card top */
+  overflow: hidden;
+}
+
+.na-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.na-glass-card:hover .na-main-img {
+  transform: scale(1.05);
+}
+
+/* Glass Actions */
+.na-glass-actions {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.na-glass-card:hover .na-glass-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.na-action-circle,
+.na-action-rect {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  /* Glass Effect */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: 0.3s;
+}
+
+.na-action-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.na-action-rect {
+  flex: 1;
+  border-radius: 30px;
+  font-family: "myMontserrat", sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  gap: 8px;
+}
+
+.na-action-circle:hover,
+.na-action-rect:hover {
+  background: rgba(134, 2, 4, 0.6); /* Brand Red Blur */
+}
+
+/* Info Section */
+.na-card-bottom {
+  padding: 15px 10px;
+  text-align: left;
+}
+
+.na-item-title {
+  font-family: "myMontserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #151312;
+}
+
+.na-item-price {
+  font-family: "myMontserrat", sans-serif;
+  font-weight: 700;
+  color: #860204;
+}
+
+.na-rating-tag {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .na-product-grid {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* 2 items on mobile for better visibility */
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .na-glass-actions {
+    opacity: 1;
+    transform: translateY(0);
+    bottom: 10px;
+  }
+
+  .na-action-rect span {
+    display: none; /* Icon only on mobile to save space */
+  }
+
+  .na-action-rect {
+    width: 40px;
+    flex: none;
+    border-radius: 50%;
+  }
+
+  .na-header-section.na-mobile-16-9 {
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+  }
+
+  .na-header-text h1 {
+    font-size: 1.8rem; /* Adjust text for smaller 16:9 box */
+  }
+}

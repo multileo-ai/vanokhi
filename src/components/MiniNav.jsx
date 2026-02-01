@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
 import { useAuth } from "../context/AuthContext";
 import "./MiniNav.css";
 import { User, ShoppingCart, Search, X } from "lucide-react";
@@ -9,6 +9,7 @@ import ProfileSidebar from "./ProfileSidebar";
 const MiniNav = () => {
   const { userData } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize navigate
   const isLandingPage = location.pathname === "/";
 
   const menuItems = [
@@ -18,21 +19,35 @@ const MiniNav = () => {
     "Our Roots",
     "Contact",
   ];
-
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
-
   const cartItemCount = userData.cart.reduce((acc, item) => acc + item.qty, 0);
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) searchInputRef.current.focus();
   }, [searchOpen]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle Search Submission
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery(""); // Clear after search
+    }
+  };
 
   useEffect(() => {
     const onDocClick = (e) => {
@@ -44,67 +59,6 @@ const MiniNav = () => {
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [open]);
-
-  const ActionIcons = () => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-    useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth <= 768);
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    return (
-      <div className="nav-action-group">
-        {/* Search logic: only render on mobile if it is the Landing Page */}
-        {(isLandingPage || !isMobile) && (
-          <div
-            className={`search-wrapper ${
-              searchOpen || (isMobile && isLandingPage) ? "active" : ""
-            }`}
-          >
-            <input
-              ref={searchInputRef}
-              type="text"
-              className="search-input"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              className="icon-btn search-trigger"
-              onClick={() => !isMobile && setSearchOpen(!searchOpen)}
-            >
-              <Search className="mini-icon" strokeWidth={1.3} />
-            </button>
-          </div>
-        )}
-
-        <button className="icon-btn" onClick={() => setProfileOpen(true)}>
-          <User className="mini-icon" strokeWidth={1.3} />
-        </button>
-        <button className="icon-btn" onClick={() => setCartOpen(true)}>
-          <div className="cart-badge-container">
-            <ShoppingCart className="mini-icon" strokeWidth={1.3} />
-            {cartItemCount > 0 && (
-              <span className="cart-count">{cartItemCount}</span>
-            )}
-          </div>
-        </button>
-      </div>
-    );
-  };
-
-  const getPath = (item) => {
-    const paths = {
-      Collections: "/collections",
-      "All Products": "/all-products",
-      "Our Roots": "/our-story",
-      "New Arrivals": "/new-arrivals",
-      Contact: "/contact",
-    };
-    return paths[item] || "/";
-  };
 
   const themeClass = isLandingPage ? "landing-mini" : "other-mini";
 
@@ -126,11 +80,23 @@ const MiniNav = () => {
         </button>
 
         <div className="mini-desktop-nav">
-          <div className="desktop-spacer" />
           <ul className="desktop-links">
             {menuItems.map((item, index) => (
               <li key={index} className="mini-link-item">
-                <Link to={getPath(item)} className="nav-route-link">
+                <Link
+                  to={
+                    item === "Collections"
+                      ? "/collections"
+                      : item === "All Products"
+                      ? "/all-products"
+                      : item === "Our Roots"
+                      ? "/our-story"
+                      : item === "New Arrivals"
+                      ? "/new-arrivals"
+                      : "/contact"
+                  }
+                  className="nav-route-link"
+                >
                   {item}
                 </Link>
               </li>
@@ -139,7 +105,42 @@ const MiniNav = () => {
         </div>
 
         <div className="nav-actions-container">
-          <ActionIcons />
+          <div className="nav-action-group">
+            {/* Conditional Search Box rendering for Mobile vs Desktop */}
+            <div
+              className={`search-wrapper ${
+                searchOpen || (isMobile && isLandingPage) ? "active" : ""
+              } ${!isLandingPage ? "mobile-hidden-search" : ""}`}
+            >
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="search-input"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+              />
+              <button
+                className="icon-btn"
+                onClick={() => setSearchOpen(!searchOpen)}
+              >
+                <Search className="mini-icon" strokeWidth={1.3} />
+              </button>
+            </div>
+
+            <button className="icon-btn" onClick={() => setProfileOpen(true)}>
+              <User className="mini-icon" strokeWidth={1.3} />
+            </button>
+            <button className="icon-btn" onClick={() => setCartOpen(true)}>
+              <div className="cart-badge-container">
+                <ShoppingCart className="mini-icon" strokeWidth={1.3} />
+                {cartItemCount > 0 && (
+                  <span className="cart-count">{cartItemCount}</span>
+                )}
+              </div>
+            </button>
+          </div>
         </div>
 
         {open && (
@@ -148,8 +149,17 @@ const MiniNav = () => {
               {menuItems.map((item, i) => (
                 <li key={i}>
                   <Link
-                    to={getPath(item)}
-                    className="mini-link-nav"
+                    to={
+                      item === "Collections"
+                        ? "/collections"
+                        : item === "All Products"
+                        ? "/all-products"
+                        : item === "Our Roots"
+                        ? "/our-story"
+                        : item === "New Arrivals"
+                        ? "/new-arrivals"
+                        : "/contact"
+                    }
                     onClick={() => setOpen(false)}
                   >
                     {item}

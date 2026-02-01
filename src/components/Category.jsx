@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Category.css";
 import { useAuth } from "../context/AuthContext";
 
 const Category = () => {
   const { liveProducts } = useAuth();
+  const navigate = useNavigate();
   if (!liveProducts || liveProducts.length === 0) return null;
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
   const loopItems = [...liveProducts, ...liveProducts];
   return (
@@ -17,7 +23,12 @@ const Category = () => {
               <img src={product.img} alt={product.name} className="card-img" />
               <div className="overlay">
                 <p className="product-name">{product.name}</p>
-                <button className="quick-view">Quick View</button>
+                <button
+                  className="quick-view"
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  Quick View
+                </button>
               </div>
             </article>
           ))}
