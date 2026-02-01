@@ -25,8 +25,6 @@ const MiniNav = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const themeClass = isLandingPage ? "landing-mini" : "other-mini";
-
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
 
@@ -48,7 +46,6 @@ const MiniNav = () => {
   }, [open]);
 
   const ActionIcons = () => {
-    // Add a check for window width to keep search open on mobile
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
@@ -59,27 +56,30 @@ const MiniNav = () => {
 
     return (
       <div className="nav-action-group">
-        {/* Search wrapper is now ALWAYS active if isMobile is true */}
-        <div
-          className={`search-wrapper ${searchOpen || isMobile ? "active" : ""}`}
-        >
-          <input
-            ref={searchInputRef}
-            type="text"
-            className="search-input"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button
-            className="icon-btn search-trigger"
-            onClick={() => !isMobile && setSearchOpen(!searchOpen)}
+        {/* Search logic: only render on mobile if it is the Landing Page */}
+        {(isLandingPage || !isMobile) && (
+          <div
+            className={`search-wrapper ${
+              searchOpen || (isMobile && isLandingPage) ? "active" : ""
+            }`}
           >
-            <Search className="mini-icon" strokeWidth={1.3} />
-          </button>
-        </div>
+            <input
+              ref={searchInputRef}
+              type="text"
+              className="search-input"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="icon-btn search-trigger"
+              onClick={() => !isMobile && setSearchOpen(!searchOpen)}
+            >
+              <Search className="mini-icon" strokeWidth={1.3} />
+            </button>
+          </div>
+        )}
 
-        {/* Profile and Cart buttons remain the same */}
         <button className="icon-btn" onClick={() => setProfileOpen(true)}>
           <User className="mini-icon" strokeWidth={1.3} />
         </button>
@@ -106,13 +106,17 @@ const MiniNav = () => {
     return paths[item] || "/";
   };
 
+  const themeClass = isLandingPage ? "landing-mini" : "other-mini";
+
   return (
     <>
       <div className={`mini-nav ${themeClass}`}>
-        {/* 1. Dynamic Hamburger Color */}
         <button
-          className={`mini-hamburger ${themeClass}`}
-          onClick={() => setOpen(!open)}
+          className={`hamburger-btn ${themeClass}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(!open);
+          }}
         >
           {open ? (
             <X className="hamburger-icon-svg" />
@@ -135,14 +139,7 @@ const MiniNav = () => {
         </div>
 
         <div className="nav-actions-container">
-          {/* 2. Search visible ONLY on Landing Page in Mobile */}
-          {!isLandingPage ? (
-            <div className="mobile-hidden-search">
-              <ActionIcons hideSearchOnMobile={true} />
-            </div>
-          ) : (
-            <ActionIcons />
-          )}
+          <ActionIcons />
         </div>
 
         {open && (
