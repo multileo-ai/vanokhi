@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown } from "lucide-react";
 import "./FaqModal.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const FAQ_DATA = [
   {
@@ -113,7 +120,15 @@ export default function FAQModal({ isOpen, onClose }) {
 
             <div className="faq-modal-footer">
               <p>
-                Still need help? <span>Contact Support</span>
+                Still need help?{" "}
+                <span>
+                  <Link
+                    to="/contact"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Contact Support
+                  </Link>
+                </span>
               </p>
             </div>
           </motion.div>

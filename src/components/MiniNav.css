@@ -270,14 +270,31 @@
     left: 12px;
     right: 12px;
     top: 90px;
-    background: rgba(253, 248, 242, 0.98); /* Cream background */
-    color: #4a2b1f;
+    /* background: rgba(253, 248, 242, 0.98);  */
+    color: rgb(12, 7, 5)f;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); */
     z-index: 20000 !important;
     padding: 16px;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    /* backdrop-filter: blur(8px); */
+    /* border: 1px solid rgba(255, 255, 255, 0.4); */
+
+
+    /* Transparent background with low opacity */
+    background: rgba(253, 248, 242, 0.65) !important; /* Adjusted for luxury feel */
+    
+    /* The "Frosting" effect */
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%); /* Safari support */
+    
+    /* Subtle border for depth */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    
+    /* Soft shadow to make it pop */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    
+    /* Ensure rounded corners match your luxury aesthetic */
+    border-radius: 16px;
   }
 
   /* Ensure the lines are visible against your background */
@@ -308,4 +325,12 @@
   .mini-nav.landing-mini .mini-icon {
   color: #9a0002;
 }
+}
+
+
+/* --- MOBILE GLASSMORPHISM EFFECT --- */
+@media (max-width: 768px) {
+  .mini-mobile-menu {
+    
+  }
 }

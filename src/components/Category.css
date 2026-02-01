@@ -81,12 +81,8 @@
   position: relative;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(6px);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-  box-shadow:
-    0 8px 15px rgba(0, 0, 0, 0.15),
-    0 8px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15), 0 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 50px;
 }
 
@@ -222,6 +218,7 @@
   .card {
     border-radius: 40px;
     height: 320px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.15);
   }
   .overlay {
     border-radius: 40px;
@@ -235,7 +232,7 @@
   .quick-view {
     font-size: 0.85rem;
   }
-  .category-section{
+  .category-section {
     padding-top: 100px;
     padding-bottom: 100px;
   }

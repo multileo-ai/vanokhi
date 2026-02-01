@@ -2,6 +2,13 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import "./PolicyModal.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const POLICY_CONTENT = {
   "Privacy Policy": `At Vanokhi, we respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit or make a purchase from www.vanokhi.com
@@ -217,7 +224,15 @@ export default function PolicyModal({ isOpen, onClose, policyTitle }) {
 
             <div className="policy-modal-footer">
               <p>
-                Have more questions? <span>Contact Support</span>
+                Have more questions?{" "}
+                <span>
+                  <Link
+                    to="/contact"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Contact Support
+                  </Link>
+                </span>
               </p>
             </div>
           </motion.div>

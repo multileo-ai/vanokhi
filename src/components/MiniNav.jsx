@@ -17,7 +17,7 @@ const MiniNav = () => {
     // "Return & Exchange",
     "New Arrivals",
     // "Most Wanted",
-    "Our Story",
+    "Our Roots",
     "Contact",
   ];
 

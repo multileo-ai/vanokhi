@@ -6,10 +6,10 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./App.css";
 import { db } from "./firebase"; // Adjust path to your firebase config file
 import { doc, onSnapshot } from "firebase/firestore";
-import { Link } from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar";

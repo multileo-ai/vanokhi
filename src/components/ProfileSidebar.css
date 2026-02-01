@@ -150,6 +150,7 @@
   letter-spacing: 1px;
   cursor: pointer;
   transition: transform 0.2s;
+  border-radius: 50px;
 }
 .login-trigger-btn:hover {
   transform: translateY(-2px);
