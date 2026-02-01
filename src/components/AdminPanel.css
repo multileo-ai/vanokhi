@@ -343,6 +343,33 @@
   transition: all 0.3s ease;
 }
 
+.order-items-detail {
+  text-align: right;
+  margin: 10px 0;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+.shipping-info-box {
+  margin-top: 12px;
+  padding: 10px;
+  background: #fdf8f2; /* Vanokhi secondary beige */
+  border-radius: 8px;
+  border-left: 3px solid #860204;
+}
+
+.shipping-info-box p {
+  font-size: 0.85rem;
+  margin: 4px 0;
+  line-height: 1.4;
+  color: #444;
+}
+
+.shipping-info-box strong {
+  color: #860204;
+}
+
 .admin-order-item:hover {
   border-color: #860204;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);

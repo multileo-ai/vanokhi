@@ -162,6 +162,20 @@
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.item-variant {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.item-info-top {
+  margin-bottom: 8px;
+}
+
 .subtotal {
   display: flex;
   justify-content: space-between;

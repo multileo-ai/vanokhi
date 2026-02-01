@@ -267,7 +267,7 @@ export default function ProductPage() {
 
         <div className="gallery">
           <div className="mainImage">
-            <img src={selectedImage} alt={product.name} fetchpriority="high" />
+            <img src={selectedImage} alt={product.name} fetchPriority="high" />
           </div>
 
           <div className="thumbs">

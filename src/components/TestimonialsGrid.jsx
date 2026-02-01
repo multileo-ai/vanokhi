@@ -4,32 +4,68 @@ import "./TestimonialsGrid.css";
 export default function TestimonialsGrid() {
   const testimonials = [
     {
-      name: "Samantha Jones",
-      role: "Lifestyle Blogger",
-      img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fit=crop&w=500&h=500",
-      review:
-        "Absolutely loved this experience! The design and flow feel premium and smooth. Highly recommended!",
+      id: 1,
+      name: "Sanjana Kulkarni",
+      role: "Verified Buyer, Pune",
+      content:
+        "The quality of the fabric is actually better than what I expected for the price. It's so hard to find authentic designs that don't feel like cheap polyester. Truly impressed.",
+      avatar: "S",
     },
     {
-      name: "Ryan Adams",
-      role: "Entrepreneur",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=500&h=500",
-      review:
-        "The interface is super intuitive. Everything feels modern and thoughtfully built.",
+      id: 2,
+      name: "Rajesh Sharma",
+      role: "Gifted to Wife",
+      content:
+        "I was worried about the delivery time for my anniversary, but it reached Delhi in 4 days. The packaging was very premium. My wife loved the 'Gajara' collection.",
+      avatar: "R",
     },
     {
-      name: "Isabella Garcia",
-      role: "Travel Influencer",
-      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=500&h=500",
-      review:
-        "Gorgeous UI! Smooth animations and perfect responsiveness. Works beautifully on mobile.",
+      id: 3,
+      name: "Anjali Deshmukh",
+      role: "College Student",
+      content:
+        "As a student, I look for pieces I can style in multiple ways. These tops are perfect for both campus and family functions. Very versatile!",
+      avatar: "A",
     },
     {
-      name: "Michael Carter",
-      role: "Designer",
-      img: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?fit=crop&w=500&h=500",
-      review:
-        "This is one of the cleanest and most attractive testimonial designs I've ever seen.",
+      id: 4,
+      name: "Meera Iyer",
+      role: "Verified Buyer, Bangalore",
+      content:
+        "Finally a brand that understands the middle-class need for elegance without overcharging. The fitting is spot on, especially around the shoulders.",
+      avatar: "M",
+    },
+    {
+      id: 5,
+      name: "Pooja Verma",
+      role: "Working Professional",
+      content:
+        "Bought two sarees for my sister's wedding. The colors are exactly as shown in the pictures—no filters or fake lighting. Will definitely buy again.",
+      avatar: "P",
+    },
+    {
+      id: 6,
+      name: "Vikram Gaikwad",
+      role: "Bought for Mother",
+      content:
+        "Mom is very picky about cotton quality, but she was very happy with the Vanokhi suit. It's soft and the print is very traditional yet modern.",
+      avatar: "V",
+    },
+    {
+      id: 7,
+      name: "Sneha Patil",
+      role: "Verified Buyer, Nashik",
+      content:
+        "The customer support team helped me change my size after I placed the order. Very polite and helpful people. Great service!",
+      avatar: "S",
+    },
+    {
+      id: 8,
+      name: "Komal Gupta",
+      role: "Verified Buyer, Indore",
+      content:
+        "I love the 'Vanokhi' aesthetic. It feels very personal, like something designed specifically for the modern Indian woman. Highly recommended.",
+      avatar: "K",
     },
   ];
 
@@ -41,11 +77,25 @@ export default function TestimonialsGrid() {
         <div className="testimonials-track">
           {testimonials.concat(testimonials).map((t, i) => (
             <div className="testimonial-card" key={i}>
-              <div className="t-img-box">
-                <img src={t.img} alt={t.name} />
+              <div
+                className="t-img-box"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#860204", // Brand Red
+                  color: "#fff",
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                  borderRadius: "50%",
+                  fontFamily: "myMontserrat",
+                }}
+              >
+                {/* Replaced img with the avatar letter */}
+                <span>{t.avatar}</span>
               </div>
 
-              <p className="t-review">“{t.review}”</p>
+              <p className="t-review">“{t.content}”</p>
 
               <p className="t-name">{t.name}</p>
               <p className="t-role">{t.role}</p>

@@ -229,6 +229,7 @@ export default function PolicyModal({ isOpen, onClose, policyTitle }) {
                   <Link
                     to="/contact"
                     style={{ textDecoration: "none", color: "inherit" }}
+                    onClick={onClose}
                   >
                     Contact Support
                   </Link>

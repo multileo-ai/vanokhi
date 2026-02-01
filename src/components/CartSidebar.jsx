@@ -46,7 +46,7 @@ export default function CartSidebar({ isOpen, onClose }) {
     // 2. Razorpay Integration amount: subtotal * 100,
     const options = {
       key: "rzp_live_SA0hlT1msG7y4P", // Get from Razorpay Dashboard
-      amount: 1 * 100,
+      amount: subtotal * 100,
 
       currency: "INR",
       name: "Vanokhi",
@@ -55,7 +55,16 @@ export default function CartSidebar({ isOpen, onClose }) {
         // This runs on successful payment
         try {
           const orderData = {
-            items: userData.cart,
+            // FIXED: Explicitly map items to include size from the cart array
+            items: userData.cart.map((cartItem) => ({
+              id: cartItem.id,
+              name: cartItem.name,
+              price: cartItem.price,
+              img: cartItem.img || cartItem.image,
+              size: cartItem.size || "Standard", // Pulls size from individual item
+              qty: cartItem.qty,
+              color: cartItem.color || "",
+            })),
             total: subtotal,
             paymentId: response.razorpay_payment_id,
             customerName: `${p.firstName} ${p.lastName}`,
@@ -71,7 +80,10 @@ export default function CartSidebar({ isOpen, onClose }) {
           navigate("/orders"); // Create this route next
           onClose();
         } catch (err) {
-          toast.error("Failed to save order details.");
+          console.error("Order Save Error:", err);
+          toast.error(
+            "Payment successful, but failed to record order. Please contact support.",
+          );
         }
       },
       prefill: {
@@ -112,19 +124,25 @@ export default function CartSidebar({ isOpen, onClose }) {
                 <div className="item-info-top">
                   <h4 className="item-name">{item.name}</h4>
                   <div className="item-meta">
+                    {/* NEW: Size Display */}
+                    <span className="item-variant">
+                      Size: {item.size || "Standard"}
+                    </span>
+
                     {item.color && (
                       <span
                         className="color-indicator"
                         style={{ backgroundColor: item.color }}
                       />
                     )}
-                    <button
-                      onClick={() => moveToWishlistFromCart(item)}
-                      className="move-wish-btn"
-                    >
-                      <Heart size={14} /> Move to Wishlist
-                    </button>
                   </div>
+
+                  <button
+                    onClick={() => moveToWishlistFromCart(item)}
+                    className="move-wish-btn"
+                  >
+                    <Heart size={14} /> Move to Wishlist
+                  </button>
                 </div>
 
                 <div className="item-price">{item.price}</div>

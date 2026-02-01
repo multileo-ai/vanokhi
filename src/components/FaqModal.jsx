@@ -125,6 +125,7 @@ export default function FAQModal({ isOpen, onClose }) {
                   <Link
                     to="/contact"
                     style={{ textDecoration: "none", color: "inherit" }}
+                    onClick={onClose}
                   >
                     Contact Support
                   </Link>

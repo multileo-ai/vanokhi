@@ -33,12 +33,18 @@ const SearchResults = () => {
       <div className="sr-product-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((item) => {
+            const isOutOfStock = item.stock === 0;
             const isInWishlist = userData?.wishlist?.some(
               (w) => w.id === item.id,
             );
 
             return (
-              <div key={item.id} className="sr-glass-card">
+              <div
+                key={item.id}
+                className={`sr-glass-card ${
+                  isOutOfStock ? "out-of-stock" : ""
+                }`}
+              >
                 <div className="sr-card-top">
                   <Link to={`/product/${item.id}`}>
                     <img

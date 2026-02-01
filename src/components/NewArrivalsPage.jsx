@@ -25,12 +25,16 @@ const NewArrivalsPage = () => {
 
       <div className="na-product-grid">
         {products.map((item) => {
+          const isOutOfStock = item.stock === 0;
           const isInWishlist = userData?.wishlist?.some(
             (w) => w.id === item.id,
           );
 
           return (
-            <div key={item.id} className="na-glass-card">
+            <div
+              key={item.id}
+              className={`na-glass-card ${isOutOfStock ? "out-of-stock" : ""}`}
+            >
               <div className="na-card-top">
                 <Link to={`/product/${item.id}`}>
                   <img src={item.img} alt={item.name} className="na-main-img" />
@@ -55,7 +59,7 @@ const NewArrivalsPage = () => {
                   </button>
                   <button
                     className="na-action-rect"
-                    onClick={() => addToCart(item, item.sizes?.[0] || "M")}
+                    onClick={() => addToCart(item, "M", item.sizes?.[0] || "M")}
                   >
                     <ShoppingBag size={18} />
                     <span>ADD TO BAG</span>

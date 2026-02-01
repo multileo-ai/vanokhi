@@ -107,8 +107,8 @@
 
 /* Avatar container */
 .t-img-box {
-  width: 96px;
-  height: 96px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   overflow: hidden;
   margin-top: 2px;

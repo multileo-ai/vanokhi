@@ -22,7 +22,7 @@
   width: 100vw;
   height: 100vh;
   /* background: #FAECD9; */
-  background: #d9c5aa;
+  background: #ffffff;
   position: relative;
   overflow: hidden;
 }
@@ -114,9 +114,10 @@
 
 /* SHRUNK HEADER DESIGN */
 .cp-shrunk-header {
-  height: 45vh;
-  width: 100%;
   position: relative;
+  width: 100%;
+  height: 45vh; /* Fixed height for PC as requested */
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,15 +295,15 @@
   align-items: baseline;
 }
 .cp-product-info h3 {
-  font-family: "Bodoni Moda";
+  font-family: "myMontserrat", sans-serif;
   font-size: 1.2rem;
   margin: 0;
   color: #1a1a1a;
 }
 .cp-price {
-  font-family: "Lora";
+  font-family: "myMontserrat", sans-serif;
   font-weight: 600;
-  color: #dd8512;
+  color: #9a0002;
 }
 
 .cp-color-swatches {
@@ -315,6 +316,29 @@
   height: 14px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cp-product-card.out-of-stock {
+  filter: grayscale(100%);
+  pointer-events: none !important;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.cp-product-card.out-of-stock::after {
+  content: "OUT OF STOCK";
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-family: "Fragor", serif;
+  font-size: 1.5rem;
+  color: #9a0002;
+  border: 3px solid #9a0002;
+  padding: 5px 15px;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 20;
+  white-space: nowrap;
 }
 
 /* @media (max-width: 1024px) {
@@ -339,11 +363,17 @@
 @media (max-width: 768px) {
   /* MOBILE OVERRIDES */
 
+  .cp-product-card.out-of-stock::after {
+    top: 35%;
+  }
+
   .cp-shrunk-header.mobile-16-9 {
+    height: auto !important; /* This "unlocks" the 45vh so aspect-ratio can work */
+    aspect-ratio: 16 / 9; /* Forces professional ratio on mobile */
     width: 100vw;
-    aspect-ratio: 16 / 9;
-    height: auto !important;
-    min-height: auto;
+    display: flex; /* Ensure container is flex */
+    align-items: center;
+    justify-content: center;
   }
 
   .cp-back-home {
@@ -390,7 +420,7 @@
   .cp-shrunk-header.mobile-16-9 {
     height: auto !important; /* Overrides the 45vh set in desktop */
     width: 100vw;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9 !important;
     min-height: auto;
   }
 
@@ -400,13 +430,24 @@
     inset: 0;
   }
 
+  .cp-header-overlay {
+    position: absolute; /* Absolute to cover the background */
+    inset: 0;
+    display: flex;
+    align-items: center; /* Vertical Center */
+    justify-content: center; /* Horizontal Center */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   /* Optional: Adjust title size slightly to fit the 16:9 box better */
   .cp-header-overlay h1 {
     font-size: 2.8rem;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 1; /* Prevents extra bottom spacing */
+    margin: 0;
+    text-align: center;
   }
 
   .cp-close {

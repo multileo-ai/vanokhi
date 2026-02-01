@@ -85,12 +85,19 @@ const CollectionPage = () => {
                 const item = liveProducts.find((p) => p.id === pid);
                 if (!item) return null;
 
+                const isOutOfStock = item.stock === 0;
+
                 const isInWishlist = userData?.wishlist?.some(
                   (w) => w.id === item.id,
                 );
 
                 return (
-                  <div key={item.id} className="cp-product-card">
+                  <div
+                    key={item.id}
+                    className={`cp-product-card ${
+                      isOutOfStock ? "out-of-stock" : ""
+                    }`}
+                  >
                     <div className="cp-img-container">
                       <Link to={`/product/${item.id}`}>
                         <img
@@ -128,6 +135,7 @@ const CollectionPage = () => {
                             e.stopPropagation();
                             addToCart(
                               item,
+                              "M",
                               item.colors ? item.colors[0] : null,
                             );
                           }}

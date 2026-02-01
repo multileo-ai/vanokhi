@@ -29,7 +29,6 @@
   z-index: 1;
 }
 
-
 .cp-header-overlay4 {
   position: relative;
   z-index: 2;
@@ -152,12 +151,40 @@
 }
 
 .cp-price {
-  font-family: "Fragor", serif;
+  font-family: "myMontserrat", sans-serif;
   font-size: 1.3rem;
-  color: #dd8512;
+  color: #9a0002;
+}
+
+.cp-product-card.out-of-stock {
+  filter: grayscale(100%);
+  pointer-events: none; /* Disables all clicks and redirects */
+  position: relative;
+  opacity: 0.8;
+}
+
+/* The slanting cross overlay */
+.cp-product-card.out-of-stock::after {
+  content: "SOLD OUT";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-family: "Fragor", serif;
+  font-size: 2rem;
+  color: #9a0002;
+  border: 4px solid #9a0002;
+  padding: 10px 20px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
+  .cp-product-card.out-of-stock::after {
+    top: 35%;
+  }
+
   .ap-main-container {
     padding-top: 100px; /* Reduced space for mobile navbars */
   }

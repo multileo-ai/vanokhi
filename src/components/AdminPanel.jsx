@@ -689,7 +689,9 @@ export default function AdminPanel() {
                     </div>
                     <div className="item-actions">
                       <button
-                        className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""}`}
+                        className={`most-wanted-toggle ${
+                          mostWantedIds.includes(p.id) ? "active" : ""
+                        }`}
                         onClick={() => toggleMostWanted(p.id)}
                         title="Toggle Most Wanted"
                       >
@@ -740,9 +742,29 @@ export default function AdminPanel() {
                           {order.customerName || order.userName || "Anonymous"}
                         </h4>
                         <p className="order-email">{order.email}</p>
+                        <div className="shipping-info-box">
+                          <p>
+                            <strong>Phone:</strong> {order.phone}
+                          </p>
+                          <p>
+                            <strong>Address:</strong> {order.shippingAddress}
+                          </p>
+                        </div>
                       </div>
                       <div className="order-summary">
                         <p>Items: {order.items?.length || 0}</p>
+                        <div className="order-items-detail">
+                          {order.items?.map((item, i) => (
+                            <small
+                              key={i}
+                              style={{ display: "block", color: "#666" }}
+                            >
+                              {item.name} - <strong>Size: {item.size}</strong>{" "}
+                              (x{item.qty})
+                            </small>
+                          ))}
+                        </div>
+                        <p>{order.paymentId}</p>
                         <p className="order-total-price">
                           ₹{order.totalAmount || order.total}
                         </p>
@@ -766,7 +788,9 @@ export default function AdminPanel() {
                         ].map((status) => (
                           <button
                             key={status.label}
-                            className={`status-btn ${order.status === status.label ? "btn-active" : ""}`}
+                            className={`status-btn ${
+                              order.status === status.label ? "btn-active" : ""
+                            }`}
                             onClick={() => updateStatus(order.id, status.label)}
                           >
                             {status.icon} {status.label}
@@ -820,7 +844,11 @@ export default function AdminPanel() {
                           <td className="bold-text">#{req.orderNumber}</td>
                           <td>
                             <span
-                              className={`badge ${req.type === "Return" ? "badge-red" : "badge-gold"}`}
+                              className={`badge ${
+                                req.type === "Return"
+                                  ? "badge-red"
+                                  : "badge-gold"
+                              }`}
                             >
                               {req.type}
                             </span>

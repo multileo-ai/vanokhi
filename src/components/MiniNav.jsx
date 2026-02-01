@@ -107,27 +107,29 @@ const MiniNav = () => {
         <div className="nav-actions-container">
           <div className="nav-action-group">
             {/* Conditional Search Box rendering for Mobile vs Desktop */}
-            <div
-              className={`search-wrapper ${
-                searchOpen || (isMobile && isLandingPage) ? "active" : ""
-              } ${!isLandingPage ? "mobile-hidden-search" : ""}`}
-            >
-              <input
-                ref={searchInputRef}
-                type="text"
-                className="search-input"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={handleSearchKeyDown}
-              />
-              <button
-                className="icon-btn"
-                onClick={() => setSearchOpen(!searchOpen)}
+            {(!isMobile || isLandingPage) && (
+              <div
+                className={`search-wrapper ${
+                  searchOpen || (isMobile && isLandingPage) ? "active" : ""
+                }`}
               >
-                <Search className="mini-icon" strokeWidth={1.3} />
-              </button>
-            </div>
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className={`search-input ${themeClass}`}
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                />
+                <button
+                  className="icon-btn"
+                  onClick={() => setSearchOpen(!searchOpen)}
+                >
+                  <Search className="mini-icon" strokeWidth={1.3} />
+                </button>
+              </div>
+            )}
 
             <button className="icon-btn" onClick={() => setProfileOpen(true)}>
               <User className="mini-icon" strokeWidth={1.3} />

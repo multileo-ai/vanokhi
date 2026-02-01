@@ -197,6 +197,15 @@
   }
 
   /* Mobile Search Box - Positioned BELOW Navbar */
+  .mini-nav:not(.landing-mini) .search-wrapper {
+    display: none !important;
+  }
+
+  .nav-action-group {
+    gap: 0.5rem;
+    margin-top: 10px;
+  }
+
   .search-wrapper.active {
     background: rgba(116, 116, 116, 0.2) !important;
     backdrop-filter: blur(10px) saturate(150%);

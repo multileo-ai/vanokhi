@@ -26,7 +26,7 @@ const OrdersPage = () => {
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const ordersData = snapshot.docs.map((doc) => ({
-        id: doc.id, 
+        id: doc.id,
         ...doc.data(),
       }));
       setOrders(ordersData);
@@ -107,6 +107,7 @@ const OrdersPage = () => {
                         <h3 className="item-brand-name">{item.name}</h3>
                         <span className="item-price-tag">{item.price}</span>
                       </div>
+
                       <div className="item-details-grid">
                         <div className="detail-box">
                           <label>Size</label>
@@ -145,7 +146,9 @@ const OrdersPage = () => {
                         (step, idx) => (
                           <div
                             key={step}
-                            className={`step-dot ${idx <= getStatusStep(order.status) ? "active" : ""}`}
+                            className={`step-dot ${
+                              idx <= getStatusStep(order.status) ? "active" : ""
+                            }`}
                           >
                             <div className="dot-core"></div>
                             <span className="step-text">{step}</span>

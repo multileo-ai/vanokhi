@@ -15,9 +15,7 @@ const AllProducts = () => {
       */}
       <div className="cp-shrunk-header4 mobile-16-9">
         <div className="cp-header-overlay4">
-          <h1>
-            ALL PRODUCTS
-          </h1>
+          <h1>ALL PRODUCTS</h1>
         </div>
       </div>
 
@@ -26,11 +24,17 @@ const AllProducts = () => {
           const isInWishlist = userData?.wishlist?.some(
             (w) => w.id === item.id,
           );
+          const isOutOfStock = item.stock === 0;
 
           return (
-            <div key={item.id} className="cp-product-card">
+            <div
+              key={item.id}
+              className={`cp-product-card ${
+                isOutOfStock ? "out-of-stock" : ""
+              }`}
+            >
               <div className="cp-img-container">
-                <Link to={`/product/${item.id}`}>
+                <Link to={isOutOfStock ? "#" : `/product/${item.id}`}>
                   <img src={item.img} alt={item.name} />
                 </Link>
 
@@ -38,7 +42,9 @@ const AllProducts = () => {
 
                 <div className="cp-product-actions">
                   <button
-                    className={`action-btn wishlist ${isInWishlist ? "active" : ""}`}
+                    className={`action-btn wishlist ${
+                      isInWishlist ? "active" : ""
+                    }`}
                     onClick={() => addToWishlist(item)}
                   >
                     <Heart
@@ -49,7 +55,7 @@ const AllProducts = () => {
                   </button>
                   <button
                     className="action-btn cart"
-                    onClick={() => addToCart(item, item.colors?.[0])}
+                    onClick={() => addToCart(item, "M", item.colors?.[0])}
                   >
                     <ShoppingBag size={18} /> Add to Bag
                   </button>

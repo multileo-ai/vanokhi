@@ -106,25 +106,127 @@ export function AuthProvider({ children }) {
   const logout = () => signOut(auth);
 
   // --- Cart Logic (Toggle & Increment) ---
-  const addToCart = async (product, selectedColor = null) => {
+  // const addToCart = async (product, selectedColor = null) => {
+  //   if (!currentUser) {
+  //     toast.error("Please login to add items to your bag");
+  //     return;
+  //   }
+
+  //   let newCart = [...(userData.cart || [])];
+  //   const existingIndex = newCart.findIndex(
+  //     (item) => item.id === product.id && item.color === selectedColor,
+  //   );
+
+  //   if (existingIndex > -1) {
+  //     newCart[existingIndex].qty += 1;
+  //   } else {
+  //     newCart.push({ ...product, qty: 1, color: selectedColor });
+  //   }
+
+  //   await updateFirebase({ cart: newCart });
+  //   toast.success(`${product.name} added to Bag!`);
+  // };
+
+  // const addToCart = async (product, selectedColor = null) => {
+  //   if (!currentUser) {
+  //     toast.error("Please login to add items to your bag");
+  //     return;
+  //   }
+
+  //   // 1. Check if the product itself is out of stock before even looking at the cart
+  //   if (product.stock <= 0) {
+  //     toast.error("Sorry, this item is currently sold out!");
+  //     return;
+  //   }
+
+  //   let newCart = [...(userData.cart || [])];
+  //   const existingIndex = newCart.findIndex(
+  //     (item) => item.id === product.id && item.color === selectedColor,
+  //   );
+
+  //   if (existingIndex > -1) {
+  //     const currentQtyInCart = newCart[existingIndex].qty;
+
+  //     // 2. Validation: Check if adding one more exceeds available stock
+  //     if (currentQtyInCart + 1 > product.stock) {
+  //       toast.warning(
+  //         `Cannot add more! Only ${product.stock} items available in stock.`,
+  //         {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //         },
+  //       );
+  //       return; // Stop the function here
+  //     }
+
+  //     newCart[existingIndex].qty += 1;
+  //   } else {
+  //     // 3. For a new item, ensure at least 1 is available
+  //     if (product.stock < 1) {
+  //       toast.error("Item is out of stock.");
+  //       return;
+  //     }
+  //     newCart.push({ ...product, qty: 1, color: selectedColor });
+  //   }
+
+  //   try {
+  //     await updateFirebase({ cart: newCart });
+  //     toast.success(`${product.name} added to Bag!`);
+  //   } catch (error) {
+  //     console.error("Cart Update Error:", error);
+  //     toast.error("Failed to update bag. Please try again.");
+  //   }
+  // };
+
+  const addToCart = async (
+    product,
+    selectedSize = "M",
+    selectedColor = null,
+  ) => {
     if (!currentUser) {
       toast.error("Please login to add items to your bag");
       return;
     }
 
+    if (product.stock <= 0) {
+      toast.error("Sorry, this item is currently sold out!");
+      return;
+    }
+
     let newCart = [...(userData.cart || [])];
+
+    // Update the check to include size so the same product in different sizes
+    // appears as separate items in the bag
     const existingIndex = newCart.findIndex(
-      (item) => item.id === product.id && item.color === selectedColor,
+      (item) =>
+        item.id === product.id &&
+        item.color === selectedColor &&
+        item.size === selectedSize,
     );
 
     if (existingIndex > -1) {
+      const currentQtyInCart = newCart[existingIndex].qty;
+      if (currentQtyInCart + 1 > product.stock) {
+        toast.warning(`Only ${product.stock} items available.`);
+        return;
+      }
       newCart[existingIndex].qty += 1;
     } else {
-      newCart.push({ ...product, qty: 1, color: selectedColor });
+      // SAVE THE SIZE HERE
+      newCart.push({
+        ...product,
+        qty: 1,
+        color: selectedColor,
+        size: selectedSize, // <--- This line is critical
+      });
     }
 
-    await updateFirebase({ cart: newCart });
-    toast.success(`${product.name} added to Bag!`);
+    try {
+      await updateFirebase({ cart: newCart });
+      toast.success(`${product.name} (${selectedSize}) added to Bag!`);
+    } catch (error) {
+      console.error("Cart Update Error:", error);
+    }
   };
 
   const updateCartQty = async (id, color, delta) => {
@@ -188,6 +290,7 @@ export function AuthProvider({ children }) {
         ...item,
         qty: 1,
         color: item.colors ? item.colors[0] : null,
+        size: selectedSize,
       });
     }
 
@@ -222,7 +325,9 @@ export function AuthProvider({ children }) {
   const createOrder = async (orderData) => {
     if (!currentUser) return;
     try {
-      const orderNumber = `VK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderNumber = `VK-${new Date().getFullYear()}-${Math.floor(
+        1000 + Math.random() * 9000,
+      )}`;
       // 1. Add order to 'orders' collection
       const orderRef = await addDoc(collection(db, "orders"), {
         ...orderData,
@@ -230,7 +335,9 @@ export function AuthProvider({ children }) {
         userId: currentUser.uid,
         customerEmail: currentUser.email,
         customerName:
-          `${userData.profile.firstName || ""} ${userData.profile.lastName || ""}`.trim() ||
+          `${userData.profile.firstName || ""} ${
+            userData.profile.lastName || ""
+          }`.trim() ||
           currentUser.displayName ||
           "Valued Customer",
         status: "Order Placed",
