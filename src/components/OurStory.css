@@ -1,6 +1,6 @@
 .story-page-wrapper {
   padding: 0 0 5rem 0; /* Top padding is 0 to let banner touch top */
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   background-color: #fff;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .final-text {
-  font-family: "Bodoni Moda", serif;
+  font-family: "Arya", serif;
   font-size: 2rem;
   font-style: italic;
   margin-top: 2rem;

@@ -3,20 +3,6 @@
   src: url(/fonts/Carina.ttf);
 }
 
-/* 1. Define the Fragor Font */
-@font-face {
-  font-family: "Fragor";
-  src: url("/fonts/Fragor-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "myMontserrat";
-  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* Supports all weights */
-}
 
 .cp-viewport {
   width: 100vw;
@@ -54,7 +40,7 @@
 }
 
 .cp-back-home span {
-  font-family: "myMontserrat" !important;
+  font-family: "LibreFranklin", sans-serif !important;
 }
 
 .cp-snap-container {
@@ -95,7 +81,7 @@
 }
 
 .cp-content h2 {
-  font-family: "VanokhiSerif" !important;
+  font-family: "Arya" !important;
   font-size: 8vw;
   margin: 10px 0;
   text-transform: uppercase;
@@ -104,7 +90,7 @@
 
 /* List View Subtitle */
 .cp-content p {
-  font-family: "myMontserrat", serif; /* Current font */
+  font-family: "LibreFranklin", serif; /* Current font */
   font-style: italic; /* Current style */
   font-size: 1.5rem; /* Edit this to change size */
   color: white; /* Edit this to change color */
@@ -150,7 +136,7 @@
 }
 
 .cp-header-overlay h1 {
-  font-family: "VanokhiSerif" !important;
+  font-family: "Arya" !important;
   font-size: 5rem;
   color: white;
   text-transform: uppercase;
@@ -254,7 +240,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Poppins";
+  font-family: "LibreFranklin";
   font-size: 0.85rem;
   transition: 0.2s;
 }
@@ -295,13 +281,13 @@
   align-items: baseline;
 }
 .cp-product-info h3 {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "Arya", sans-serif;
   font-size: 1.2rem;
   margin: 0;
   color: #1a1a1a;
 }
 .cp-price {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   color: #9a0002;
 }
@@ -331,7 +317,7 @@
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-size: 1.5rem;
   color: #9a0002;
   border: 3px solid #9a0002;

@@ -20,7 +20,7 @@
 }
 
 .parallax-bg-text {
-  font-family: "Fragor", serif; /* */
+  font-family: "Arya", serif; /* */
   font-size: 15vw;
   color: rgba(134, 2, 4, 0.03); /* Extremely faint Vanokhi Red */
   text-transform: uppercase;
@@ -37,7 +37,7 @@
 
 /* Typography & Content */
 .section-tag {
-  font-family: "myMontserrat", sans-serif; /* */
+  font-family: "LibreFranklin", sans-serif; /* */
   font-size: 0.75rem;
   letter-spacing: 5px;
   color: #860204;
@@ -47,7 +47,7 @@
 }
 
 .contact-hero-title {
-  font-family: "Fragor", serif; /* */
+  font-family: "Arya", serif; /* */
   font-size: clamp(3.5rem, 8vw, 6rem);
   line-height: 0.95;
   color: #111;
@@ -62,7 +62,7 @@
 }
 
 .detail-item h4 {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 3px;
   color: #888;
@@ -70,7 +70,7 @@
 }
 
 .detail-item p {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 1.2rem;
   font-weight: 400;
   color: #111;
@@ -95,7 +95,7 @@
 }
 
 .input-field-wrapper label {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.6rem;
   letter-spacing: 2px;
   color: #999;
@@ -107,7 +107,7 @@
   border: none;
   background: transparent;
   padding: 10px 0 20px;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 1.1rem;
   color: #111;
   outline: none;
@@ -148,7 +148,7 @@
   position: relative;
   z-index: 2;
   color: #ffffff; /* Vanokhi Cream */
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   letter-spacing: 3px;
   font-size: 0.8rem;

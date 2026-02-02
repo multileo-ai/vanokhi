@@ -36,7 +36,7 @@
 }
 
 .cp-header-overlay4 h1 {
-  font-family: "VanokhiSerif", serif !important;
+  font-family: "Arya", serif !important;
   font-size: clamp(2.5rem, 6vw, 5rem);
   color: #860204;
 
@@ -106,7 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   font-size: 0.8rem;
   transition: 0.2s;
@@ -142,7 +142,7 @@
 }
 
 .cp-product-info h3 {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   margin: 0 0 5px 0;
@@ -151,7 +151,7 @@
 }
 
 .cp-price {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 1.3rem;
   color: #9a0002;
 }
@@ -170,7 +170,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);
-  font-family: "Fragor", serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 2rem;
   color: #9a0002;
   border: 4px solid #9a0002;

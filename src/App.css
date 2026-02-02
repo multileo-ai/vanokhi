@@ -1,6 +1,15 @@
 @font-face {
-  font-family: "myMontserrat";
-  src: url(/fonts/Montserrat/Montserrat-VariableFont_wght.ttf);
+  font-family: "Arya";
+  src: url(/fonts/Arya-Bold.woff) format("woff"),
+    url(/fonts/Arya-Regular.woff) format("woff");
+  font-weight: bold, normal;
+}
+
+@font-face {
+  font-family: "LibreFranklin";
+  src: url(/fonts/LibreFranklin-VariableFont_wght.ttf) format("truetype"),
+    url(/fonts/LibreFranklin-Italic-VariableFont_wght.ttf) format("truetype");
+  font-style: normal, italic;
 }
 
 @font-face {
@@ -8,33 +17,23 @@
   src: url(/fonts/Carina.ttf);
 }
 
-/* 1. Define the Fragor Font */
-@font-face {
-  font-family: "Fragor";
-  src: url("/fonts/Fragor-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: "myMontserrat";
-  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* Supports all weights */
-}
-
-/* 2. Apply it to all Headings */
+/* 2. Apply Arya to all Headings */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-.vanokhi-logo,
 .nav-logo,
 .footer-column h3 {
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-weight: normal; /* Display fonts often look best without bold added */
+}
+
+/* Keep VanokhiSerif for Vanokhi logo */
+.vanokhi-logo {
+  font-family: "VanokhiSerif", serif !important;
 }
 
 /* 1. Ensure the Font is Defined (You likely already have this) */
@@ -51,7 +50,7 @@ textarea,
 .vanokhi-tagline,
 .footer-column ul li,
 .badge-text {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   letter-spacing: 0.02em; /* Slight spacing makes it look more "high-end" */
 }
 
@@ -208,7 +207,6 @@ video {
   opacity: 0;
 }
 
-
 .footer-glow {
   position: absolute;
   top: -80px;
@@ -266,7 +264,7 @@ video {
   color: rgba(250, 236, 217, 0.9);
   /* font-style: italic; */
   font-weight: 400;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 }
 
 /* ---- Columns (IMPROVED SPACING & FONT) ---- */

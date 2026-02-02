@@ -54,7 +54,7 @@
 }
 
 .cp-back-home span {
-  font-family: "myMontserrat" !important;
+  font-family: "LibreFranklin" !important;
 }
 
 .cp-snap-container {
@@ -95,7 +95,7 @@
 }
 
 .cp-content h2 {
-  font-family: "VanokhiSerif" !important;
+  font-family: "Arya" !important;
   font-size: 8vw;
   margin: 10px 0;
   text-transform: uppercase;
@@ -104,7 +104,7 @@
 
 /* List View Subtitle */
 .cp-content p {
-  font-family: "myMontserrat", serif; /* Current font */
+  font-family: "LibreFranklin", serif; /* Current font */
   font-style: italic; /* Current style */
   font-size: 1.5rem; /* Edit this to change size */
   color: white; /* Edit this to change color */
@@ -148,7 +148,7 @@
 }
 
 .cp-header-overlay h1 {
-  font-family: "VanokhiSerif" !important;
+  font-family: "Arya" !important;
   font-size: 5rem;
   color: white;
   text-transform: uppercase;
@@ -252,7 +252,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Poppins";
+  font-family: "LibreFranklin";
   font-size: 0.85rem;
   transition: 0.2s;
 }
@@ -294,13 +294,13 @@
   align-items: baseline;
 }
 .cp-product-info h3 {
-  font-family: "Bodoni Moda";
+  font-family: "Arya", sans-serif;
   font-size: 1.2rem;
   margin: 0;
   color: #1a1a1a;
 }
 .cp-price {
-  font-family: "Lora";
+  font-family: "LibreFranklin";
   font-weight: 600;
   color: #dd8512;
 }

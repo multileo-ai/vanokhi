@@ -45,7 +45,7 @@
 }
 
 .sidebar-header h2 {
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-size: 1.8rem;
   color: #9a0002;
   margin: 0;
@@ -97,20 +97,20 @@
 }
 
 .item-name {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 1.2rem;
   color: #2c2c2c;
   margin-bottom: 4px;
 }
 
 .item-variant {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.85rem;
   color: #777;
 }
 
 .item-price {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   color: #9a0002;
   font-size: 1.1rem;
@@ -141,7 +141,7 @@
 }
 
 .qty-selector span {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -163,7 +163,7 @@
 }
 
 .item-variant {
-  font-family: "Montserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.8rem;
   color: #777;
   text-transform: uppercase;
@@ -179,14 +179,14 @@
 .subtotal {
   display: flex;
   justify-content: space-between;
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-size: 1.5rem;
   color: #2c2c2c;
   margin-bottom: 0.5rem;
 }
 
 .tax-note {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.8rem;
   color: #888;
   margin-bottom: 1.5rem;
@@ -198,7 +198,7 @@
   background: #9a0002;
   color: #fff;
   border: none;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
@@ -214,7 +214,7 @@
 .move-wish-btn {
   background: none;
   border: none;
-  font-family: "Work Sans", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.75rem;
   color: #666;
   text-decoration: underline;
@@ -242,7 +242,7 @@
 }
 
 .item-name {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: "LibreFranklin", sans-serif !important;
   font-weight: 500;
   letter-spacing: 0.5px;
 }

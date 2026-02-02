@@ -18,7 +18,7 @@
   padding: 60px 8% 80px;
   background: #ffffff;
   color: #151312;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 }
 
 .return-header-section {
@@ -27,7 +27,7 @@
 }
 
 .fragor-label {
-  font-family: "Fragor", sans-serif;
+  font-family: "Arya", sans-serif;
   text-transform: uppercase;
   letter-spacing: 4px;
   font-size: 0.8rem;
@@ -80,7 +80,7 @@
   border: none;
   padding: 15px;
   outline: none;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
   letter-spacing: 1px;
@@ -92,7 +92,7 @@
   border: none;
   padding: 15px 40px;
   border-radius: 100px;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 800;
   font-size: 0.8rem;
   cursor: pointer;
@@ -111,7 +111,7 @@
 }
 
 .area-heading {
-  font-family: "VanokhiSerif", serif;
+  font-family: "Arya", serif;
   font-size: 1.8rem;
   margin-bottom: 2rem;
 }
@@ -208,7 +208,7 @@
 }
 
 .no-orders-luxury h3 {
-  font-family: "VanokhiSerif", serif;
+  font-family: "Arya", serif;
   font-size: 2rem;
   margin-bottom: 1rem;
 }
@@ -262,7 +262,7 @@
 }
 
 .manifest-label {
-  font-family: "Fragor", sans-serif;
+  font-family: "Arya", sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: #151312;
@@ -287,7 +287,7 @@
   border-radius: 8px;
 }
 .row-info h4 {
-  font-family: "VanokhiSerif", serif;
+  font-family: "Arya", serif;
   font-size: 1.1rem;
   margin-bottom: 4px;
 }
@@ -329,7 +329,7 @@
   background: #f9f9f9;
   border: 1px solid #eee;
   padding: 20px;
-  font-family: inherit;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.95rem;
   outline: none;
   margin-bottom: 2.5rem;
@@ -417,7 +417,7 @@
 }
 
 .locked-request-box h3 {
-  font-family: "VanokhiSerif", serif;
+  font-family: "Arya", serif;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #151312;
@@ -443,7 +443,7 @@
 
   /* Typography */
   color: white;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 3px;

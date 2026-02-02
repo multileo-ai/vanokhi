@@ -45,7 +45,7 @@
 }
 
 .na-header-text h1 {
-  font-family: "VanokhiSerif", serif;
+  font-family: "Arya", serif;
   font-size: clamp(2.5rem, 6vw, 5rem);
   color: white;
   letter-spacing: 6px;
@@ -134,7 +134,7 @@
 .na-action-rect {
   flex: 1;
   border-radius: 30px;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   font-size: 0.75rem;
   gap: 8px;
@@ -152,7 +152,7 @@
 }
 
 .na-item-title {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 5px;
@@ -160,7 +160,7 @@
 }
 
 .na-item-price {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   color: #860204;
 }
@@ -183,7 +183,7 @@
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-20deg);
-  font-family: "Fragor", serif;
+  font-family: "LibreFranklin", serif;
   font-size: 1.8rem;
   color: #9a0002;
   border: 4px solid #9a0002;

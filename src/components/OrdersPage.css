@@ -115,7 +115,7 @@
 }
 
 .item-brand-name {
-  font-family: "Bodoni Moda", serif;
+  font-family: "Arya", serif;
   font-size: 1.8rem;
   margin: 0;
 }
@@ -251,7 +251,7 @@
 }
 
 .summary-amount {
-  font-family: "Bodoni Moda", serif;
+  font-family: "LibreFranklin", serif;
   font-size: 2rem;
   font-weight: 700;
 }
@@ -266,7 +266,7 @@
 }
 
 .loader-text {
-  font-family: "Bodoni Moda", serif;
+  font-family: "LibreFranklin", serif;
   font-size: 3rem;
   letter-spacing: 10px;
   animation: pulse 2s infinite;

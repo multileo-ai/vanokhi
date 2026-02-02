@@ -21,7 +21,7 @@
 }
 
 .catName {
-  font-family: "myMontserrat", serif;
+  font-family: "Arya", sans-serif;
   font-size: 10rem;
   text-align: left;
   letter-spacing: 6px;
@@ -64,7 +64,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "myMontserrat", serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
   color: #000;
@@ -91,7 +91,7 @@
 }
 
 .descTitle {
-  font-family: "myMontserrat", serif;
+  font-family: "Arya", sans-serif;
   font-weight: 700;
   font-size: 1.6rem;
   margin: 0;
@@ -175,7 +175,7 @@
 }
 
 .reviewsTitle {
-  font-family: "myMontserrat", serif;
+  font-family: "Arya", sans-serif;
   font-weight: 800;
   font-size: 1.4rem;
   margin: 0;
@@ -627,7 +627,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Poppins";
+  font-family: "LibreFranklin";
   font-size: 0.85rem;
   transition: 0.2s;
 }
@@ -692,7 +692,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "myMontserrat", serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
@@ -778,7 +778,7 @@
   max-width: 450px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   position: relative;
-  font-family: "myMontserrat", serif;
+  font-family: "LibreFranklin", sans-serif;
 }
 
 .closeModal {
@@ -812,11 +812,6 @@
   font-size: 0.9rem;
 }
 
-/* src/components/ProductPage.css */
-@font-face {
-  font-family: "myMontserrat";
-  src: url(/fonts/Montserrat/Montserrat-VariableFont_wght.ttf);
-}
 
 :root {
   --primary: #9a0002;
@@ -833,7 +828,7 @@
   padding: 0 0 40px 0;
 }
 .catName {
-  font-family: "myMontserrat", serif;
+  font-family: "Arya", serif;
   font-size: 10rem;
   position: absolute;
   left: 140px;
@@ -974,7 +969,7 @@
   }
 
   .mobTitle {
-    font-family: "myMontserrat";
+    font-family: "LibreFranklin";
     font-size: 1.4rem;
     font-weight: 800;
     margin: 0;

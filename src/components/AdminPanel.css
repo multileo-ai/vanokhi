@@ -3,7 +3,7 @@
   padding: 120px 5% 50px;
   background: #fdf8f2;
   min-height: 100vh;
-  font-family: "Montserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 }
 .admin-grid {
   display: grid;
@@ -36,7 +36,7 @@
   padding: 12px;
   border: 1px solid #eee;
   border-radius: 8px;
-  font-family: inherit;
+  font-family: "LibreFranklin", sans-serif;
   font-size: 0.9rem;
 }
 .admin-btn {
@@ -59,7 +59,7 @@
 
 /* --- NEW TAB & MANAGEMENT UI --- */
 .admin-header h1 {
-  font-family: "Bodoni Moda", serif;
+  font-family: "Arya", serif;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 20px;
@@ -149,7 +149,7 @@
   font-weight: 700;
   font-size: 1rem;
   color: #1a1a1a;
-  font-family: "Montserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 }
 
 .item-info small {
@@ -385,7 +385,7 @@
 }
 
 .order-customer h4 {
-  font-family: "Bodoni Moda", serif;
+  font-family: "Arya", serif;
   font-size: 1.2rem;
   margin: 5px 0 0 0;
 }
@@ -484,7 +484,7 @@
 }
 
 .submission-header h3 {
-  font-family: "Bodoni Moda", serif;
+  font-family: "Arya", serif;
   margin: 0;
   font-size: 1.2rem;
   color: #1a1a1a;
@@ -542,7 +542,7 @@
 
 .no-data {
   text-align: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   color: #999;
   grid-column: 1 / -1;
   padding: 50px;

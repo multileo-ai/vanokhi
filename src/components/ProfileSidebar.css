@@ -40,20 +40,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Fragor", serif;
+  font-family: "LibreFranklin", serif;
   font-size: 2.2rem;
   margin: 0 auto 1.2rem;
 }
 
 .user-info h3 {
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-size: 1.6rem;
   color: #2c2c2c;
   margin-bottom: 0.4rem;
 }
 
 .user-info p {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   color: #777;
   font-size: 0.95rem;
 }
@@ -72,7 +72,7 @@
   border-radius: 8px;
   color: #4a2b1f;
   text-decoration: none;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
 }
@@ -93,7 +93,7 @@
   border: 1px solid #e0e0e0;
   background: transparent;
   color: #666;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -127,14 +127,14 @@
 }
 
 .guest-view h3 {
-  font-family: "Fragor", serif;
+  font-family: "Arya", serif;
   font-size: 2rem;
   color: #9a0002;
   margin-bottom: 1rem;
 }
 
 .guest-view p {
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   color: #666;
   margin-bottom: 2.5rem;
   line-height: 1.6;
@@ -145,7 +145,7 @@
   background: #9a0002;
   color: #fff;
   border: none;
-  font-family: "myMontserrat", sans-serif;
+  font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
