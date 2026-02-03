@@ -17,7 +17,6 @@
   src: url(/fonts/Carina.ttf);
 }
 
-
 /* 2. Apply Arya to all Headings */
 h1,
 h2,
@@ -52,6 +51,8 @@ textarea,
 .badge-text {
   font-family: "LibreFranklin", sans-serif;
   letter-spacing: 0.02em; /* Slight spacing makes it look more "high-end" */
+  color: inherit; /* Added: Forces links to use the parent's text color */
+  text-decoration: none; /* Added: Removes the default underline */
 }
 
 /* 3. OPTIONAL: Make paragraph text slightly lighter for that "cool" aesthetic */

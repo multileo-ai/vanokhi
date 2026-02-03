@@ -71,7 +71,7 @@ export default function TestimonialsGrid() {
 
   return (
     <section className="testimonials-section">
-      <h2 className="testimonials-heading">What People Say ❤️</h2>
+      <h2 className="testimonials-heading">What People Say</h2>
 
       <div className="testimonials-wrapper">
         <div className="testimonials-track">
