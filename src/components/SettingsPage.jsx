@@ -132,6 +132,16 @@ export default function SettingsPage() {
               </div>
               <div className="input-row">
                 <div className="field">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    value={profile.country}
+                    onChange={(e) =>
+                      setProfile({ ...profile, country: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="field">
                   <label>City</label>
                   <input
                     type="text"

@@ -34,6 +34,7 @@ export default function CartSidebar({ isOpen, onClose }) {
       p.addressLine1 &&
       p.city &&
       p.state &&
+      p.country &&
       p.pinCode;
 
     if (!isProfileComplete) {
@@ -71,7 +72,7 @@ export default function CartSidebar({ isOpen, onClose }) {
             email: currentUser.email,
             shippingAddress: `${p.addressLine1}, ${p.addressLine2 || ""}, ${
               p.city
-            }, ${p.state} - ${p.pinCode}`,
+            }, ${p.state} - ${p.pinCode}, ${p.country}`,
             phone: p.phone,
           };
 

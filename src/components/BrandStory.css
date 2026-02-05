@@ -53,7 +53,7 @@
 @media (max-width: 768px) {
   .brand-story-box {
     padding: 0px 15px;
-    min-height: 120px;
+    min-height: 80px;
   }
 
   .typing-container {
