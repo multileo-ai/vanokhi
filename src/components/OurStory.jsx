@@ -28,7 +28,7 @@ export default function OurStory() {
         <div className="story-text-block">
           <h1 className="story-title">OUR STORY & PHILOSOPHY</h1>
           <p>
-            🌸 Vaanokhi - The Waah Moment In a world obsessed with trends,
+            Vaanokhi - The Waah Moment In a world obsessed with trends,
             Vaanokhi chooses to stand apart. Born from the idea of “Vastra ka
             Anokhapan,” it celebrates the many cultures of India in a way that
             feels fresh, youthful, and unapologetically original. Each

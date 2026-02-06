@@ -66,7 +66,7 @@ export default function SettingsPage() {
               </div>
               <div className="field">
                 <label>
-                  <Phone size={14} /> Phone Number
+                  Phone Number
                 </label>
                 <input
                   type="tel"
@@ -78,7 +78,7 @@ export default function SettingsPage() {
               </div>
               <div className="field disabled">
                 <label>
-                  <Mail size={14} /> Registered Email
+                  Registered Email
                 </label>
                 <input type="text" value={currentUser?.email} disabled />
               </div>

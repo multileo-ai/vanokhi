@@ -752,22 +752,45 @@ export default function AdminPanel() {
                         </div>
                       </div>
                       <div className="order-summary">
-                        <p>Items: {order.items?.length || 0}</p>
-                        <div className="order-items-detail">
-                          {order.items?.map((item, i) => (
-                            <small
-                              key={i}
-                              style={{ display: "block", color: "#666" }}
-                            >
-                              {item.name} - <strong>Size: {item.size}</strong>{" "}
-                              (x{item.qty})
-                            </small>
-                          ))}
+                        <div className="payment-status-badge">
+                          <span
+                            className={`badge ${
+                              order.paymentMode === "COD"
+                                ? "badge-gold"
+                                : "badge-blue"
+                            }`}
+                          >
+                            {order.paymentMode}
+                          </span>
+                          <span
+                            className={`status-pill ${order.paymentStatus?.toLowerCase()}`}
+                          >
+                            {order.paymentStatus}
+                          </span>
                         </div>
-                        <p>{order.paymentId}</p>
+
+                        <p>Items: {order.items?.length || 0}</p>
+                        {/* ... items detail ... */}
+
                         <p className="order-total-price">
                           ₹{order.totalAmount || order.total}
                         </p>
+
+                        {/* NEW: Payment Update Button for Admin */}
+                        {order.paymentMode === "COD" &&
+                          order.paymentStatus !== "Paid" && (
+                            <button
+                              className="admin-btn admin-btn-payment"
+                              onClick={() =>
+                                updateDoc(doc(db, "orders", order.id), {
+                                  paymentStatus: "Paid",
+                                })
+                              }
+                            >
+                              <Check size={14} />
+                              <span>Mark as Paid</span>
+                            </button>
+                          )}
                       </div>
                     </div>
 
