@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./LoginPage.css";
 import { X, ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { Capacitor } from "@capacitor/core"; // 1. Add this import
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -205,9 +203,8 @@ export default function LoginPage({ onClose }) {
                   Log In
                 </button>
                 <button
-                  className={`tab-btn ${
-                    activeTab === "signup" ? "active" : ""
-                  }`}
+                  className={`tab-btn ${activeTab === "signup" ? "active" : ""
+                    }`}
                   onClick={() => {
                     setActiveTab("signup");
                     setError("");
@@ -273,8 +270,8 @@ export default function LoginPage({ onClose }) {
                   {loading
                     ? "PROCESSING..."
                     : activeTab === "login"
-                    ? "LOGIN"
-                    : "CREATE ACCOUNT"}
+                      ? "LOGIN"
+                      : "CREATE ACCOUNT"}
                 </button>
               </form>
 

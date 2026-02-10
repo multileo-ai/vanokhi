@@ -71,7 +71,22 @@ const MostWantedPage = () => {
               </div>
               <div className="cp-product-info">
                 <h3>{item.name}</h3>
-                <p className="cp-price">{item.price}</p>
+                <div className="mw-price-row">
+                  <span className="mw-price">{item.price}</span>
+                  {item.originalPrice && (
+                    <span
+                      className="mw-price original"
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                        fontSize: "0.9em",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      {item.originalPrice}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           );

@@ -69,29 +69,45 @@ export function AuthProvider({ children }) {
       },
     );
 
+    let unsubUserDoc = null;
+
     // Listener for Auth State and User Profile
     const unsubAuth = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+
+      // Cleanup previous user listener if it exists
+      if (unsubUserDoc) {
+        unsubUserDoc();
+        unsubUserDoc = null;
+      }
+
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
-        // Sync user profile, cart, wishlist, and admin status
-        onSnapshot(userDocRef, (docSnap) => {
-          if (docSnap.exists()) {
-            setUserData(docSnap.data());
-          } else {
-            // Initialize new user document in Firestore if it doesn't exist
-            const initialData = {
-              cart: [],
-              wishlist: [],
-              profile: { firstName: "", lastName: "", phone: "" },
-              isAdmin: false,
-            };
-            setDoc(userDocRef, initialData);
-            setUserData(initialData);
-          }
-        });
+
+        unsubUserDoc = onSnapshot(
+          userDocRef,
+          (docSnap) => {
+            if (docSnap.exists()) {
+              setUserData(docSnap.data());
+            } else {
+              const initialData = {
+                cart: [],
+                wishlist: [],
+                profile: { firstName: "", lastName: "", phone: "" },
+                isAdmin: false,
+              };
+              setDoc(userDocRef, initialData);
+              setUserData(initialData);
+            }
+          },
+          (error) => {
+            console.warn(
+              "User profile listener blocked or failed:",
+              error.message,
+            );
+          },
+        );
       } else {
-        // Reset local data on logout
         setUserData({ cart: [], wishlist: [], profile: {}, isAdmin: false });
       }
       setLoading(false);
@@ -101,6 +117,7 @@ export function AuthProvider({ children }) {
       unsubProds();
       unsubColls();
       unsubAuth();
+      if (unsubUserDoc) unsubUserDoc();
     };
   }, []);
 
@@ -119,83 +136,11 @@ export function AuthProvider({ children }) {
     signInWithEmailAndPassword(auth, email, password);
   const signup = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
-  const googleLogin = () => signInWithPopup(auth, googleProvider);
+  const googleLogin = () => signInWithPopup(auth, googleProvider); // Removed Capacitor logic here
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
   const logout = () => signOut(auth);
 
   // --- Cart Logic (Toggle & Increment) ---
-  // const addToCart = async (product, selectedColor = null) => {
-  //   if (!currentUser) {
-  //     toast.error("Please login to add items to your bag");
-  //     return;
-  //   }
-
-  //   let newCart = [...(userData.cart || [])];
-  //   const existingIndex = newCart.findIndex(
-  //     (item) => item.id === product.id && item.color === selectedColor,
-  //   );
-
-  //   if (existingIndex > -1) {
-  //     newCart[existingIndex].qty += 1;
-  //   } else {
-  //     newCart.push({ ...product, qty: 1, color: selectedColor });
-  //   }
-
-  //   await updateFirebase({ cart: newCart });
-  //   toast.success(`${product.name} added to Bag!`);
-  // };
-
-  // const addToCart = async (product, selectedColor = null) => {
-  //   if (!currentUser) {
-  //     toast.error("Please login to add items to your bag");
-  //     return;
-  //   }
-
-  //   // 1. Check if the product itself is out of stock before even looking at the cart
-  //   if (product.stock <= 0) {
-  //     toast.error("Sorry, this item is currently sold out!");
-  //     return;
-  //   }
-
-  //   let newCart = [...(userData.cart || [])];
-  //   const existingIndex = newCart.findIndex(
-  //     (item) => item.id === product.id && item.color === selectedColor,
-  //   );
-
-  //   if (existingIndex > -1) {
-  //     const currentQtyInCart = newCart[existingIndex].qty;
-
-  //     // 2. Validation: Check if adding one more exceeds available stock
-  //     if (currentQtyInCart + 1 > product.stock) {
-  //       toast.warning(
-  //         `Cannot add more! Only ${product.stock} items available in stock.`,
-  //         {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //         },
-  //       );
-  //       return; // Stop the function here
-  //     }
-
-  //     newCart[existingIndex].qty += 1;
-  //   } else {
-  //     // 3. For a new item, ensure at least 1 is available
-  //     if (product.stock < 1) {
-  //       toast.error("Item is out of stock.");
-  //       return;
-  //     }
-  //     newCart.push({ ...product, qty: 1, color: selectedColor });
-  //   }
-
-  //   try {
-  //     await updateFirebase({ cart: newCart });
-  //     toast.success(`${product.name} added to Bag!`);
-  //   } catch (error) {
-  //     console.error("Cart Update Error:", error);
-  //     toast.error("Failed to update bag. Please try again.");
-  //   }
-  // };
-
   const addToCart = async (
     product,
     selectedSize = "M",
@@ -213,8 +158,6 @@ export function AuthProvider({ children }) {
 
     let newCart = [...(userData.cart || [])];
 
-    // Update the check to include size so the same product in different sizes
-    // appears as separate items in the bag
     const existingIndex = newCart.findIndex(
       (item) =>
         item.id === product.id &&
@@ -230,12 +173,11 @@ export function AuthProvider({ children }) {
       }
       newCart[existingIndex].qty += 1;
     } else {
-      // SAVE THE SIZE HERE
       newCart.push({
         ...product,
         qty: 1,
         color: selectedColor,
-        size: selectedSize, // <--- This line is critical
+        size: selectedSize,
       });
     }
 
@@ -308,7 +250,7 @@ export function AuthProvider({ children }) {
         ...item,
         qty: 1,
         color: item.colors ? item.colors[0] : null,
-        size: selectedSize,
+        size: "M", // Standardized to default size
       });
     }
 
@@ -319,19 +261,16 @@ export function AuthProvider({ children }) {
   const moveToWishlistFromCart = async (item) => {
     if (!currentUser) return;
 
-    // 1. Remove from Cart
     const newCart = userData.cart.filter(
       (c) => !(c.id === item.id && c.color === item.color),
     );
 
-    // 2. Add to Wishlist (check if it's already there first to avoid duplicates)
     const isAlreadyInWishlist = (userData.wishlist || []).some(
       (w) => w.id === item.id,
     );
 
     let newWishlist = [...(userData.wishlist || [])];
     if (!isAlreadyInWishlist) {
-      // Strip cart-specific properties like 'qty' before adding to wishlist
       const { qty, ...productData } = item;
       newWishlist.push(productData);
     }
@@ -346,7 +285,6 @@ export function AuthProvider({ children }) {
       const orderNumber = `VK-${new Date().getFullYear()}-${Math.floor(
         1000 + Math.random() * 9000,
       )}`;
-      // 1. Add order to 'orders' collection
       const orderRef = await addDoc(collection(db, "orders"), {
         ...orderData,
         orderNumber: orderNumber,
@@ -362,7 +300,6 @@ export function AuthProvider({ children }) {
         totalAmount: orderData.total || orderData.totalAmount,
       });
 
-      // 2. Clear user's cart in Firebase
       await updateFirebase({ cart: [] });
 
       return { id: orderRef.id, orderNumber };

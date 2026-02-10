@@ -55,7 +55,8 @@
 /* Grid Logic: 3 Items per row */
 .na-product-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Force 3 items */
+  grid-template-columns: repeat(3, 1fr);
+  /* Force 3 items */
   gap: 30px;
   padding: 0 5%;
   max-width: 1400px;
@@ -66,7 +67,8 @@
 .na-glass-card {
   display: flex;
   flex-direction: column;
-  border-radius: 25px; /* Significant border radius */
+  border-radius: 25px;
+  /* Significant border radius */
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -76,7 +78,8 @@
   width: 100%;
   aspect-ratio: 3 / 4;
   background: #f8f8f8;
-  border-radius: 25px; /* Rounded card top */
+  border-radius: 25px;
+  /* Rounded card top */
   overflow: hidden;
 }
 
@@ -94,16 +97,19 @@
 /* Glass Actions */
 .na-glass-actions {
   position: absolute;
-  bottom: 0; /* Changed from 15px to 0 to match cp-product-actions */
+  bottom: 0;
+  /* Changed from 15px to 0 to match cp-product-actions */
   left: 0;
   right: 0;
   width: 100%;
-  padding: 20px; /* Matching cp-product-actions padding */
+  padding: 20px;
+  /* Matching cp-product-actions padding */
   display: flex;
   gap: 10px;
   z-index: 5;
   opacity: 0;
-  transform: translateY(100%); /* Matching cp-product-actions transition */
+  transform: translateY(100%);
+  /* Matching cp-product-actions transition */
   transition: all 0.3s ease;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
 }
@@ -115,15 +121,19 @@
 
 .na-action-circle,
 .na-action-rect {
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Matching cp border */
-  border-radius: 50px; /* Matching cp border-radius */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Matching cp border */
+  border-radius: 50px;
+  /* Matching cp border-radius */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  background: rgba(255, 255, 255, 0.1); /* Matching cp background */
-  backdrop-filter: blur(10px); /* Matching cp blur */
+  background: rgba(255, 255, 255, 0.1);
+  /* Matching cp background */
+  backdrop-filter: blur(10px);
+  /* Matching cp blur */
   -webkit-backdrop-filter: blur(10px);
   transition: 0.2s;
   font-family: "LibreFranklin", sans-serif;
@@ -132,21 +142,25 @@
 }
 
 .na-action-circle {
-  width: 45px; /* Matched from 50px to 45px */
-  height: 45px; /* Matched from 50px to 45px */
+  width: 45px;
+  /* Matched from 50px to 45px */
+  height: 45px;
+  /* Matched from 50px to 45px */
   flex-shrink: 0;
 }
 
 .na-action-rect {
   flex: 1;
-  height: 45px; /* Ensure height matches circle */
+  height: 45px;
+  /* Ensure height matches circle */
   gap: 8px;
   text-transform: uppercase;
 }
 
 .na-action-circle:hover,
 .na-action-rect:hover {
-  background: rgba(154, 0, 2, 0.4); /* Matched Brand Red Blur */
+  background: rgba(154, 0, 2, 0.4);
+  /* Matched Brand Red Blur */
 }
 
 /* Info Section */
@@ -167,6 +181,13 @@
   font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
   color: #860204;
+}
+
+.na-item-price.original {
+  color: #999 !important;
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-left: 8px;
 }
 
 .na-rating-tag {
@@ -204,10 +225,9 @@
   }
 
   .na-product-grid {
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* 2 items on mobile for better visibility */
+    grid-template-columns: repeat(2,
+        1fr);
+    /* 2 items on mobile for better visibility */
     gap: 15px;
     padding: 0 15px;
   }
@@ -215,18 +235,22 @@
   .na-glass-actions {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    background: rgba(0, 0, 0, 0.2); /* Matching cp-product-actions mobile */
-    padding: 10px; /* Matching cp-product-actions mobile */
+    background: rgba(0, 0, 0, 0.2);
+    /* Matching cp-product-actions mobile */
+    padding: 10px;
+    /* Matching cp-product-actions mobile */
   }
 
   .na-action-circle {
-    width: 36px !important; /* Smaller size for mobile consistency */
+    width: 36px !important;
+    /* Smaller size for mobile consistency */
     height: 36px !important;
   }
 
   .na-action-rect {
     height: 36px !important;
-    font-size: 0.7rem !important; /* Matching cp action-btn mobile font */
+    font-size: 0.7rem !important;
+    /* Matching cp action-btn mobile font */
   }
 
   .na-action-rect span {
@@ -239,6 +263,7 @@
   }
 
   .na-header-text h1 {
-    font-size: 1.8rem; /* Adjust text for smaller 16:9 box */
+    font-size: 1.8rem;
+    /* Adjust text for smaller 16:9 box */
   }
 }

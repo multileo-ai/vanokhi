@@ -110,20 +110,25 @@ function AppContent() {
   useEffect(() => {
     const heroDocRef = doc(db, "siteSettings", "hero");
 
-    // This creates a real-time connection to the "hero" document
-    const unsubscribe = onSnapshot(heroDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data.bannerUrl) {
-          setBannerUrl(data.bannerUrl); // Update state with the URL from Admin Panel
+    // Add an error handler to prevent the "Permission Denied" from crashing the app
+    const unsubscribe = onSnapshot(heroDocRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.bannerUrl) setBannerUrl(data.bannerUrl);
+          if (data.mobileBannerUrl) setMobileBannerUrl(data.mobileBannerUrl);
         }
-        if (data.mobileBannerUrl) {
-          setMobileBannerUrl(data.mobileBannerUrl); // Update state with the URL from Admin Panel
-        }
+      },
+      (error) => {
+        // Log the error instead of letting it bubble up and trigger an assertion failure
+        console.error("Firestore Hero Listener failed:", error.message);
       }
-    });
+    );
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => {
+      // Immediate cleanup to prevent listener firing during unmount
+      unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

@@ -58,6 +58,7 @@ export default function AdminPanel() {
   const [newProd, setNewProd] = useState({
     name: "",
     price: "",
+    originalPrice: "", // NEW: MRP
     img: "",
     collectionId: "",
     stock: 0,
@@ -120,6 +121,9 @@ export default function AdminPanel() {
       const docRef = await addDoc(collection(db, "products"), {
         ...newProd,
         price: `₹${newProd.price}`,
+        originalPrice: newProd.originalPrice
+          ? `₹${newProd.originalPrice}`
+          : "",
         sizes: newProd.sizes.split(","),
         colors: newProd.colors.split(","),
         details: newProd.details.split("\n"),
@@ -273,21 +277,21 @@ export default function AdminPanel() {
   }, [userData]);
 
   const updateNewArrivalPoster = async (e) => {
-  e.preventDefault();
-  try {
-    const docRef = doc(db, "siteSettings", "posters");
-    // Use setDoc with merge to ensure the document is created if it doesn't exist
-    await setDoc(
-      docRef,
-      { newArrivalsUrl: newArrivalPoster },
-      { merge: true }
-    );
-    alert("New Arrivals Poster Updated!");
-    // Optional: Re-fetch or rely on the fact that landing page uses onSnapshot
-  } catch (err) {
-    alert("Error updating poster: " + err.message);
-  }
-};
+    e.preventDefault();
+    try {
+      const docRef = doc(db, "siteSettings", "posters");
+      // Use setDoc with merge to ensure the document is created if it doesn't exist
+      await setDoc(
+        docRef,
+        { newArrivalsUrl: newArrivalPoster },
+        { merge: true }
+      );
+      alert("New Arrivals Poster Updated!");
+      // Optional: Re-fetch or rely on the fact that landing page uses onSnapshot
+    } catch (err) {
+      alert("Error updating poster: " + err.message);
+    }
+  };
 
   const updateStoryContent = async (e) => {
     e.preventDefault();
@@ -375,6 +379,11 @@ export default function AdminPanel() {
         price: editingProd.price.toString().startsWith("₹")
           ? editingProd.price
           : `₹${editingProd.price}`,
+        originalPrice: editingProd.originalPrice
+          ? editingProd.originalPrice.toString().startsWith("₹")
+            ? editingProd.originalPrice
+            : `₹${editingProd.originalPrice}`
+          : "",
         sizes:
           typeof editingProd.sizes === "string"
             ? editingProd.sizes.split(",")
@@ -569,6 +578,19 @@ export default function AdminPanel() {
                   />
                 </div>
 
+                <div className="form-row">
+                  <input
+                    placeholder="Original Price (MRP) - Optional"
+                    value={newProd.originalPrice}
+                    onChange={(e) =>
+                      setNewProd({
+                        ...newProd,
+                        originalPrice: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
                 <input
                   placeholder="Main Thumbnail URL"
                   required
@@ -678,9 +700,8 @@ export default function AdminPanel() {
                 {filteredProducts.map((p) => (
                   <div
                     key={p.id}
-                    className={`mini-item ${
-                      p.stock < 5 ? "low-stock-alert" : ""
-                    }`}
+                    className={`mini-item ${p.stock < 5 ? "low-stock-alert" : ""
+                      }`}
                   >
                     <img src={p.img} alt="" />
                     <div className="item-info">
@@ -691,9 +712,8 @@ export default function AdminPanel() {
                     </div>
                     <div className="item-actions">
                       <button
-                        className={`most-wanted-toggle ${
-                          mostWantedIds.includes(p.id) ? "active" : ""
-                        }`}
+                        className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""
+                          }`}
                         onClick={() => toggleMostWanted(p.id)}
                         title="Toggle Most Wanted"
                       >
@@ -712,6 +732,9 @@ export default function AdminPanel() {
                             sizes: p.sizes?.join(","),
                             details: p.details?.join("\n"),
                             price: p.price.replace("₹", ""),
+                            originalPrice: p.originalPrice
+                              ? p.originalPrice.replace("₹", "")
+                              : "",
                           })
                         }
                         className="edit-icon"
@@ -756,11 +779,10 @@ export default function AdminPanel() {
                       <div className="order-summary">
                         <div className="payment-status-badge">
                           <span
-                            className={`badge ${
-                              order.paymentMode === "COD"
-                                ? "badge-gold"
-                                : "badge-blue"
-                            }`}
+                            className={`badge ${order.paymentMode === "COD"
+                              ? "badge-gold"
+                              : "badge-blue"
+                              }`}
                           >
                             {order.paymentMode}
                           </span>
@@ -813,9 +835,8 @@ export default function AdminPanel() {
                         ].map((status) => (
                           <button
                             key={status.label}
-                            className={`status-btn ${
-                              order.status === status.label ? "btn-active" : ""
-                            }`}
+                            className={`status-btn ${order.status === status.label ? "btn-active" : ""
+                              }`}
                             onClick={() => updateStatus(order.id, status.label)}
                           >
                             {status.icon} {status.label}
@@ -869,11 +890,10 @@ export default function AdminPanel() {
                           <td className="bold-text">#{req.orderNumber}</td>
                           <td>
                             <span
-                              className={`badge ${
-                                req.type === "Return"
-                                  ? "badge-red"
-                                  : "badge-gold"
-                              }`}
+                              className={`badge ${req.type === "Return"
+                                ? "badge-red"
+                                : "badge-gold"
+                                }`}
                             >
                               {req.type}
                             </span>
@@ -1147,9 +1167,9 @@ export default function AdminPanel() {
                   onChange={(e) =>
                     editingInsta
                       ? setEditingInsta({
-                          ...editingInsta,
-                          img: e.target.value,
-                        })
+                        ...editingInsta,
+                        img: e.target.value,
+                      })
                       : setNewInsta({ ...newInsta, img: e.target.value })
                   }
                 />
@@ -1161,9 +1181,9 @@ export default function AdminPanel() {
                   onChange={(e) =>
                     editingInsta
                       ? setEditingInsta({
-                          ...editingInsta,
-                          instalink: e.target.value,
-                        })
+                        ...editingInsta,
+                        instalink: e.target.value,
+                      })
                       : setNewInsta({ ...newInsta, instalink: e.target.value })
                   }
                 />
@@ -1175,9 +1195,9 @@ export default function AdminPanel() {
                     onChange={(e) =>
                       editingInsta
                         ? setEditingInsta({
-                            ...editingInsta,
-                            likes: e.target.value,
-                          })
+                          ...editingInsta,
+                          likes: e.target.value,
+                        })
                         : setNewInsta({ ...newInsta, likes: e.target.value })
                     }
                   />
@@ -1190,9 +1210,9 @@ export default function AdminPanel() {
                     onChange={(e) =>
                       editingInsta
                         ? setEditingInsta({
-                            ...editingInsta,
-                            comments: e.target.value,
-                          })
+                          ...editingInsta,
+                          comments: e.target.value,
+                        })
                         : setNewInsta({ ...newInsta, comments: e.target.value })
                     }
                   />
@@ -1377,6 +1397,16 @@ export default function AdminPanel() {
                   value={editingProd.price}
                   onChange={(e) =>
                     setEditingProd({ ...editingProd, price: e.target.value })
+                  }
+                />
+                <input
+                  placeholder="Original Price (MRP)"
+                  value={editingProd.originalPrice || ""}
+                  onChange={(e) =>
+                    setEditingProd({
+                      ...editingProd,
+                      originalPrice: e.target.value,
+                    })
                   }
                 />
               </div>

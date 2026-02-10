@@ -94,9 +94,8 @@ const CollectionPage = () => {
                 return (
                   <div
                     key={item.id}
-                    className={`cp-product-card ${
-                      isOutOfStock ? "out-of-stock" : ""
-                    }`}
+                    className={`cp-product-card ${isOutOfStock ? "out-of-stock" : ""
+                      }`}
                   >
                     <div className="cp-img-container">
                       <Link to={`/product/${item.id}`}>
@@ -115,9 +114,8 @@ const CollectionPage = () => {
 
                       <div className="cp-product-actions">
                         <button
-                          className={`action-btn wishlist ${
-                            isInWishlist ? "active" : ""
-                          }`}
+                          className={`action-btn wishlist ${isInWishlist ? "active" : ""
+                            }`}
                           onClick={(e) => {
                             e.stopPropagation();
                             addToWishlist(item);
@@ -154,7 +152,22 @@ const CollectionPage = () => {
                           <h3>{item.name}</h3>
                         </Link>
                       </div>
-                      <p className="cp-price">{item.price}</p>
+                      <div className="cp-price-row">
+                        <span className="cp-price">{item.price}</span>
+                        {item.originalPrice && (
+                          <span
+                            className="cp-price original"
+                            style={{
+                              textDecoration: "line-through",
+                              color: "#999",
+                              fontSize: "0.9em",
+                              marginLeft: "8px",
+                            }}
+                          >
+                            {item.originalPrice}
+                          </span>
+                        )}
+                      </div>
                       {/* <AverageRating productId={item.id} /> */}
                     </div>
                   </div>

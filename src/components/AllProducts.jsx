@@ -29,9 +29,8 @@ const AllProducts = () => {
           return (
             <div
               key={item.id}
-              className={`cp-product-card ${
-                isOutOfStock ? "out-of-stock" : ""
-              }`}
+              className={`cp-product-card ${isOutOfStock ? "out-of-stock" : ""
+                }`}
             >
               <div className="cp-img-container">
                 <Link to={isOutOfStock ? "#" : `/product/${item.id}`}>
@@ -42,9 +41,8 @@ const AllProducts = () => {
 
                 <div className="cp-product-actions">
                   <button
-                    className={`action-btn wishlist ${
-                      isInWishlist ? "active" : ""
-                    }`}
+                    className={`action-btn wishlist ${isInWishlist ? "active" : ""
+                      }`}
                     onClick={() => addToWishlist(item)}
                   >
                     <Heart
@@ -64,7 +62,22 @@ const AllProducts = () => {
 
               <div className="cp-product-info">
                 <h3>{item.name}</h3>
-                <p className="cp-price">{item.price}</p>
+                <div className="cp-price-row">
+                  <span className="cp-price">{item.price}</span>
+                  {item.originalPrice && (
+                    <span
+                      className="cp-price original"
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                        fontSize: "0.9em",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      {item.originalPrice}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           );

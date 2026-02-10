@@ -41,9 +41,8 @@ const SearchResults = () => {
             return (
               <div
                 key={item.id}
-                className={`sr-glass-card ${
-                  isOutOfStock ? "out-of-stock" : ""
-                }`}
+                className={`sr-glass-card ${isOutOfStock ? "out-of-stock" : ""
+                  }`}
               >
                 <div className="sr-card-top">
                   <Link to={`/product/${item.id}`}>
@@ -60,9 +59,8 @@ const SearchResults = () => {
 
                   <div className="sr-glass-actions">
                     <button
-                      className={`sr-action-circle ${
-                        isInWishlist ? "active" : ""
-                      }`}
+                      className={`sr-action-circle ${isInWishlist ? "active" : ""
+                        }`}
                       onClick={() => addToWishlist(item)}
                     >
                       <Heart
@@ -83,7 +81,21 @@ const SearchResults = () => {
 
                 <div className="sr-card-bottom">
                   <h3 className="sr-item-title">{item.name}</h3>
-                  <p className="sr-item-price">{item.price} INR</p>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <p className="sr-item-price">{item.price} INR</p>
+                    {item.originalPrice && (
+                      <p
+                        className="sr-item-price original"
+                        style={{
+                          textDecoration: "line-through",
+                          color: "#999",
+                          fontSize: "0.9em",
+                        }}
+                      >
+                        {item.originalPrice} INR
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             );

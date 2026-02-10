@@ -46,9 +46,8 @@ const NewArrivalsPage = () => {
 
                 <div className="na-glass-actions">
                   <button
-                    className={`na-action-circle ${
-                      isInWishlist ? "active" : ""
-                    }`}
+                    className={`na-action-circle ${isInWishlist ? "active" : ""
+                      }`}
                     onClick={() => addToWishlist(item)}
                   >
                     <Heart
@@ -69,7 +68,21 @@ const NewArrivalsPage = () => {
 
               <div className="na-card-bottom">
                 <h3 className="na-item-title">{item.name}</h3>
-                <p className="na-item-price">{item.price} INR</p>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <p className="na-item-price">{item.price}</p>
+                  {item.originalPrice && (
+                    <p
+                      className="na-item-price original"
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                        fontSize: "0.9em",
+                      }}
+                    >
+                      {item.originalPrice}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           );

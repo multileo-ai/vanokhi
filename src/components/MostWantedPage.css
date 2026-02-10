@@ -13,9 +13,9 @@
 
 @font-face {
   font-family: "myMontserrat";
-  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* Supports all weights */
+  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  /* Supports all weights */
 }
 
 .cp-viewport {
@@ -80,6 +80,7 @@
   inset: 0;
   z-index: 1;
 }
+
 .cp-bg-wrapper img {
   width: 100%;
   height: 100%;
@@ -104,11 +105,16 @@
 
 /* List View Subtitle */
 .cp-content p {
-  font-family: "LibreFranklin", serif; /* Current font */
-  font-style: italic; /* Current style */
-  font-size: 1.5rem; /* Edit this to change size */
-  color: white; /* Edit this to change color */
-  opacity: 0.8; /* Added for a more refined look */
+  font-family: "LibreFranklin", serif;
+  /* Current font */
+  font-style: italic;
+  /* Current style */
+  font-size: 1.5rem;
+  /* Edit this to change size */
+  color: white;
+  /* Edit this to change color */
+  opacity: 0.8;
+  /* Added for a more refined look */
   margin-top: 5px;
 }
 
@@ -189,7 +195,8 @@
   position: fixed;
   inset: 0;
   background: #fff;
-  z-index: 100; /* Highest Z-index */
+  z-index: 100;
+  /* Highest Z-index */
   overflow-y: auto;
 }
 
@@ -266,6 +273,7 @@
   color: white;
   /* color: #333; */
 }
+
 .action-btn.cart {
   flex: 1;
   background: rgba(255, 255, 255, 0.1);
@@ -288,21 +296,32 @@
   padding-top: 15px;
   text-align: left;
 }
+
 .cp-info-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
+
 .cp-product-info h3 {
   font-family: "Arya", sans-serif;
   font-size: 1.2rem;
   margin: 0;
   color: #1a1a1a;
 }
+
 .cp-price {
   font-family: "LibreFranklin";
   font-weight: 600;
   color: #dd8512;
+}
+
+.cp-price.original {
+  color: #999 !important;
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-left: 8px;
+  font-size: 1rem;
 }
 
 .cp-color-swatches {
@@ -310,6 +329,7 @@
   gap: 8px;
   margin-top: 10px;
 }
+
 .swatch {
   width: 14px;
   height: 14px;
@@ -340,20 +360,26 @@
   /* MOBILE OVERRIDES */
 
   .cp-back-home {
-    top: 20px; /* Moved closer to the edge */
-    left: 20px; /* Moved closer to the edge */
-    padding: 6px 14px; /* Shrunk padding */
-    gap: 6px; /* Reduced gap between icon and text */
+    top: 20px;
+    /* Moved closer to the edge */
+    left: 20px;
+    /* Moved closer to the edge */
+    padding: 6px 14px;
+    /* Shrunk padding */
+    gap: 6px;
+    /* Reduced gap between icon and text */
   }
 
   .cp-back-home span {
-    font-size: 0.75rem; /* Smaller text */
+    font-size: 0.75rem;
+    /* Smaller text */
     letter-spacing: 1px;
   }
 
   /* Target the Lucide icon specifically if needed */
   .cp-back-home svg {
-    width: 18px; /* Smaller icon */
+    width: 18px;
+    /* Smaller icon */
     height: 18px;
   }
 
@@ -367,12 +393,15 @@
   .cp-section {
     height: auto;
     width: 100vw;
-    aspect-ratio: 16 / 9; /* Professional 16:9 ratio on mobile */
-    margin-bottom: 2px; /* Subtle line between banners */
+    aspect-ratio: 16 / 9;
+    /* Professional 16:9 ratio on mobile */
+    margin-bottom: 2px;
+    /* Subtle line between banners */
   }
 
   .cp-content h2 {
-    font-size: 2.2rem; /* Adjusted for smaller header */
+    font-size: 2.2rem;
+    /* Adjusted for smaller header */
   }
 
   .cp-content p {
@@ -381,7 +410,8 @@
 
   /* Expanded View Adjustments */
   .cp-shrunk-header.mobile-16-9 {
-    height: auto !important; /* Overrides the 45vh set in desktop */
+    height: auto !important;
+    /* Overrides the 45vh set in desktop */
     width: 100vw;
     aspect-ratio: 16 / 9;
     min-height: auto;

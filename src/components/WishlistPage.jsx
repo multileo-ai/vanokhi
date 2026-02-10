@@ -15,7 +15,7 @@ const WishlistPage = () => {
     <div className="cp-expanded-view1">
       {/* Header exactly matching the CSS provided */}
       <div className="cp-shrunk-header1 mobile-16-9">
-        
+
         <div className="cp-header-overlay">
           <h1>
             <span>My Wishlist</span>
@@ -55,7 +55,22 @@ const WishlistPage = () => {
 
             <div className="cp-product-info">
               <h3>{item.name}</h3>
-              <p className="cp-price">{item.price}</p>
+              <div className="cp-price-row">
+                <span className="cp-price">{item.price}</span>
+                {item.originalPrice && (
+                  <span
+                    className="cp-price original"
+                    style={{
+                      textDecoration: "line-through",
+                      color: "#999",
+                      fontSize: "0.9em",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    {item.originalPrice}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         ))}

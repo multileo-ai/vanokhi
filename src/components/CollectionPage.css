@@ -304,6 +304,13 @@
   color: #9a0002;
 }
 
+.cp-price.original {
+  color: #999 !important;
+  text-decoration: line-through;
+  font-weight: 400;
+  margin-left: 8px;
+}
+
 .cp-color-swatches {
   display: flex;
   gap: 8px;

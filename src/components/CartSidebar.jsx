@@ -177,7 +177,21 @@ export default function CartSidebar({ isOpen, onClose }) {
                         </button>
                       </div>
 
-                      <div className="item-price">{item.price}</div>
+                      <div className="item-price-wrapper">
+                        <div className="item-price">{item.price}</div>
+                        {item.originalPrice && (
+                          <div
+                            className="item-original-price"
+                            style={{
+                              textDecoration: "line-through",
+                              color: "#999",
+                              fontSize: "0.85em",
+                            }}
+                          >
+                            {item.originalPrice}
+                          </div>
+                        )}
+                      </div>
 
                       <div className="item-actions">
                         <div className="qty-selector">

@@ -156,9 +156,18 @@
   color: #9a0002 !important;
 }
 
+.cp-price.original {
+  color: #999 !important;
+  text-decoration: line-through;
+  font-weight: 400;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
 .cp-product-card.out-of-stock {
   filter: grayscale(100%);
-  pointer-events: none; /* Disables all clicks and redirects */
+  pointer-events: none;
+  /* Disables all clicks and redirects */
   position: relative;
   opacity: 0.8;
 }
@@ -186,7 +195,8 @@
   }
 
   .ap-main-container {
-    padding-top: 100px; /* Reduced space for mobile navbars */
+    padding-top: 100px;
+    /* Reduced space for mobile navbars */
   }
 
   .cp-shrunk-header.mobile-16-9 {
