@@ -72,13 +72,8 @@ export default function OurStory() {
 
       {/* 4th: 30% - 70% Banners + Final Text */}
       <section className="story-row">
-        <div className="split-grid-30-70">
-          <div className="small-cap">
-            <img src="/brand-ad.jpg" alt="Detail" />
-          </div>
-          <div className="large-cap">
-            <img src="/newarivals.png" alt="Vision" />
-          </div>
+        <div className="full-banner">
+          <img src="/roots/root0.jpg" alt="Vanokhi Banner" />
         </div>
         <div className="story-text-block final-block">
           <p className="final-text">— “ द वाह मोमेंट ” —</p>
