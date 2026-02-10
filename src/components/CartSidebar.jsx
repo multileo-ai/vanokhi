@@ -63,9 +63,8 @@ export default function CartSidebar({ isOpen, onClose }) {
       paymentId: paymentId,
       customerName: `${p.firstName} ${p.lastName}`,
       email: currentUser.email,
-      shippingAddress: `${p.addressLine1}, ${p.addressLine2 || ""}, ${
-        p.city
-      }, ${p.state} - ${p.pinCode}, ${p.country}`,
+      shippingAddress: `${p.addressLine1}, ${p.addressLine2 || ""}, ${p.city
+        }, ${p.state} - ${p.pinCode}, ${p.country}`,
       phone: p.phone,
     };
 
@@ -246,12 +245,11 @@ export default function CartSidebar({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Cash on Delivery Card */}
+                {/* Cash on Delivery Card (DISABLED) */}
                 <div
-                  className="payment-card standard-card"
-                  onClick={() => processOrder("COD")}
+                  className="payment-card standard-card disabled-card"
+                  title="Coming Soon"
                 >
-                  <div className="card-glow"></div>
                   <div className="card-content">
                     <div className="method-main">
                       <div className="method-icon cod-icon">
@@ -259,12 +257,14 @@ export default function CartSidebar({ isOpen, onClose }) {
                       </div>
                       <div className="method-details">
                         <span className="method-name">Cash on Delivery</span>
-                        <span className="method-sub">Pay upon arrival</span>
+                        <span className="method-sub coming-soon">
+                          Coming Soon
+                        </span>
                       </div>
                     </div>
-                    <div className="method-action">
+                    {/* <div className="method-action">
                       <Plus size={18} />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

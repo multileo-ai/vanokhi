@@ -43,8 +43,8 @@ export default function OurStory() {
       {/* 2nd: Two 50% Banners + Text */}
       <section className="story-row">
         <div className="split-grid-50">
-          <img src="/brand-ad.jpg" alt="Modern" />
-          <img src="/newarivals.png" alt="Heritage" />
+          <img src="/roots/root1.jpg" alt="Modern" />
+          <img src="/roots/root2.jpg" alt="Heritage" />
         </div>
         <div className="story-text-block">
           <h2 className="story-title">Culture Reimagined</h2>
@@ -59,7 +59,7 @@ export default function OurStory() {
       {/* 3rd: Big Banner + Text */}
       <section className="story-row">
         <div className="full-banner">
-          <img src="/brand-ad.jpg" alt="Philosophy Banner" />
+          <img src="/roots/root3.jpg" alt="Philosophy Banner" />
         </div>
         <div className="story-text-block">
           <h2 className="story-title">Distinct Identity</h2>

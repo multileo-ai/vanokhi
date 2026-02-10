@@ -110,6 +110,10 @@
   font-weight: 800;
   font-size: 1rem;
   color: #9a0002;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
 }
 
 .gallery {

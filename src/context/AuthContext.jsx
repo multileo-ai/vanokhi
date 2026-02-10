@@ -40,16 +40,34 @@ export function AuthProvider({ children }) {
   // 1. Sync Products, Collections, and Auth in Real-time
   useEffect(() => {
     // Real-time listener for Products
-    const unsubProds = onSnapshot(collection(db, "products"), (snapshot) => {
-      const prods = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setLiveProducts(prods);
-    });
+    const unsubProds = onSnapshot(
+      collection(db, "products"),
+      (snapshot) => {
+        const prods = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setLiveProducts(prods);
+      },
+      (error) => {
+        console.error("Error fetching products:", error);
+      },
+    );
 
     // Real-time listener for Collections
-    const unsubColls = onSnapshot(collection(db, "collections"), (snapshot) => {
-      const colls = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setLiveCollections(colls);
-    });
+    const unsubColls = onSnapshot(
+      collection(db, "collections"),
+      (snapshot) => {
+        const colls = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setLiveCollections(colls);
+      },
+      (error) => {
+        console.error("Error fetching collections:", error);
+      },
+    );
 
     // Listener for Auth State and User Profile
     const unsubAuth = onAuthStateChanged(auth, async (user) => {
@@ -335,9 +353,8 @@ export function AuthProvider({ children }) {
         userId: currentUser.uid,
         customerEmail: currentUser.email,
         customerName:
-          `${userData.profile.firstName || ""} ${
-            userData.profile.lastName || ""
-          }`.trim() ||
+          `${userData.profile.firstName || ""} ${userData.profile.lastName || ""
+            }`.trim() ||
           currentUser.displayName ||
           "Valued Customer",
         status: "Order Placed",

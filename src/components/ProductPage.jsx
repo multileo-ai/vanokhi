@@ -217,7 +217,8 @@ export default function ProductPage() {
             <h2 className="descTitle">{product.name}</h2>
             <p className="prodOverview">{product.overview}</p>
             <div className="price">
-              {product.price} <span className="currency">INR</span>
+              <b>{product.price} <span className="currency">INR</span></b>
+              <p style={{ textDecoration: "line-through", color: "gray" }}>{product.price} <span className="currency">INR</span></p>
             </div>
 
             {/* <div className="productActions">

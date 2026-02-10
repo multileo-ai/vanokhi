@@ -7,7 +7,7 @@ import "./NewArivals.css";
 
 export default function NewArivals() {
   const navigate = useNavigate();
-  const [posterUrl, setPosterUrl] = useState("/newarivals.png");
+  const [posterUrl, setPosterUrl] = useState("/GROUP/Artboard 2.avif");
 
   useEffect(() => {
     // UPDATED: Path changed to "sitesettings" to match your DB exactly

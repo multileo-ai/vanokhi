@@ -66,6 +66,7 @@
   inset: 0;
   z-index: 1;
 }
+
 .cp-bg-wrapper img {
   width: 100%;
   height: 100%;
@@ -90,11 +91,16 @@
 
 /* List View Subtitle */
 .cp-content p {
-  font-family: "LibreFranklin", serif; /* Current font */
-  font-style: italic; /* Current style */
-  font-size: 1.5rem; /* Edit this to change size */
-  color: white; /* Edit this to change color */
-  opacity: 0.8; /* Added for a more refined look */
+  font-family: "LibreFranklin", serif;
+  /* Current font */
+  font-style: italic;
+  /* Current style */
+  font-size: 1.5rem;
+  /* Edit this to change size */
+  color: white;
+  /* Edit this to change color */
+  opacity: 0.8;
+  /* Added for a more refined look */
   margin-top: 5px;
 }
 
@@ -102,7 +108,8 @@
 .cp-shrunk-header {
   position: relative;
   width: 100%;
-  height: 45vh; /* Fixed height for PC as requested */
+  height: 45vh;
+  /* Fixed height for PC as requested */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -177,7 +184,8 @@
   position: fixed;
   inset: 0;
   background: #fff;
-  z-index: 9999; /* Highest Z-index */
+  z-index: 9999;
+  /* Highest Z-index */
   overflow-y: auto;
 }
 
@@ -254,6 +262,7 @@
   color: white;
   /* color: #333; */
 }
+
 .action-btn.cart {
   flex: 1;
   background: rgba(255, 255, 255, 0.1);
@@ -275,17 +284,20 @@
 .cp-product-info {
   padding-top: 15px;
 }
+
 .cp-info-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
+
 .cp-product-info h3 {
   font-family: "Arya", sans-serif;
   font-size: 1.2rem;
   margin: 0;
   color: #1a1a1a;
 }
+
 .cp-price {
   font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
@@ -297,6 +309,7 @@
   gap: 8px;
   margin-top: 10px;
 }
+
 .swatch {
   width: 14px;
   height: 14px;
@@ -354,29 +367,38 @@
   }
 
   .cp-shrunk-header.mobile-16-9 {
-    height: auto !important; /* This "unlocks" the 45vh so aspect-ratio can work */
-    aspect-ratio: 16 / 9; /* Forces professional ratio on mobile */
+    height: auto !important;
+    /* This "unlocks" the 45vh so aspect-ratio can work */
+    aspect-ratio: 16 / 9;
+    /* Forces professional ratio on mobile */
     width: 100vw;
-    display: flex; /* Ensure container is flex */
+    display: flex;
+    /* Ensure container is flex */
     align-items: center;
     justify-content: center;
   }
 
   .cp-back-home {
-    top: 20px; /* Moved closer to the edge */
-    left: 20px; /* Moved closer to the edge */
-    padding: 6px 14px; /* Shrunk padding */
-    gap: 6px; /* Reduced gap between icon and text */
+    top: 20px;
+    /* Moved closer to the edge */
+    left: 20px;
+    /* Moved closer to the edge */
+    padding: 6px 14px;
+    /* Shrunk padding */
+    gap: 6px;
+    /* Reduced gap between icon and text */
   }
 
   .cp-back-home span {
-    font-size: 0.75rem; /* Smaller text */
+    font-size: 0.75rem;
+    /* Smaller text */
     letter-spacing: 1px;
   }
 
   /* Target the Lucide icon specifically if needed */
   .cp-back-home svg {
-    width: 18px; /* Smaller icon */
+    width: 18px;
+    /* Smaller icon */
     height: 18px;
   }
 
@@ -390,12 +412,15 @@
   .cp-section {
     height: auto;
     width: 100vw;
-    aspect-ratio: 16 / 9; /* Professional 16:9 ratio on mobile */
-    margin-bottom: 2px; /* Subtle line between banners */
+    aspect-ratio: 16 / 9;
+    /* Professional 16:9 ratio on mobile */
+    margin-bottom: 2px;
+    /* Subtle line between banners */
   }
 
   .cp-content h2 {
-    font-size: 2.2rem; /* Adjusted for smaller header */
+    font-size: 2.2rem;
+    /* Adjusted for smaller header */
   }
 
   .cp-content p {
@@ -404,7 +429,8 @@
 
   /* Expanded View Adjustments */
   .cp-shrunk-header.mobile-16-9 {
-    height: auto !important; /* Overrides the 45vh set in desktop */
+    height: auto !important;
+    /* Overrides the 45vh set in desktop */
     width: 100vw;
     aspect-ratio: 16 / 9 !important;
     min-height: auto;
@@ -417,11 +443,14 @@
   }
 
   .cp-header-overlay {
-    position: absolute; /* Absolute to cover the background */
+    position: absolute;
+    /* Absolute to cover the background */
     inset: 0;
     display: flex;
-    align-items: center; /* Vertical Center */
-    justify-content: center; /* Horizontal Center */
+    align-items: center;
+    /* Vertical Center */
+    justify-content: center;
+    /* Horizontal Center */
     height: 100%;
     width: 100%;
     margin: 0;
@@ -431,7 +460,8 @@
   /* Optional: Adjust title size slightly to fit the 16:9 box better */
   .cp-header-overlay h1 {
     font-size: 2.8rem;
-    line-height: 1; /* Prevents extra bottom spacing */
+    line-height: 1;
+    /* Prevents extra bottom spacing */
     margin: 0;
     text-align: center;
   }
@@ -471,8 +501,15 @@
     padding: 10px;
   }
 
+  .action-btn.wishlist {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0;
+  }
+
   .action-btn.cart {
     font-size: 0.7rem;
     padding: 8px;
+    height: 36px !important;
   }
 }
