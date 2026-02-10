@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 import { db } from "../firebase";
 import {
   collection,
@@ -12,6 +13,7 @@ import "./OrdersPage.css";
 
 const OrdersPage = () => {
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +67,7 @@ const OrdersPage = () => {
           <p>Your archive is currently empty.</p>
           <button
             className="browse-btn"
-            onClick={() => (window.location.href = "/category/all")}
+            onClick={() => navigate("/all-products")}
           >
             Begin Your Collection
           </button>
@@ -86,10 +88,10 @@ const OrdersPage = () => {
                   <span className="meta-date">
                     {order.createdAt?.toDate
                       ? order.createdAt.toDate().toLocaleDateString("en-US", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
                       : "Processing"}
                   </span>
                 </div>
@@ -146,9 +148,8 @@ const OrdersPage = () => {
                         (step, idx) => (
                           <div
                             key={step}
-                            className={`step-dot ${
-                              idx <= getStatusStep(order.status) ? "active" : ""
-                            }`}
+                            className={`step-dot ${idx <= getStatusStep(order.status) ? "active" : ""
+                              }`}
                           >
                             <div className="dot-core"></div>
                             <span className="step-text">{step}</span>

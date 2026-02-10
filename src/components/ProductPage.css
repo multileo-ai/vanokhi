@@ -113,53 +113,86 @@
 }
 
 .gallery {
-  display: grid;
-  /* Keeps the main image and the 350px thumbnail column */
-  grid-template-columns: 1fr 400px;
-  align-items: center;
-  /* INCREASE THIS VALUE FOR MORE SPACING */
-  gap: 8rem;
-  grid-column: 3;
-  align-self: center;
+  display: grid !important;
+  /* flex-direction: row; */
+  align-items: flex-start;
+  gap: 2px;
+  /* Reduced gap */
+  grid-column: 2;
+  align-self: start;
+  margin-top: 4rem;
+  margin-left: 50px;
+}
+
+.mainImage {
+  flex: 1;
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  height: 65vh;
+  /* Maintain user's height preference */
+  width: auto;
+  /* Let width follow aspect ratio */
+  /* Allow width to scale */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  /* Soft shadow for depth */
 }
 
 .mainImage img {
-  height: 100vh;
-  min-width: 100%;
-  max-width: auto !important; /* Added to maintain layout integrity */
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 30px;
+  /* Widescreen format */
+  /* object-fit: contain; */
+  /* Ensure no distortion */
+  object-fit: contain !important;
+  /* object-position: top !important; */
+  /* Ensure no cropping */
   display: block;
-  transform: translateY(-20%);
-  transition: opacity 240ms ease, transform 260ms ease;
+  border-radius: 30px;
+  transition: opacity 240ms ease;
+  background: #f8f8f8;
+  /* Subtle background for letterboxing if needed */
 }
 
 .thumbs {
-  display: grid;
-  grid-column: 2;
-  grid-template-columns: 1fr 10px;
+  display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-left: 200px;
+  width: 100px;
+  margin-left: 0;
 }
 
 .thumb {
-  background: transparent;
-  border: none;
-  /* padding: 6px; */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  width: 150px;
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 16/9;
+  /* Match main image ratio */
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid transparent;
   cursor: pointer;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  background: white;
 }
 
 .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.thumb:hover {
+  transform: scale(1.05);
 }
 
 .thumb.active {
-  outline: 2px solid rgba(0, 0, 0, 0.7);
+  border-color: var(--primary);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(154, 0, 2, 0.15);
 }
 
 .reviewsSection {
@@ -255,9 +288,11 @@
 
 .productActions {
   display: flex !important;
-  flex-direction: row !important; /* Forces side-by-side */
+  flex-direction: row !important;
+  /* Forces side-by-side */
   align-items: center;
-  gap: 12px; /* Spacing between buttons */
+  gap: 12px;
+  /* Spacing between buttons */
   width: 100%;
   margin-top: 5rem;
   /* border: 10px solid black; */
@@ -286,14 +321,15 @@
   justify-content: center;
 
   /* Glassmorphism Logic */
-  background: rgba(
-    154,
-    0,
-    2,
-    0
-  ); /* Translucent version of your --primary red */
-  backdrop-filter: blur(10px); /* The frosted glass effect */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  background: rgba(154,
+      0,
+      2,
+      0);
+  /* Translucent version of your --primary red */
+  backdrop-filter: blur(10px);
+  /* The frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  /* Safari support */
 
   /* Border helps define the glass edge against white backgrounds */
   border: 1px solid rgba(232, 232, 232, 0.4);
@@ -325,14 +361,15 @@
   justify-content: center;
 
   /* Glassmorphism Logic */
-  background: rgba(
-    154,
-    0,
-    2,
-    0
-  ); /* Translucent version of your --primary red */
-  backdrop-filter: blur(10px); /* The frosted glass effect */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  background: rgba(154,
+      0,
+      2,
+      0);
+  /* Translucent version of your --primary red */
+  backdrop-filter: blur(10px);
+  /* The frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  /* Safari support */
 
   /* Border helps define the glass edge against white backgrounds */
   border: 1px solid rgba(232, 232, 232, 0.4);
@@ -381,14 +418,15 @@
   justify-content: center;
 
   /* Glassmorphism Logic */
-  background: rgba(
-    154,
-    0,
-    2,
-    0
-  ); /* Translucent version of your --primary red */
-  backdrop-filter: blur(10px); /* The frosted glass effect */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  background: rgba(154,
+      0,
+      2,
+      0);
+  /* Translucent version of your --primary red */
+  backdrop-filter: blur(10px);
+  /* The frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  /* Safari support */
 
   /* Border helps define the glass edge against white backgrounds */
   border: 1px solid rgba(232, 232, 232, 0.4);
@@ -425,7 +463,8 @@
 /* MOBILE FIX: Ensure they don't stack on small screens */
 @media (max-width: 768px) {
   .productActions {
-    flex-direction: row !important; /* Keep side-by-side on mobile */
+    flex-direction: row !important;
+    /* Keep side-by-side on mobile */
     padding: 0 10px;
   }
 
@@ -457,18 +496,22 @@
 .reviewBody {
   flex: 1;
 }
+
 .reviewHeader {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
 .reviewUser {
   font-weight: 800;
   font-size: 0.95rem;
 }
+
 .reviewStars .star {
   font-size: 0.95rem;
 }
+
 .reviewText {
   color: #444;
   margin-top: 6px;
@@ -481,10 +524,12 @@
   gap: 6px;
   align-items: flex-end;
 }
+
 .reviewDate {
   font-size: 0.8rem;
   color: #8b8b8b;
 }
+
 .deleteBtn {
   background: transparent;
   border: none;
@@ -503,13 +548,15 @@
   }
 
   .prodMainCont {
-    grid-template-columns: 80px 1fr; /* Drop the 3rd column */
+    grid-template-columns: 80px 1fr;
+    /* Drop the 3rd column */
     padding: 0 2rem;
     gap: 1.5rem;
   }
 
   .gallery {
-    grid-column: 2; /* Move gallery under description */
+    grid-column: 2;
+    /* Move gallery under description */
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 2rem;
@@ -529,17 +576,20 @@
   }
 
   .catName {
-    display: none; /* Hide massive text to save space */
+    display: none;
+    /* Hide massive text to save space */
   }
 
   .prodMainCont {
     display: flex;
-    flex-direction: column; /* Vertical stack everything */
+    flex-direction: column;
+    /* Vertical stack everything */
     padding: 0 1rem;
   }
 
   .sizes {
-    order: 2; /* Put sizes under the image */
+    order: 2;
+    /* Put sizes under the image */
     flex-direction: row;
     width: 100%;
     margin: 1.5rem 0;
@@ -553,18 +603,21 @@
   }
 
   .gallery {
-    order: 1; /* Image at the very top */
+    order: 1;
+    /* Image at the very top */
     width: 100%;
     margin-top: 0;
   }
 
   .mainImage img {
-    height: 50vh; /* Shorter image for mobile */
+    height: 50vh;
+    /* Shorter image for mobile */
     transform: none;
   }
 
   .productActions {
-    flex-direction: row; /* Keep buttons side-by-side */
+    flex-direction: row;
+    /* Keep buttons side-by-side */
     gap: 0.5rem;
   }
 
@@ -639,9 +692,11 @@
   background: white;
   color: #333;
 }
+
 .action-btn1.cart1 {
   flex: 1;
-  background: #860204; /* Restored Vanokhi Red */
+  background: #860204;
+  /* Restored Vanokhi Red */
   color: white;
   gap: 8px;
 }
@@ -658,7 +713,8 @@
 /* Make your existing review section fit the 50% width */
 .reviewsSection {
   margin: 0 !important;
-  padding: 2.5rem; /* Adjusted for better split balance */
+  padding: 2.5rem;
+  /* Adjusted for better split balance */
   width: 100%;
   box-sizing: border-box;
 }
@@ -715,6 +771,7 @@
   color: #666;
   font-size: 0.9rem;
 }
+
 /* Animation for the + icon */
 .accordionItem[open] .icon {
   transform: rotate(45deg);
@@ -734,19 +791,21 @@
 }
 
 .sizeChartCircle {
-  width: 44px; /* Matches your .size width */
-  height: 44px; /* Matches your .size height */
+  width: 44px;
+  /* Matches your .size width */
+  height: 44px;
+  /* Matches your .size height */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%; /* Matches your .size border-radius */
+  border-radius: 50%;
+  /* Matches your .size border-radius */
   cursor: pointer;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.04
-  ); /* Subtle background to distinguish from sizes */
+  background: rgba(0,
+      0,
+      0,
+      0.04);
+  /* Subtle background to distinguish from sizes */
   color: var(--text);
   transition: all 0.2s ease;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -828,6 +887,7 @@
   min-height: 100vh;
   padding: 0 0 40px 0;
 }
+
 .catName {
   font-family: "Arya", serif;
   font-size: 10rem;
@@ -837,11 +897,13 @@
   z-index: -1;
   color: rgba(0, 0, 0, 0.06);
 }
+
 .prodMainCont {
   display: grid;
   grid-template-columns: 80px minmax(320px, 420px) minmax(320px, 1fr);
   padding: 0 6rem;
 }
+
 .sizes {
   width: 80px;
   display: flex;
@@ -849,6 +911,7 @@
   align-self: center;
   gap: 1.6rem;
 }
+
 .size {
   width: 44px;
   height: 44px;
@@ -858,39 +921,47 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
 .size.selected {
   border: 2px solid rgba(0, 0, 0, 0.6);
 }
+
 .prodDesc {
   margin: 18rem 100px 0;
   align-self: start;
 }
+
 .gallery {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 8rem;
   grid-column: 3;
 }
+
 .mainImage img {
   height: 100vh;
   object-fit: cover;
   transform: translateY(-20%);
 }
+
 .thumbs {
   display: grid;
   grid-template-columns: 1fr 10px;
   margin-left: 200px;
 }
+
 .thumb {
   width: 150px;
   height: 200px;
 }
+
 .productInfoSplit {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 7rem;
   margin: 3.5rem 6rem;
 }
+
 /* ... (Rest of your original CSS stays here) ... */
 
 /* --- VISIBILITY TOGGLE --- */
@@ -902,6 +973,7 @@
   .desktopOnlyView {
     display: none !important;
   }
+
   .pdWrapper {
     padding-top: 0;
   }
@@ -921,14 +993,16 @@
     position: absolute;
     top: -10%;
     /* left: 15%; */
-    width: 95%;
+    width: 100%;
     height: 80%;
     z-index: 1;
   }
+
   .mobileMainImg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
   }
 
   /* 4 images vertically aligned on right */
@@ -941,6 +1015,7 @@
     gap: 12px;
     z-index: 5;
   }
+
   .mobThumb {
     width: 75px;
     height: 95px;
@@ -948,6 +1023,7 @@
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.4);
   }
+
   .mobThumb img {
     width: 100%;
     height: 100%;
@@ -975,6 +1051,7 @@
     font-weight: 800;
     margin: 0;
   }
+
   .mobPrice {
     font-weight: 700;
     margin-bottom: 15px;
@@ -986,6 +1063,7 @@
     gap: 8px;
     margin-top: 8px;
   }
+
   .mobSizeBtn {
     width: 38px;
     height: 38px;
@@ -994,6 +1072,7 @@
     background: white;
     font-weight: 700;
   }
+
   .mobSizeBtn.active {
     background: var(--primary);
     color: white;
@@ -1006,6 +1085,7 @@
     font-size: 0.8rem;
     font-weight: 700;
   }
+
   .mobSizeLink {
     text-decoration: underline;
     color: var(--primary);
@@ -1016,6 +1096,7 @@
     gap: 10px;
     margin-top: 15px;
   }
+
   .mobBtn.cart {
     flex: 1;
     background: var(--primary);
@@ -1029,6 +1110,7 @@
     justify-content: center;
     gap: 8px;
   }
+
   .mobBtn.wishlist {
     width: 50px;
     background: white;
@@ -1046,6 +1128,7 @@
     gap: 2rem;
     margin: 2rem 1rem;
   }
+
   .detailsSection,
   .reviewsSection {
     padding: 1.5rem;

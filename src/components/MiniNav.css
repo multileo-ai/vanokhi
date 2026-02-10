@@ -199,10 +199,10 @@
     background: inherit;
   }
   .hamburger-lines::before {
-    top: 8.5px;
+    top: 9.5px;
   }
   .hamburger-lines::after {
-    top: 17px;
+    top: 19px;
   }
 
   /* Mobile Search Box - Positioned BELOW Navbar */

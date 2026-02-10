@@ -58,7 +58,8 @@
 }
 
 .cp-header-overlay h1 span {
-  color: #860204; /* Brand Red accent */
+  color: #860204;
+  /* Brand Red accent */
 }
 
 .cp-close {
@@ -149,7 +150,8 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #860204; /* Show as active/remove in wishlist context */
+  color: #860204;
+  /* Show as active/remove in wishlist context */
 }
 
 .action-btn.cart {
@@ -214,8 +216,8 @@
 }
 
 .shop-link-btn {
-  background: #151312;
-  color: white;
+  background: #151312 !important;
+  color: white !important;
   border: none;
   padding: 15px 40px;
   border-radius: 50px;

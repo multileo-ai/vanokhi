@@ -7,37 +7,28 @@ import "./NewArivals.css";
 
 export default function NewArivals() {
   const navigate = useNavigate();
-  const [posterUrl, setPosterUrl] = useState("/newarivals.png"); // Default image
+  const [posterUrl, setPosterUrl] = useState("/newarivals.png");
 
   useEffect(() => {
-    // Ensure "siteSettings" and "posters" match your DB casing exactly
-    const unsub = onSnapshot(
-      doc(db, "siteSettings", "posters"),
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log("Current Poster Data:", data); // Debugging line
-          if (data.newArrivalsUrl) {
-            setPosterUrl(data.newArrivalsUrl);
-          }
-        } else {
-          console.log("No such document in siteSettings/posters!");
+    // UPDATED: Path changed to "sitesettings" to match your DB exactly
+    const unsub = onSnapshot(doc(db, "sitesettings", "posters"), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        // Check for the exact field name used in AdminPanel.jsx
+        if (data.newArrivalsUrl) {
+          setPosterUrl(data.newArrivalsUrl);
         }
-      },
-      (error) => {
-        console.error("Error listening to poster:", error);
-      },
-    );
-
+      }
+    });
     return () => unsub();
   }, []);
 
   return (
     <div className="brand-image-outer1">
-      {/* Inline style overrides the hardcoded CSS image */}
       <div
         className="brand-image-viewport1"
-        style={{ backgroundImage: `url(${posterUrl})` }}
+        // FIXED: Added quotes around ${posterUrl} to handle paths with spaces
+        style={{ backgroundImage: `url("${posterUrl}")` }}
       >
         <div className="hero-overlay1" />
         <div

@@ -52,7 +52,7 @@ export default function ProductPage() {
       const found = liveProducts.find((p) => p.id === id);
       if (found) {
         setProduct(found);
-        setSelectedImage(found.galleryPNG?.[0] || found.img);
+        setSelectedImage(found.galleryNormal?.[0] || found.img);
 
         // Fetch Reviews from Database
         const q = query(
@@ -119,10 +119,9 @@ export default function ProductPage() {
           {product.galleryNormal?.map((img, i) => (
             <div
               key={i}
-              className={`mobThumb ${
-                selectedImage === product.galleryPNG?.[i] ? "active" : ""
-              }`}
-              onClick={() => setSelectedImage(product.galleryPNG?.[i])}
+              className={`mobThumb ${selectedImage === img ? "active" : ""
+                }`}
+              onClick={() => setSelectedImage(img)}
             >
               <img src={img} alt="" />
             </div>
@@ -149,9 +148,8 @@ export default function ProductPage() {
               {product.sizes?.map((sz) => (
                 <button
                   key={sz}
-                  className={`mobSizeBtn ${
-                    selectedSize === sz ? "active" : ""
-                  }`}
+                  className={`mobSizeBtn ${selectedSize === sz ? "active" : ""
+                    }`}
                   onClick={() => setSelectedSize(sz)}
                 >
                   {sz}
@@ -274,10 +272,9 @@ export default function ProductPage() {
             {product.galleryNormal?.map((img, i) => (
               <button
                 key={i}
-                className={`thumb ${
-                  selectedImage === product.galleryPNG?.[i] ? "active" : ""
-                }`}
-                onClick={() => setSelectedImage(product.galleryPNG?.[i])}
+                className={`thumb ${selectedImage === img ? "active" : ""
+                  }`}
+                onClick={() => setSelectedImage(img)}
               >
                 <img src={img} alt={`Thumbnail ${i}`} fetchpriority="high" />
               </button>
