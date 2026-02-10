@@ -132,11 +132,14 @@ const MiniNav = () => {
             )}
 
             <button className="icon-btn" onClick={() => setProfileOpen(true)}>
-              <User className="mini-icon" strokeWidth={1.3} />
+              <User className="mini-icon mob-icons" strokeWidth={1.3} />
             </button>
             <button className="icon-btn" onClick={() => setCartOpen(true)}>
-              <div className="cart-badge-container">
-                <ShoppingCart className="mini-icon" strokeWidth={1.3} />
+              <div className="cart-badge-container mob-icons">
+                <ShoppingCart
+                  className="mini-icon"
+                  strokeWidth={1.3}
+                />
                 {cartItemCount > 0 && (
                   <span className="cart-count">{cartItemCount}</span>
                 )}

@@ -1,6 +1,6 @@
 // src/components/NewArivals.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import "./NewArivals.css";
@@ -10,11 +10,25 @@ export default function NewArivals() {
   const [posterUrl, setPosterUrl] = useState("/newarivals.png"); // Default image
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "siteSettings", "posters"), (docSnap) => {
-      if (docSnap.exists() && docSnap.data().newArrivalsUrl) {
-        setPosterUrl(docSnap.data().newArrivalsUrl);
-      }
-    });
+    // Ensure "siteSettings" and "posters" match your DB casing exactly
+    const unsub = onSnapshot(
+      doc(db, "siteSettings", "posters"),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log("Current Poster Data:", data); // Debugging line
+          if (data.newArrivalsUrl) {
+            setPosterUrl(data.newArrivalsUrl);
+          }
+        } else {
+          console.log("No such document in siteSettings/posters!");
+        }
+      },
+      (error) => {
+        console.error("Error listening to poster:", error);
+      },
+    );
+
     return () => unsub();
   }, []);
 

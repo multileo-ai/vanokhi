@@ -153,7 +153,7 @@
 .cp-price {
   font-family: "LibreFranklin", sans-serif;
   font-size: 1.3rem;
-  color: #9a0002;
+  color: #9a0002 !important;
 }
 
 .cp-product-card.out-of-stock {

@@ -273,19 +273,21 @@ export default function AdminPanel() {
   }, [userData]);
 
   const updateNewArrivalPoster = async (e) => {
-    e.preventDefault();
-    try {
-      const docRef = doc(db, "siteSettings", "posters");
-      await setDoc(
-        docRef,
-        { newArrivalsUrl: newArrivalPoster },
-        { merge: true },
-      );
-      alert("New Arrivals Poster Updated!");
-    } catch (err) {
-      alert("Error updating poster: " + err.message);
-    }
-  };
+  e.preventDefault();
+  try {
+    const docRef = doc(db, "siteSettings", "posters");
+    // Use setDoc with merge to ensure the document is created if it doesn't exist
+    await setDoc(
+      docRef,
+      { newArrivalsUrl: newArrivalPoster },
+      { merge: true }
+    );
+    alert("New Arrivals Poster Updated!");
+    // Optional: Re-fetch or rely on the fact that landing page uses onSnapshot
+  } catch (err) {
+    alert("Error updating poster: " + err.message);
+  }
+};
 
   const updateStoryContent = async (e) => {
     e.preventDefault();

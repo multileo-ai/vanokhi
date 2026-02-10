@@ -94,15 +94,18 @@
 /* Glass Actions */
 .na-glass-actions {
   position: absolute;
-  bottom: 15px;
-  left: 15px;
-  right: 15px;
+  bottom: 0; /* Changed from 15px to 0 to match cp-product-actions */
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 20px; /* Matching cp-product-actions padding */
   display: flex;
   gap: 10px;
   z-index: 5;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(100%); /* Matching cp-product-actions transition */
   transition: all 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
 }
 
 .na-glass-card:hover .na-glass-actions {
@@ -112,37 +115,38 @@
 
 .na-action-circle,
 .na-action-rect {
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Matching cp border */
+  border-radius: 50px; /* Matching cp border-radius */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  /* Glass Effect */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.1); /* Matching cp background */
+  backdrop-filter: blur(10px); /* Matching cp blur */
+  -webkit-backdrop-filter: blur(10px);
+  transition: 0.2s;
+  font-family: "LibreFranklin", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .na-action-circle {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 45px; /* Matched from 50px to 45px */
+  height: 45px; /* Matched from 50px to 45px */
+  flex-shrink: 0;
 }
 
 .na-action-rect {
   flex: 1;
-  border-radius: 30px;
-  font-family: "LibreFranklin", sans-serif;
-  font-weight: 700;
-  font-size: 0.75rem;
+  height: 45px; /* Ensure height matches circle */
   gap: 8px;
+  text-transform: uppercase;
 }
 
 .na-action-circle:hover,
 .na-action-rect:hover {
-  background: rgba(134, 2, 4, 0.6); /* Brand Red Blur */
+  background: rgba(154, 0, 2, 0.4); /* Matched Brand Red Blur */
 }
 
 /* Info Section */
@@ -211,48 +215,22 @@
   .na-glass-actions {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    bottom: 8px; /* Slightly tighter to the bottom */
-    left: 14px;
-    right: 8px;
-    gap: 8px;
+    background: rgba(0, 0, 0, 0.2); /* Matching cp-product-actions mobile */
+    padding: 10px; /* Matching cp-product-actions mobile */
   }
 
   .na-action-circle {
-    width: 36px !important; /* Smaller circle to give more room to the bag button */
+    width: 36px !important; /* Smaller size for mobile consistency */
     height: 36px !important;
-    flex-shrink: 0;
-    border-radius: 50% !important;
   }
 
   .na-action-rect {
-    width: auto !important;
-    height: 36px !important; /* Matches circle height */
-    flex: 1;
-    border-radius: 18px !important;
-    padding: 0 8px !important; /* Reduced padding */
-    /* background: rgba(21, 19, 18, 0.9); */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    overflow: hidden;
+    height: 36px !important;
+    font-size: 0.7rem !important; /* Matching cp action-btn mobile font */
   }
 
   .na-action-rect span {
     display: inline-block !important;
-    font-size: 0.6rem !important; /* Smaller font */
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  /* Icon only on mobile to save space */
-  /* .na-action-rect span {
-    display: none;
-  } */
-
-  .na-action-rect {
-    width: 40px;
-    flex: none;
-    border-radius: 50%;
   }
 
   .na-header-section.na-mobile-16-9 {
