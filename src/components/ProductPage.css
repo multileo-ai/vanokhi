@@ -986,19 +986,19 @@
   .mobileHeroContainer {
     display: block;
     position: relative;
-    height: 85vh;
+    height: 100vh;
     width: 100%;
     overflow: hidden;
-    background: #fff;
+    background: #000;
   }
 
   /* Main image shifted left */
   .mobileMainImg {
     position: absolute;
-    top: -10%;
-    /* left: 15%; */
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 80%;
+    height: 100%;
     z-index: 1;
   }
 
@@ -1037,16 +1037,25 @@
   /* Bottom Panel for Info */
   .mobileActionPanel {
     position: absolute;
-    bottom: 0px;
-    left: 20px;
-    width: 80%;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    /* Glassmorphism – light blur so image shows through */
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+
+    padding: 20px 22px;
+    border-radius: 22px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    color: #fff;
   }
 
   .mobTitle {
@@ -1054,12 +1063,18 @@
     font-size: 1.4rem;
     font-weight: 800;
     margin: 0;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 
   .mobPrice {
     font-weight: 700;
     margin-bottom: 15px;
-    color: #9a0002;
+    color: #fff;
+  }
+
+  .mobPrice .currency {
+    opacity: 0.8;
   }
 
   .mobSizeGrid {
@@ -1072,9 +1087,11 @@
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
     font-weight: 700;
+    transition: all 0.2s ease;
   }
 
   .mobSizeBtn.active {
@@ -1088,11 +1105,13 @@
     justify-content: space-between;
     font-size: 0.8rem;
     font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .mobSizeLink {
     text-decoration: underline;
-    color: var(--primary);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
   }
 
   .mobButtons {
@@ -1103,9 +1122,9 @@
 
   .mobBtn.cart {
     flex: 1;
-    background: var(--primary);
-    color: white;
-    border: none;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 12px;
     border-radius: 30px;
     font-weight: 800;
@@ -1113,17 +1132,19 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    transition: all 0.2s ease;
   }
 
   .mobBtn.wishlist {
     width: 50px;
-    background: white;
-    border: 1px solid #eee;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary);
+    color: #fff;
+    transition: all 0.2s ease;
   }
 
   /* Ensure detail sections below fold look good on mobile */
