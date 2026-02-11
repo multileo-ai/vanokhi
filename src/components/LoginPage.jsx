@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./LoginPage.css";
 import { X, ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function LoginPage({ onClose }) {
   const { login, signup, googleLogin, resetPassword } = useAuth();
@@ -20,14 +18,7 @@ export default function LoginPage({ onClose }) {
   const [message, setMessage] = useState(""); // For success messages
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (Capacitor.isNativePlatform()) {
-      GoogleAuth.initialize({
-        clientId:
-          "399331187738-eflpp9q55b7u250g7kudg85j9j4f801o.apps.googleusercontent.com",
-      });
-    }
-  }, []);
+
 
   // Handle Login / Signup
   async function handleSubmit(e) {
@@ -73,39 +64,13 @@ export default function LoginPage({ onClose }) {
   async function handleGoogleLogin() {
     setError("");
     try {
-      // 2. Check if running on a native device (Android/iOS)
-      if (Capacitor.isNativePlatform()) {
-        // Trigger the native bottom-sheet picker
-        const user = await GoogleAuth.signIn();
-
-        // Create Firebase credential using the native token
-        const credential = GoogleAuthProvider.credential(
-          user.authentication.idToken,
-        );
-
-        // Sign into Firebase project
-        await signInWithCredential(auth, credential);
-      } else {
-        // 3. Fallback for standard web browser testing
-        await googleLogin();
-      }
-
-      onClose(); // Close modal on success
+      await googleLogin();
+      onClose();
     } catch (err) {
       console.error("Login Error:", err);
       setError("Google Sign-In failed. Please try again.");
     }
   }
-
-  // async function handleGoogleLogin() {
-  //   setError("");
-  //   try {
-  //     await googleLogin();
-  //     onClose();
-  //   } catch (err) {
-  //     handleError(err);
-  //   }
-  // }
 
   function handleError(err) {
     console.error(err);

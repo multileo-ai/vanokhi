@@ -7,19 +7,98 @@ import AverageRating from "./AverageRating";
 import "./SearchResults.css";
 
 const SearchResults = () => {
-  const { liveProducts, addToCart, addToWishlist, userData } = useAuth();
+  const { liveProducts, liveCollections, addToCart, addToWishlist, userData } = useAuth();
   const location = useLocation();
 
   // Extract search query from URL (?q=...)
   const queryParams = new URLSearchParams(location.search);
-  const searchTerm = queryParams.get("q")?.toLowerCase() || "";
+  const searchTerm = queryParams.get("q")?.toLowerCase().trim() || "";
 
-  // Filter products based on search term
-  const filteredProducts = liveProducts.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.category?.toLowerCase().includes(searchTerm),
-  );
+  // Common fashion keyword aliases — maps user search terms to related words
+  const keywordAliases = {
+    kurti: ["kurta", "kurtis", "kurties", "kurti"],
+    kurta: ["kurti", "kurtis", "kurties", "kurta"],
+    kurties: ["kurti", "kurta", "kurtis", "kurties"],
+    kurtis: ["kurti", "kurta", "kurties", "kurtis"],
+    saree: ["sari", "sarees", "saris", "saree"],
+    sari: ["saree", "sarees", "saris", "sari"],
+    pants: ["pant", "trouser", "trousers", "bottom", "bottoms", "pants"],
+    pant: ["pants", "trouser", "trousers", "bottom", "bottoms"],
+    top: ["tops", "blouse", "shirt", "top"],
+    tops: ["top", "blouse", "shirt", "tops"],
+    dress: ["dresses", "gown", "frock", "dress"],
+    skirt: ["skirts", "lehenga", "ghagra", "skirt"],
+    corset: ["corsets", "bustier", "blouse", "corset"],
+    cotton: ["cotton", "mul cotton", "organic cotton"],
+    linen: ["linen", "flax"],
+    silk: ["silk", "silky"],
+    shirt: ["shirts", "top", "tops", "tshirt", "t-shirt"],
+    lehenga: ["lehengas", "ghagra", "skirt"],
+    dupatta: ["dupattas", "stole", "scarf"],
+    ethnic: ["traditional", "indian", "desi", "ethnic"],
+    western: ["modern", "casual", "western"],
+  };
+
+  // Expand search term with aliases
+  const expandSearch = (term) => {
+    const words = term.split(/\s+/).filter(Boolean);
+    const expandedSets = words.map((word) => {
+      const aliases = keywordAliases[word] || [];
+      return [word, ...aliases];
+    });
+    return expandedSets;
+  };
+
+  // Build collection ID → title map
+  const collectionMap = {};
+  liveCollections.forEach((col) => {
+    collectionMap[col.id] = (col.title || col.name || "").toLowerCase();
+  });
+
+  // Find collections whose title matches search term (with aliases)
+  const expandedTerms = expandSearch(searchTerm);
+  const matchingCollectionIds = liveCollections
+    .filter((col) => {
+      const colTitle = (col.title || col.name || "").toLowerCase();
+      return expandedTerms.some((wordGroup) =>
+        wordGroup.some((alias) => colTitle.includes(alias))
+      );
+    })
+    .map((col) => col.id);
+
+  // Collect productIds from matching collections
+  const productIdsFromCollections = new Set();
+  liveCollections.forEach((col) => {
+    if (matchingCollectionIds.includes(col.id) && col.productIds) {
+      col.productIds.forEach((pid) => productIdsFromCollections.add(pid));
+    }
+  });
+
+  // Filter products
+  const filteredProducts = liveProducts.filter((product) => {
+    if (!searchTerm) return true;
+
+    // 1. Check if product is in a matching collection (via productIds)
+    if (productIdsFromCollections.has(product.id)) return true;
+
+    // 2. Check if product's collectionId matches a matching collection
+    if (product.collectionId && matchingCollectionIds.includes(product.collectionId)) return true;
+
+    // 3. Search all string fields on product + resolved collection name
+    const collectionTitle = product.collectionId ? (collectionMap[product.collectionId] || "") : "";
+    const fieldValues = Object.values(product).flatMap((val) => {
+      if (typeof val === "string") return [val];
+      if (Array.isArray(val)) return val.filter((v) => typeof v === "string");
+      return [];
+    });
+    fieldValues.push(collectionTitle);
+    const searchableText = fieldValues.join(" ").toLowerCase();
+
+    // Check if ALL search words (with aliases) match
+    return expandedTerms.every((wordGroup) =>
+      wordGroup.some((alias) => searchableText.includes(alias))
+    );
+  });
 
   return (
     <div className="sr-main-wrapper">

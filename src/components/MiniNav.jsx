@@ -49,6 +49,23 @@ const MiniNav = () => {
     }
   };
 
+  // Lock/unlock body scroll when hamburger menu is open
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    if (open) {
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+    } else {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    }
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    };
+  }, [open]);
+
   useEffect(() => {
     const onDocClick = (e) => {
       if (!open) return;
@@ -88,12 +105,12 @@ const MiniNav = () => {
                     item === "Collections"
                       ? "/collections"
                       : item === "All Products"
-                      ? "/all-products"
-                      : item === "Our Roots"
-                      ? "/our-story"
-                      : item === "New Arrivals"
-                      ? "/new-arrivals"
-                      : "/contact"
+                        ? "/all-products"
+                        : item === "Our Roots"
+                          ? "/our-story"
+                          : item === "New Arrivals"
+                            ? "/new-arrivals"
+                            : "/contact"
                   }
                   className="nav-route-link"
                 >
@@ -109,9 +126,8 @@ const MiniNav = () => {
             {/* Conditional Search Box rendering for Mobile vs Desktop */}
             {(!isMobile || isLandingPage) && (
               <div
-                className={`search-wrapper ${
-                  searchOpen || (isMobile && isLandingPage) ? "active" : ""
-                }`}
+                className={`search-wrapper ${searchOpen || (isMobile && isLandingPage) ? "active" : ""
+                  }`}
               >
                 <input
                   ref={searchInputRef}
@@ -158,12 +174,12 @@ const MiniNav = () => {
                       item === "Collections"
                         ? "/collections"
                         : item === "All Products"
-                        ? "/all-products"
-                        : item === "Our Roots"
-                        ? "/our-story"
-                        : item === "New Arrivals"
-                        ? "/new-arrivals"
-                        : "/contact"
+                          ? "/all-products"
+                          : item === "Our Roots"
+                            ? "/our-story"
+                            : item === "New Arrivals"
+                              ? "/new-arrivals"
+                              : "/contact"
                     }
                     onClick={() => setOpen(false)}
                   >
