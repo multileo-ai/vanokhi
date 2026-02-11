@@ -28,9 +28,7 @@ import SettingsPage from "./components/SettingsPage";
 // import ProductPage from "./components/ProductPage";
 // import AdminPanel from "./components/AdminPanel";
 import PolicyModal from "./components/PolicyModal";
-import AllProducts from "./components/AllProducts";
 import FAQModal from "./components/FaqModal";
-import OrdersPage from "./components/OrdersPage";
 import OurStory from "./components/OurStory";
 import ScrollToTop from "./components/ScrollToTop";
 import NewArrivalsPage from "./components/NewArrivalsPage";
@@ -42,6 +40,8 @@ import SearchResults from "./components/SearchResults";
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
 const ProductPage = lazy(() => import("./components/ProductPage"));
 const CollectionPage = lazy(() => import("./components/CollectionPage"));
+const AllProducts = lazy(() => import("./components/AllProducts"));
+const OrdersPage = lazy(() => import("./components/OrdersPage"));
 
 const HomePage = ({
   whiteSectionRef,
@@ -81,7 +81,6 @@ const HomePage = ({
         <NewArivals />
       </div>
       <InstagramGrid />
-      <TestimonialsGrid />
     </div>
   </>
 );
@@ -111,7 +110,8 @@ function AppContent() {
     const heroDocRef = doc(db, "siteSettings", "hero");
 
     // Add an error handler to prevent the "Permission Denied" from crashing the app
-    const unsubscribe = onSnapshot(heroDocRef,
+    const unsubscribe = onSnapshot(
+      heroDocRef,
       (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
@@ -122,7 +122,7 @@ function AppContent() {
       (error) => {
         // Log the error instead of letting it bubble up and trigger an assertion failure
         console.error("Firestore Hero Listener failed:", error.message);
-      }
+      },
     );
 
     return () => {

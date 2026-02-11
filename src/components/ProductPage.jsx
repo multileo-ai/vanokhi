@@ -14,6 +14,8 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
+import Skeleton from "./common/Skeleton";
+
 import "./ProductPage.css";
 
 export default function ProductPage() {
@@ -102,7 +104,50 @@ export default function ProductPage() {
   };
 
   if (!product)
-    return <div className="vanokhi-loader">Loading Excellence...</div>;
+    return (
+      <div className="pdWrapper">
+        <div className="prodMainCont desktopOnlyView" style={{ padding: "40px" }}>
+          <div style={{ flex: 1 }}>
+            <Skeleton type="block" style={{ height: "500px" }} />
+          </div>
+          <div style={{ flex: 1, paddingLeft: "40px" }}>
+            <Skeleton type="title" style={{ width: "80%", marginBottom: "20px" }} />
+            <Skeleton type="text" style={{ marginBottom: "10px" }} />
+            <Skeleton type="text" style={{ marginBottom: "10px" }} />
+            <Skeleton type="text" style={{ width: "60%", marginBottom: "30px" }} />
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Skeleton type="rect" style={{ width: "150px", height: "50px" }} />
+              <Skeleton type="rect" style={{ width: "150px", height: "50px" }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Skeleton */}
+        <div className="mobileHeroContainer">
+          <Skeleton
+            type="block"
+            style={{ width: "100%", height: "450px", marginBottom: "20px" }}
+          />
+          <div style={{ padding: "0 20px" }}>
+            <Skeleton
+              type="title"
+              style={{ width: "70%", marginBottom: "15px" }}
+            />
+            <Skeleton type="text" style={{ width: "40%", marginBottom: "20px" }} />
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Skeleton
+                type="rect"
+                style={{ flex: 1, height: "45px", borderRadius: "30px" }}
+              />
+              <Skeleton
+                type="rect"
+                style={{ flex: 1, height: "45px", borderRadius: "30px" }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="pdWrapper">
@@ -111,27 +156,28 @@ export default function ProductPage() {
 
       {/* --- MOBILE ONLY HERO SECTION --- */}
       <div className="mobileHeroContainer">
-        <div className="mobileMainImg">
-          <img src={selectedImage} alt={product.name} />
-        </div>
+        <div className="mobileGalleryWrapper">
+          <div className="mobileMainImg">
+            <img src={selectedImage} alt={product.name} />
+          </div>
 
-        <div className="mobileThumbVertical">
-          {product.galleryNormal?.map((img, i) => (
-            <div
-              key={i}
-              className={`mobThumb ${selectedImage === img ? "active" : ""
-                }`}
-              onClick={() => setSelectedImage(img)}
-            >
-              <img src={img} alt="" />
-            </div>
-          ))}
+          <div className="mobileThumbVertical">
+            {product.galleryNormal?.map((img, i) => (
+              <div
+                key={i}
+                className={`mobThumb ${selectedImage === img ? "active" : ""}`}
+                onClick={() => setSelectedImage(img)}
+              >
+                <img src={img} alt="" />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mobileActionPanel">
           <h2 className="mobTitle">{product.name}</h2>
           <div className="mobPrice" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <span>{product.price} <span className="currency">INR</span></span>
+            <span>{product.price} </span>
             {product.originalPrice && (
               <span
                 style={{
@@ -227,7 +273,6 @@ export default function ProductPage() {
         <div className="descWrapper">
           <div className="prodDesc">
             <h2 className="descTitle">{product.name}</h2>
-            <p className="prodOverview">{product.overview}</p>
             <div className="price">
               <b>
                 {product.price}

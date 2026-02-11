@@ -517,3 +517,37 @@ html::-webkit-scrollbar-thumb:hover {
     scrollbar-width: thin;
   }
 }
+/* Loading Spinner for Suspense Fallback */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #faf9f6;
+  z-index: 10000;
+  font-family: 'Arya', serif;
+  font-size: 1.5rem;
+  color: #860204;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.loading-spinner::after {
+  content: '';
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(134, 2, 4, 0.3);
+  border-top-color: #860204;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -42,13 +42,16 @@ import {
   CheckCircle,
   Mail,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import "./AdminPanel.css";
+import Skeleton from "./common/Skeleton";
 
 export default function AdminPanel() {
   const { userData, liveProducts, liveCollections } = useAuth();
   const [activeTab, setActiveTab] = useState("inventory");
   const [allOrders, setAllOrders] = useState([]);
   const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [mostWantedIds, setMostWantedIds] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -189,6 +192,7 @@ export default function AdminPanel() {
     const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setAllOrders(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -466,6 +470,21 @@ export default function AdminPanel() {
     }
   };
 
+  // Filter orders
+  const activeOrders = allOrders.filter((o) => o.status !== "Cancelled");
+  const cancelledOrders = allOrders.filter((o) => o.status === "Cancelled");
+
+  const toggleRefundStatus = async (orderId, currentStatus) => {
+    const newStatus = currentStatus === "Refunded" ? "Pending" : "Refunded";
+    try {
+      await updateDoc(doc(db, "orders", orderId), { refundStatus: newStatus });
+      toast.success(`Refund status updated to ${newStatus}`);
+    } catch (err) {
+      console.error("Error updating refund status:", err);
+      toast.error("Failed to update refund status");
+    }
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-header">
@@ -697,156 +716,292 @@ export default function AdminPanel() {
                 />
               </div>
               <div className="product-list-mini">
-                {filteredProducts.map((p) => (
-                  <div
-                    key={p.id}
-                    className={`mini-item ${p.stock < 5 ? "low-stock-alert" : ""
-                      }`}
-                  >
-                    <img src={p.img} alt="" />
-                    <div className="item-info">
-                      <span>{p.name}</span>
-                      <small>
-                        {p.price} — Stock: {p.stock}
-                      </small>
-                    </div>
-                    <div className="item-actions">
-                      <button
-                        className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""
-                          }`}
-                        onClick={() => toggleMostWanted(p.id)}
-                        title="Toggle Most Wanted"
-                      >
-                        <Star
-                          size={16}
-                          fill={
-                            mostWantedIds.includes(p.id) ? "#dd8512" : "none"
-                          }
+                {loading
+                  ? [...Array(5)].map((_, i) => (
+                    <div key={i} className="mini-item">
+                      <Skeleton
+                        type="block"
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          borderRadius: "10px",
+                          marginRight: "20px",
+                        }}
+                      />
+                      <div className="item-info">
+                        <Skeleton type="text" style={{ width: "120px" }} />
+                        <Skeleton
+                          type="text"
+                          style={{ width: "80px", height: "12px" }}
                         />
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          setEditingProd({
-                            ...p,
-                            sizes: p.sizes?.join(","),
-                            details: p.details?.join("\n"),
-                            price: p.price.replace("₹", ""),
-                            originalPrice: p.originalPrice
-                              ? p.originalPrice.replace("₹", "")
-                              : "",
-                          })
-                        }
-                        className="edit-icon"
-                      >
-                        <Edit3 size={16} />
-                      </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                  : filteredProducts.map((p) => (
+                    <div
+                      key={p.id}
+                      className={`mini-item ${p.stock < 5 ? "low-stock-alert" : ""
+                        }`}
+                    >
+                      <img src={p.img} alt="" />
+                      <div className="item-info">
+                        <span>{p.name}</span>
+                        <small>
+                          {p.price} — Stock: {p.stock}
+                        </small>
+                      </div>
+                      <div className="item-actions">
+                        <button
+                          className={`most-wanted-toggle ${mostWantedIds.includes(p.id) ? "active" : ""
+                            }`}
+                          onClick={() => toggleMostWanted(p.id)}
+                          title="Toggle Most Wanted"
+                        >
+                          <Star
+                            size={16}
+                            fill={
+                              mostWantedIds.includes(p.id) ? "#dd8512" : "none"
+                            }
+                          />
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            setEditingProd({
+                              ...p,
+                              sizes: p.sizes?.join(","),
+                              details: p.details?.join("\n"),
+                              price: p.price.replace("₹", ""),
+                              originalPrice: p.originalPrice
+                                ? p.originalPrice.replace("₹", "")
+                                : "",
+                            })
+                          }
+                          className="edit-icon"
+                        >
+                          <Edit3 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
         )}
 
         {activeTab === "orders" && (
-          <div className="admin-orders-container">
-            <div className="admin-card full-width">
-              <h2>
-                <ShoppingCart /> Customer Orders ({allOrders.length})
-              </h2>
-              <div className="admin-orders-list">
-                {allOrders.map((order) => (
-                  <div key={order.id} className="admin-order-item">
-                    <div className="order-main-info">
-                      <div className="order-customer">
-                        <span className="order-id">
-                          #{order.orderNumber.toUpperCase()}
-                        </span>
-                        <h4>
-                          {order.customerName || order.userName || "Anonymous"}
-                        </h4>
-                        <p className="order-email">{order.email}</p>
-                        <div className="shipping-info-box">
-                          <p>
-                            <strong>Phone:</strong> {order.phone}
-                          </p>
-                          <p>
-                            <strong>Address:</strong> {order.shippingAddress}
-                          </p>
+          <>
+            <div className="admin-orders-container">
+              {/* Active Orders Section */}
+              <div className="admin-card full-width">
+                <h2>
+                  <ShoppingCart /> Customer Orders ({activeOrders.length})
+                </h2>
+                <div className="admin-orders-list">
+                  {loading
+                    ? [...Array(3)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="admin-order-item"
+                        style={{ padding: "20px" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <div>
+                            <Skeleton
+                              type="text"
+                              style={{ width: "80px", marginBottom: "10px" }}
+                            />
+                            <Skeleton
+                              type="text"
+                              style={{ width: "150px", height: "24px" }}
+                            />
+                            <Skeleton
+                              type="text"
+                              style={{ width: "200px", marginTop: "10px" }}
+                            />
+                          </div>
+                          <div>
+                            <Skeleton
+                              type="rect"
+                              style={{
+                                width: "100px",
+                                height: "30px",
+                                borderRadius: "20px",
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <Skeleton type="block" style={{ height: "60px" }} />
+                      </div>
+                    ))
+                    : activeOrders.map((order) => (
+                      <div key={order.id} className="admin-order-item">
+                        {/* Existing Order Item Content */}
+                        <div className="order-main-info">
+                          <div className="order-customer">
+                            <span className="order-id">
+                              #{order.orderNumber.toUpperCase()}
+                            </span>
+                            <h4>
+                              {order.customerName || order.userName || "Anonymous"}
+                            </h4>
+                            <p className="order-email">{order.email}</p>
+                            <div className="shipping-info-box">
+                              <p>
+                                <strong>Phone:</strong> {order.phone}
+                              </p>
+                              <p>
+                                <strong>Address:</strong> {order.shippingAddress}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="order-summary">
+                            <div className="payment-status-badge">
+                              <span
+                                className={`badge ${order.paymentMode === "COD"
+                                  ? "badge-gold"
+                                  : "badge-blue"
+                                  }`}
+                              >
+                                {order.paymentMode}
+                              </span>
+                              <span
+                                className={`status-pill ${order.paymentStatus?.toLowerCase()}`}
+                              >
+                                {order.paymentStatus}
+                              </span>
+                            </div>
+
+                            <p>Items: {order.items?.length || 0}</p>
+                            <p className="order-total-price">
+                              ₹{order.totalAmount || order.total}
+                            </p>
+
+                            {/* Payment Update Button for Admin */}
+                            {order.paymentMode === "COD" &&
+                              order.paymentStatus !== "Paid" && (
+                                <button
+                                  className="admin-btn admin-btn-payment"
+                                  onClick={() =>
+                                    updateDoc(doc(db, "orders", order.id), {
+                                      paymentStatus: "Paid",
+                                    })
+                                  }
+                                >
+                                  <Check size={14} />
+                                  <span>Mark as Paid</span>
+                                </button>
+                              )}
+                          </div>
+                        </div>
+
+                        <div className="status-management">
+                          <p className="status-label">Update Shipment Progress:</p>
+                          <div className="status-buttons">
+                            {[
+                              { label: "Order Placed", icon: <Box size={14} /> },
+                              { label: "Shipped", icon: <Truck size={14} /> },
+                              {
+                                label: "Out for Delivery",
+                                icon: <Truck size={14} />,
+                              },
+                              {
+                                label: "Delivered",
+                                icon: <CheckCircle size={14} />,
+                              },
+                            ].map((status) => (
+                              <button
+                                key={status.label}
+                                className={`status-btn ${order.status === status.label ? "btn-active" : ""
+                                  }`}
+                                onClick={() => updateStatus(order.id, status.label)}
+                              >
+                                {status.icon} {status.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                      <div className="order-summary">
-                        <div className="payment-status-badge">
-                          <span
-                            className={`badge ${order.paymentMode === "COD"
-                              ? "badge-gold"
-                              : "badge-blue"
-                              }`}
-                          >
-                            {order.paymentMode}
-                          </span>
-                          <span
-                            className={`status-pill ${order.paymentStatus?.toLowerCase()}`}
-                          >
-                            {order.paymentStatus}
-                          </span>
-                        </div>
-
-                        <p>Items: {order.items?.length || 0}</p>
-                        {/* ... items detail ... */}
-
-                        <p className="order-total-price">
-                          ₹{order.totalAmount || order.total}
-                        </p>
-
-                        {/* NEW: Payment Update Button for Admin */}
-                        {order.paymentMode === "COD" &&
-                          order.paymentStatus !== "Paid" && (
-                            <button
-                              className="admin-btn admin-btn-payment"
-                              onClick={() =>
-                                updateDoc(doc(db, "orders", order.id), {
-                                  paymentStatus: "Paid",
-                                })
-                              }
-                            >
-                              <Check size={14} />
-                              <span>Mark as Paid</span>
-                            </button>
-                          )}
-                      </div>
-                    </div>
-
-                    <div className="status-management">
-                      <p className="status-label">Update Shipment Progress:</p>
-                      <div className="status-buttons">
-                        {[
-                          { label: "Order Placed", icon: <Box size={14} /> },
-                          { label: "Shipped", icon: <Truck size={14} /> },
-                          {
-                            label: "Out for Delivery",
-                            icon: <Truck size={14} />,
-                          },
-                          {
-                            label: "Delivered",
-                            icon: <CheckCircle size={14} />,
-                          },
-                        ].map((status) => (
-                          <button
-                            key={status.label}
-                            className={`status-btn ${order.status === status.label ? "btn-active" : ""
-                              }`}
-                            onClick={() => updateStatus(order.id, status.label)}
-                          >
-                            {status.icon} {status.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    ))}
+                </div>
               </div>
+
+              {/* Cancelled Orders Section */}
+              {cancelledOrders.length > 0 && (
+                <div className="admin-card full-width cancelled-orders-section">
+                  <h2>
+                    <X className="text-red-600" /> Cancelled Orders ({cancelledOrders.length})
+                  </h2>
+                  <div className="admin-orders-list">
+                    {cancelledOrders.map((order) => (
+                      <div key={order.id} className="admin-order-item cancelled-order-card">
+                        <div className="order-main-info">
+                          <div className="order-customer">
+                            <span className="order-id">
+                              #{order.orderNumber.toUpperCase()}
+                            </span>
+                            <h4>
+                              {order.customerName || order.userName || "Anonymous"}
+                            </h4>
+                            <p className="order-email">{order.email}</p>
+                            <div className="cancelled-meta">
+                              <div className="meta-row">
+                                <span className="meta-label">Cancelled At:</span>
+                                <span className="meta-value">
+                                  {order.cancelledAt?.toDate().toLocaleString()}
+                                </span>
+                              </div>
+                              <div className="meta-row">
+                                <span className="meta-label">Payment ID:</span>
+                                <span className="meta-value">
+                                  {order.paymentId || "N/A"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="order-summary">
+                            <div className="payment-status-badge">
+                              <span className="badge badge-red">Cancelled</span>
+                              <span className="badge badge-blue">
+                                {order.paymentMode}
+                              </span>
+                            </div>
+
+                            <p className="order-total-price">
+                              ₹{order.totalAmount || order.total}
+                            </p>
+
+                            {/* Refund Toggle */}
+                            <div className="refund-control">
+                              <span className="refund-label">Refund Status:</span>
+                              <button
+                                className={`status-pill ${order.refundStatus === "Refunded"
+                                  ? "approved"
+                                  : "pending"
+                                  }`}
+                                onClick={() =>
+                                  toggleRefundStatus(
+                                    order.id,
+                                    order.refundStatus || "Pending",
+                                  )
+                                }
+                              >
+                                {order.refundStatus || "Pending"}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div
               className="admin-card glass-morph full-width"
@@ -931,7 +1086,7 @@ export default function AdminPanel() {
                 </table>
               </div>
             </div>
-          </div>
+          </>
         )}
 
         {/* Edit Modal */}
@@ -1371,90 +1526,92 @@ export default function AdminPanel() {
         )}
       </div>
 
-      {editingProd && (
-        <div className="edit-overlay">
-          <div className="admin-card edit-modal glass-morph">
-            <div className="modal-header">
-              <h2>
-                <Edit3 /> Edit: {editingProd.name}
-              </h2>
-              <button
-                onClick={() => setEditingProd(null)}
-                className="close-btn"
-              >
-                <X />
-              </button>
-            </div>
-            <form onSubmit={handleUpdateProduct} className="edit-form-scroll">
-              <div className="form-row">
-                <input
-                  value={editingProd.name}
-                  onChange={(e) =>
-                    setEditingProd({ ...editingProd, name: e.target.value })
-                  }
-                />
-                <input
-                  value={editingProd.price}
-                  onChange={(e) =>
-                    setEditingProd({ ...editingProd, price: e.target.value })
-                  }
-                />
-                <input
-                  placeholder="Original Price (MRP)"
-                  value={editingProd.originalPrice || ""}
+      {
+        editingProd && (
+          <div className="edit-overlay">
+            <div className="admin-card edit-modal glass-morph">
+              <div className="modal-header">
+                <h2>
+                  <Edit3 /> Edit: {editingProd.name}
+                </h2>
+                <button
+                  onClick={() => setEditingProd(null)}
+                  className="close-btn"
+                >
+                  <X />
+                </button>
+              </div>
+              <form onSubmit={handleUpdateProduct} className="edit-form-scroll">
+                <div className="form-row">
+                  <input
+                    value={editingProd.name}
+                    onChange={(e) =>
+                      setEditingProd({ ...editingProd, name: e.target.value })
+                    }
+                  />
+                  <input
+                    value={editingProd.price}
+                    onChange={(e) =>
+                      setEditingProd({ ...editingProd, price: e.target.value })
+                    }
+                  />
+                  <input
+                    placeholder="Original Price (MRP)"
+                    value={editingProd.originalPrice || ""}
+                    onChange={(e) =>
+                      setEditingProd({
+                        ...editingProd,
+                        originalPrice: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="number"
+                    value={editingProd.stock}
+                    onChange={(e) =>
+                      setEditingProd({ ...editingProd, stock: e.target.value })
+                    }
+                  />
+                  <input
+                    value={editingProd.img}
+                    onChange={(e) =>
+                      setEditingProd({ ...editingProd, img: e.target.value })
+                    }
+                  />
+                </div>
+
+                <label>Gallery Normal (Comma Separated)</label>
+                <textarea
+                  value={editingProd.galleryNormal?.join(",")}
                   onChange={(e) =>
                     setEditingProd({
                       ...editingProd,
-                      originalPrice: e.target.value,
+                      galleryNormal: e.target.value.split(","),
                     })
                   }
                 />
-              </div>
-              <div className="form-row">
-                <input
-                  type="number"
-                  value={editingProd.stock}
+
+                <label>Gallery PNG (Comma Separated)</label>
+                <textarea
+                  value={editingProd.galleryPNG?.join(",")}
                   onChange={(e) =>
-                    setEditingProd({ ...editingProd, stock: e.target.value })
+                    setEditingProd({
+                      ...editingProd,
+                      galleryPNG: e.target.value.split(","),
+                    })
                   }
                 />
-                <input
-                  value={editingProd.img}
-                  onChange={(e) =>
-                    setEditingProd({ ...editingProd, img: e.target.value })
-                  }
-                />
-              </div>
 
-              <label>Gallery Normal (Comma Separated)</label>
-              <textarea
-                value={editingProd.galleryNormal?.join(",")}
-                onChange={(e) =>
-                  setEditingProd({
-                    ...editingProd,
-                    galleryNormal: e.target.value.split(","),
-                  })
-                }
-              />
-
-              <label>Gallery PNG (Comma Separated)</label>
-              <textarea
-                value={editingProd.galleryPNG?.join(",")}
-                onChange={(e) =>
-                  setEditingProd({
-                    ...editingProd,
-                    galleryPNG: e.target.value.split(","),
-                  })
-                }
-              />
-
-              <button type="submit" className="admin-btn update">
-                <Save size={18} /> Update Product
-              </button>
-            </form>
+                <button type="submit" className="admin-btn update">
+                  <Save size={18} /> Update Product
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }

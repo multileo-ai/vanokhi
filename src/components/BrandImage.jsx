@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import "./BrandImage.css";
+import Skeleton from "./common/Skeleton";
 
 export default function BrandImage({ scrollToCategory }) {
   const [heroData, setHeroData] = useState({
@@ -32,7 +33,29 @@ export default function BrandImage({ scrollToCategory }) {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <div className="hero-loader"></div>;
+  if (loading)
+    return (
+      <section className="brand-image-outer2" style={{ background: "#f0f0f0" }}>
+        <div className="brand-image-viewport2">
+          <Skeleton type="block" style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }} />
+          <div style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 2,
+            width: "300px",
+            height: "100px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <Skeleton type="text" style={{ width: "200px", height: "40px" }} />
+          </div>
+        </div>
+      </section>
+    );
+
   return (
     <section className="brand-image-outer2" aria-label="Brand image">
       <div

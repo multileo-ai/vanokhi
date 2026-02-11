@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./CollectionPage.css";
 import AverageRating from "./AverageRating";
+import Skeleton from "./common/Skeleton";
 
 const CollectionPage = () => {
   const [expanded, setExpanded] = useState(null);
@@ -24,36 +25,45 @@ const CollectionPage = () => {
 
       {/* 2. Main Vertical Snap Scroll Container */}
       <div className="cp-snap-container">
-        {liveCollections.map((col) => (
-          <div
-            key={col.id}
-            className="cp-section"
-            onClick={() => setExpanded(col)}
-          >
-            <div className="cp-bg-wrapper">
-              <img src={col.img} alt={col.title} />
+        {liveCollections.length === 0
+          ? [...Array(3)].map((_, i) => (
+            <div key={i} className="cp-section">
+              <Skeleton
+                type="block"
+                style={{ width: "100%", height: "100%" }}
+              />
             </div>
-            <div className="cp-content">
-              <motion.h2
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-              >
-                {col.title}
-              </motion.h2>
-              <p
-                style={{
-                  fontSize: "0.8rem",
-                  letterSpacing: "3px",
-                  textTransform: "uppercase",
-                  fontStyle: "normal",
-                  marginTop: "20px",
-                }}
-              >
-                Explore Collection
-              </p>
+          ))
+          : liveCollections.map((col) => (
+            <div
+              key={col.id}
+              className="cp-section"
+              onClick={() => setExpanded(col)}
+            >
+              <div className="cp-bg-wrapper">
+                <img src={col.img} alt={col.title} />
+              </div>
+              <div className="cp-content">
+                <motion.h2
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                >
+                  {col.title}
+                </motion.h2>
+                <p
+                  style={{
+                    fontSize: "0.8rem",
+                    letterSpacing: "3px",
+                    textTransform: "uppercase",
+                    fontStyle: "normal",
+                    marginTop: "20px",
+                  }}
+                >
+                  Explore Collection
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* 3. Expanded Overlay Animation */}

@@ -8,8 +8,13 @@ import {
   where,
   orderBy,
   onSnapshot,
+  updateDoc,
+  doc,
+  serverTimestamp,
 } from "firebase/firestore";
-import "./OrdersPage.css";
+import Skeleton from "./common/Skeleton";
+
+// ... existing imports
 
 const OrdersPage = () => {
   const { currentUser } = useAuth();
@@ -17,38 +22,59 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!currentUser) return;
+  // ... useEffect ...
 
-    const q = query(
-      collection(db, "orders"),
-      where("userId", "==", currentUser.uid),
-      orderBy("createdAt", "desc"),
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const ordersData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setOrders(ordersData);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [currentUser]);
-
-  const getStatusStep = (status) => {
-    const steps = ["Order Placed", "Shipped", "Out for Delivery", "Delivered"];
-    const index = steps.indexOf(status);
-    return index === -1 ? 0 : index;
-  };
+  // ... helpers ...
 
   if (loading)
     return (
-      <div className="loading-screen">
-        <div className="loader-text">VANOKHI</div>
-        <p>Curating your history...</p>
+      <div className="orders-wrapper">
+        <header className="hero-header">
+          <Skeleton
+            type="title"
+            style={{ width: "200px", margin: "0 auto 10px" }}
+          />
+          <div className="hero-line"></div>
+          <Skeleton
+            type="text"
+            style={{ width: "300px", margin: "10px auto" }}
+          />
+        </header>
+
+        <div className="orders-feed">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="premium-order-card"
+              style={{ padding: "2rem" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "1rem",
+                }}
+              >
+                <Skeleton type="text" style={{ width: "120px" }} />
+                <Skeleton type="text" style={{ width: "80px" }} />
+              </div>
+              <Skeleton
+                type="block"
+                style={{ height: "100px", marginBottom: "1rem" }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "auto",
+                }}
+              >
+                <Skeleton type="text" style={{ width: "150px" }} />
+                <Skeleton type="rect" style={{ width: "100px", height: "35px", borderRadius: "20px" }} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
 
@@ -75,7 +101,11 @@ const OrdersPage = () => {
       ) : (
         <div className="orders-feed">
           {orders.map((order) => (
-            <div key={order.id} className="premium-order-card">
+            <div
+              key={order.id}
+              className={`premium-order-card ${order.status === "Cancelled" ? "order-cancelled" : ""
+                }`}
+            >
               {/* Top Banner: Order Meta */}
               <div className="card-meta-bar">
                 <div className="meta-left">
@@ -129,40 +159,69 @@ const OrdersPage = () => {
               <div className="card-action-area">
                 <div className="tracking-wrapper">
                   <div className="tracking-status-label">
-                    Current Status: <strong>{order.status}</strong>
+                    Current Status:{" "}
+                    <strong
+                      className={
+                        order.status === "Cancelled" ? "status-cancelled" : ""
+                      }
+                    >
+                      {order.status}
+                    </strong>
                   </div>
 
-                  <div className="tracker-container">
-                    <div className="modern-tracker">
-                      {/* The background line */}
-                      <div className="tracker-bg-line"></div>
-                      {/* The active progress line */}
-                      <div
-                        className="progress-line"
-                        style={{
-                          width: `${(getStatusStep(order.status) / 3) * 100}%`,
-                        }}
-                      ></div>
-
-                      {["Placed", "Shipped", "Transit", "Arrived"].map(
-                        (step, idx) => (
-                          <div
-                            key={step}
-                            className={`step-dot ${idx <= getStatusStep(order.status) ? "active" : ""
-                              }`}
-                          >
-                            <div className="dot-core"></div>
-                            <span className="step-text">{step}</span>
-                          </div>
-                        ),
+                  {order.status === "Cancelled" ? (
+                    <div className="cancelled-message">
+                      <p>This order has been cancelled.</p>
+                      {order.paymentMode === "Online" && (
+                        <small>
+                          Refund will be processed within 5-7 business days.
+                        </small>
                       )}
                     </div>
-                  </div>
+                  ) : (
+                    <div className="tracker-container">
+                      <div className="modern-tracker">
+                        {/* The background line */}
+                        <div className="tracker-bg-line"></div>
+                        {/* The active progress line */}
+                        <div
+                          className="progress-line"
+                          style={{
+                            width: `${(getStatusStep(order.status) / 3) * 100}%`,
+                          }}
+                        ></div>
+
+                        {["Placed", "Shipped", "Transit", "Arrived"].map(
+                          (step, idx) => (
+                            <div
+                              key={step}
+                              className={`step-dot ${idx <= getStatusStep(order.status)
+                                ? "active"
+                                : ""
+                                }`}
+                            >
+                              <div className="dot-core"></div>
+                              <span className="step-text">{step}</span>
+                            </div>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="order-summary">
                   <span className="summary-label">Invoice Total</span>
                   <span className="summary-amount">₹{order.total}</span>
+
+                  {order.status === "Order Placed" && (
+                    <button
+                      className="cancel-order-btn"
+                      onClick={() => handleCancelOrder(order.id)}
+                    >
+                      Cancel Order
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
