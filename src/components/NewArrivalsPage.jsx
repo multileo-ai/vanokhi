@@ -18,6 +18,9 @@ const NewArrivalsPage = () => {
   // Image loading state
   const [bannerLoaded, setBannerLoaded] = React.useState(false);
 
+  // Derive loading state from products availability
+  const isLoading = !liveProducts || liveProducts.length === 0;
+
   // Combined loading state: Products must be ready AND banner must be loaded
   const isPageReady = !isLoading && bannerLoaded;
 
