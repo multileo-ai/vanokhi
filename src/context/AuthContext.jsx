@@ -39,49 +39,21 @@ export function AuthProvider({ children }) {
 
   // 1. Sync Products, Collections, and Auth in Real-time
   useEffect(() => {
-    // Real-time listener for Products
-    const unsubProds = onSnapshot(
-      collection(db, "products"),
-      (snapshot) => {
-        const prods = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setLiveProducts(prods);
-      },
-      (error) => {
-        console.error("Error fetching products:", error);
-      },
-    );
-
-    // Real-time listener for Collections
-    const unsubColls = onSnapshot(
-      collection(db, "collections"),
-      (snapshot) => {
-        const colls = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setLiveCollections(colls);
-      },
-      (error) => {
-        console.error("Error fetching collections:", error);
-      },
-    );
-
-    let unsubUserDoc = null;
+    let unsubProds = () => { };
+    let unsubColls = () => { };
+    let unsubUserDoc = () => { };
 
     // Listener for Auth State and User Profile
     const unsubAuth = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
 
-      // Cleanup previous user listener if it exists
-      if (unsubUserDoc) {
-        unsubUserDoc();
-        unsubUserDoc = null;
-      }
+      // Cleanup previous listeners
+      unsubUserDoc();
+      unsubProds();
+      unsubColls();
 
       if (user) {
+        // User is logged in
         const userDocRef = doc(db, "users", user.uid);
 
         unsubUserDoc = onSnapshot(
@@ -103,21 +75,54 @@ export function AuthProvider({ children }) {
           (error) => {
             console.warn(
               "User profile listener blocked or failed:",
-              error.message,
+              error.message
             );
+          }
+        );
+
+        // Fetch Products (Only if logged in to avoid permission errors)
+        unsubProds = onSnapshot(
+          collection(db, "products"),
+          (snapshot) => {
+            const prods = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setLiveProducts(prods);
           },
+          (error) => {
+            console.error("Error fetching products:", error);
+          }
+        );
+
+        // Fetch Collections (Only if logged in)
+        unsubColls = onSnapshot(
+          collection(db, "collections"),
+          (snapshot) => {
+            const colls = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setLiveCollections(colls);
+          },
+          (error) => {
+            console.error("Error fetching collections:", error);
+          }
         );
       } else {
+        // User is logged out
         setUserData({ cart: [], wishlist: [], profile: {}, isAdmin: false });
+        setLiveProducts([]);
+        setLiveCollections([]);
       }
       setLoading(false);
     });
 
     return () => {
+      unsubAuth();
       unsubProds();
       unsubColls();
-      unsubAuth();
-      if (unsubUserDoc) unsubUserDoc();
+      unsubUserDoc();
     };
   }, []);
 

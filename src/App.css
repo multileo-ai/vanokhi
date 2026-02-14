@@ -1,76 +1,21 @@
-@font-face {
-  font-family: "Arya";
-  src: url(/fonts/Arya-Bold.woff) format("woff"),
-    url(/fonts/Arya-Regular.woff) format("woff");
-  font-weight: bold, normal;
-}
+/* App-specific styles */
+/* Note: Global fonts and resets valid in index.css */
 
-@font-face {
-  font-family: "LibreFranklin";
-  src: url(/fonts/LibreFranklin-VariableFont_wght.ttf) format("truetype"),
-    url(/fonts/LibreFranklin-Italic-VariableFont_wght.ttf) format("truetype");
-  font-style: normal, italic;
-}
-
-@font-face {
-  font-family: "VanokhiSerif";
-  src: url(/fonts/Carina.ttf);
-}
-
-/* 2. Apply Arya to all Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.nav-logo,
-.footer-column h3 {
-  font-family: "Arya", serif;
-  font-weight: normal; /* Display fonts often look best without bold added */
-}
-
-/* Keep VanokhiSerif for Vanokhi logo */
 .vanokhi-logo {
   font-family: "VanokhiSerif", serif !important;
-}
-
-/* 1. Ensure the Font is Defined (You likely already have this) */
-
-/* 2. Apply Montserrat to Body Text Elements */
-body,
-p,
-span,
-a,
-li,
-button,
-input,
-textarea,
-.vanokhi-tagline,
-.footer-column ul li,
-.badge-text {
-  font-family: "LibreFranklin", sans-serif;
-  letter-spacing: 0.02em; /* Slight spacing makes it look more "high-end" */
-  color: inherit; /* Added: Forces links to use the parent's text color */
-  text-decoration: none; /* Added: Removes the default underline */
-}
-
-/* 3. OPTIONAL: Make paragraph text slightly lighter for that "cool" aesthetic */
-p {
-  font-weight: 400; /* Regular */
-  line-height: 1.6; /* More breathing room */
-  opacity: 0.9; /* Soften the black slightly */
 }
 
 /* Existing line class (example name: .divider-line or hr) */
 hr,
 .divider-line {
   border: none;
-  border-bottom: 1px solid #000; /* Original black line */
+  border-bottom: 1px solid #000;
+  /* Original black line */
 }
 
 /* FIX 1 & 2: Handle Dark Mode and Reduce Stroke */
 @media (prefers-color-scheme: dark) {
+
   hr,
   .divider-line {
     /* Change black to a light gray or white for visibility */
@@ -80,46 +25,16 @@ hr,
 
 /* FIX 2: Reduce stroke width specifically on mobile if needed */
 @media (max-width: 768px) {
+
   hr,
   .divider-line {
-    border-bottom-width: 0.5px !important; /* Thinner line "stroke kam kro" */
+    border-bottom-width: 0.5px !important;
+    /* Thinner line */
   }
-}
-
-:root {
-  --navbar-reserve: 120px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  user-select: none;
-}
-
-html,
-body {
-  width: 100%;
-  /* Change height: 100% to min-height: 100% */
-  min-height: 100%;
-  margin: 0;
-  padding: 0 !important;
-
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-img,
-picture,
-video {
-  /* max-width: 100%; */
-  height: auto;
-  display: block;
 }
 
 .app {
   width: 100%;
-  /* Remove min-height: 100vh to let content define height */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -131,16 +46,15 @@ video {
   padding-top: 0 !important;
 }
 
-/* src/App.css */
+/* App.css Rest of file... */
 
 @media (max-width: 480px) {
-  :root {
-    --navbar-reserve: 64px;
+  /* :root and html font-size moved to index.css */
+
+  .vanokhi-footer {
+    padding: 3rem 1.5rem 1.5rem;
   }
 
-  html {
-    font-size: 14px;
-  }
 
   .vanokhi-footer {
     padding: 3rem 1.5rem 1.5rem;
@@ -182,9 +96,11 @@ video {
 }
 
 .bgbanner {
-  position: fixed; /* Changed from absolute to fixed */
+  position: fixed;
+  /* Changed from absolute to fixed */
   width: 100vw;
-  height: 100vh; /* Ensure it covers the full viewport */
+  height: 100vh;
+  /* Ensure it covers the full viewport */
   object-fit: cover;
   z-index: -1;
   top: 0;
@@ -195,9 +111,11 @@ video {
 }
 
 .bgbanner1 {
-  position: fixed; /* Changed from absolute to fixed */
+  position: fixed;
+  /* Changed from absolute to fixed */
   width: 100vw;
-  height: 100vh; /* Ensure it covers the full viewport */
+  height: 100vh;
+  /* Ensure it covers the full viewport */
   object-fit: cover;
   object-position: center;
   z-index: -1;
@@ -215,22 +133,22 @@ video {
   transform: translateX(-50%);
   width: 300px;
   height: 300px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.15),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(255, 255, 255, 0.15),
+      transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   animation: slowPulse 8s infinite ease-in-out;
 }
 
 @keyframes slowPulse {
+
   0%,
   100% {
     opacity: 0.4;
     transform: translateX(-50%) scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: translateX(-50%) scale(1.1);
@@ -357,12 +275,10 @@ video {
 /* ---- Footer Bottom ---- */
 .footer-line {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(217, 197, 170, 0.4),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(217, 197, 170, 0.4),
+      transparent);
   margin: 2rem 0 0.5rem;
   z-index: 2;
   position: relative;
@@ -493,21 +409,27 @@ video {
 
 
 html::-webkit-scrollbar {
-  width: 8px; /* Slightly wider than the cart for easier main-page navigation */
+  width: 8px;
+  /* Slightly wider than the cart for easier main-page navigation */
 }
 
 html::-webkit-scrollbar-track {
-  background: #faf9f6; /* Off-white background matching your theme */
+  background: #faf9f6;
+  /* Off-white background matching your theme */
 }
 
 html::-webkit-scrollbar-thumb {
-  background: #860204; /* Vanokhi Signature Red */
-  border-radius: 0; /* Squared edges for a more high-fashion, editorial look */
-  border: 2px solid #faf9f6; /* Creates a padding effect around the thumb */
+  background: #860204;
+  /* Vanokhi Signature Red */
+  border-radius: 0;
+  /* Squared edges for a more high-fashion, editorial look */
+  border: 2px solid #faf9f6;
+  /* Creates a padding effect around the thumb */
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background: #5a0102; /* Darker red on hover */
+  background: #5a0102;
+  /* Darker red on hover */
 }
 
 /* For Firefox */
@@ -517,6 +439,7 @@ html::-webkit-scrollbar-thumb:hover {
     scrollbar-width: thin;
   }
 }
+
 /* Loading Spinner for Suspense Fallback */
 .loading-spinner {
   display: flex;

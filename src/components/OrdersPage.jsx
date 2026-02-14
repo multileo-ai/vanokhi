@@ -13,6 +13,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Skeleton from "./common/Skeleton";
+import "./OrdersPage.css";
 
 // ... existing imports
 
@@ -22,9 +23,67 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ... useEffect ...
+  useEffect(() => {
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
 
-  // ... helpers ...
+    const ordersQuery = query(
+      collection(db, "orders"),
+      where("userId", "==", currentUser.uid),
+      orderBy("createdAt", "desc") // Ensure you have an index for this if needed
+    );
+
+    const unsubscribe = onSnapshot(
+      ordersQuery,
+      (snapshot) => {
+        const ordersData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setOrders(ordersData);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  const getStatusStep = (status) => {
+    switch (status) {
+      case "Order Placed":
+        return 0;
+      case "Shipped":
+        return 1;
+      case "Out for Delivery": // Or 'Transit' depending on your exact string
+      case "In Transit":
+        return 2;
+      case "Delivered":
+      case "Arrived":
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+
+    try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, {
+        status: "Cancelled",
+        updatedAt: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+    }
+  };
 
   if (loading)
     return (

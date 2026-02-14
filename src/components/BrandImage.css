@@ -8,7 +8,8 @@
 
 .brand-image-viewport2 {
   /* This area overlays the site background (banner) */
-  min-height: 100vh; /* adjust to taste (was 100vh previously) */
+  min-height: 100vh;
+  /* adjust to taste (was 100vh previously) */
   width: 100%;
   display: flex;
   align-items: center;
@@ -36,7 +37,7 @@
 .hero-center-badge2 {
   position: absolute;
   bottom: 20%;
-  left: 50% - 50px;
+  left: calc(50% - 50px);
   z-index: 2;
   display: inline-flex;
   align-items: center;
@@ -60,12 +61,15 @@
   text-transform: uppercase;
   margin: 0;
 }
+
 /* --- Mobile tweaks: lift badge and improve legibility --- */
 @media (max-width: 768px) {
   .hero-center-badge2 {
-    bottom: 30%; /* lift badge higher on smaller screens */
+    bottom: 30%;
+    /* lift badge higher on smaller screens */
     padding: 10px 32px;
   }
+
   .badge-text2 {
     font-size: 1.6rem;
     letter-spacing: 3px;
@@ -74,9 +78,11 @@
 
 @media (max-width: 480px) {
   .hero-center-badge2 {
-    bottom: 35%; /* extra lift for narrow viewports */
+    bottom: 35%;
+    /* extra lift for narrow viewports */
     padding: 8px 24px;
   }
+
   .badge-text2 {
     font-size: 1.4rem;
     letter-spacing: 2px;

@@ -25,12 +25,15 @@ export default function BrandImage({ scrollToCategory }) {
         setLoading(false);
       },
       (error) => {
-        console.error("Error fetching hero data:", error);
+        // Suppress or log error without crashing
+        console.warn("BrandImage Hero Listener:", error.message);
         setLoading(false);
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   if (loading)

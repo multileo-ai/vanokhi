@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import "./App.css";
 import { db } from "./firebase"; // Adjust path to your firebase config file
 import { doc, onSnapshot } from "firebase/firestore";
+import { useAuth } from "./context/AuthContext";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -110,6 +111,7 @@ function AppContent() {
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
 
+
   useEffect(() => {
     const heroDocRef = doc(db, "siteSettings", "hero");
 
@@ -126,16 +128,12 @@ function AppContent() {
       (error) => {
         // Log the error instead of letting it bubble up and trigger an assertion failure
         console.error("Firestore Hero Listener failed:", error.message);
-      },
+      }
     );
 
-    return () => {
-      // Immediate cleanup to prevent listener firing during unmount
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
-  // Removed scroll event listener to fix layout thrashing based on IntersectionObserver plan
 
 
   return (
@@ -309,6 +307,7 @@ function AppContent() {
 }
 
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   return (
@@ -316,6 +315,7 @@ function App() {
       <ScrollToTop />
       <AppContent />
       <Analytics />
+      <SpeedInsights />
     </Router>
   );
 }
