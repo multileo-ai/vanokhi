@@ -46,6 +46,10 @@
   /* Added top padding to clear navbar */
   min-height: calc(100vh - 120px);
   margin-top: 4rem;
+  max-width: 1440px;
+  /* Constrain width on large screens */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .sizes {
@@ -173,34 +177,23 @@
   position: relative;
   border-radius: 30px;
   overflow: hidden;
-  height: 65vh;
-  /* Maintain user's height preference */
-  width: auto;
-  /* Let width follow aspect ratio */
-  /* Allow width to scale */
+  /* height: 65vh; REMOVED to let aspect-ratio dictate height, eliminating whitespace */
+  width: 100%;
+  aspect-ratio: 3/4;
+  /* Move aspect ratio to container */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  /* Soft shadow for depth */
 }
 
 .mainImage img {
   width: 100%;
   height: 100%;
-  background: #f8f8f8;
-  /* Placeholder color before load */
   aspect-ratio: 3/4;
-  /* Changed from 16/9 to match vertical product images usually found in fashion */
-  border-radius: 30px;
-  /* Widescreen format */
-  /* object-fit: contain; */
-  /* Ensure no distortion */
-  object-fit: contain !important;
-  /* object-position: top !important; */
-  /* Ensure no cropping */
+  object-fit: cover !important;
+  /* Forces image to fill the box without whitespace */
   display: block;
   border-radius: 30px;
   transition: opacity 240ms ease;
   background: #f8f8f8;
-  /* Subtle background for letterboxing if needed */
 }
 
 .thumbs {
@@ -746,8 +739,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 7rem;
-  margin: 3.5rem 6rem 6rem;
+  margin: 3.5rem auto 6rem;
+  /* Auto margins for centering */
+  padding: 0 6rem;
+  /* Move side margins to padding for consistency */
   align-items: start;
+  max-width: 1440px;
 }
 
 /* Make your existing review section fit the 50% width */

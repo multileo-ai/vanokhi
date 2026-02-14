@@ -8,6 +8,8 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import {
   onAuthStateChanged,
@@ -99,6 +101,13 @@ export function AuthProvider({ children }) {
             id: doc.id,
             ...doc.data(),
           }));
+          // Sort client-side to be safe and consistent
+          // Assuming createdAt is a Firestore Timestamp or similar
+          prods.sort((a, b) => {
+            const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+            const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+            return timeB - timeA; // Descending
+          });
           setLiveProducts(prods);
         },
         (error) => {
@@ -114,6 +123,12 @@ export function AuthProvider({ children }) {
             id: doc.id,
             ...doc.data(),
           }));
+          // Sort client-side
+          colls.sort((a, b) => {
+            const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+            const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+            return timeB - timeA;
+          });
           setLiveCollections(colls);
         },
         (error) => {

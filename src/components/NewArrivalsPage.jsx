@@ -25,7 +25,7 @@ const NewArrivalsPage = () => {
   const isPageReady = !isLoading && bannerLoaded;
 
   // Get the latest products
-  const products = [...liveProducts].reverse().slice(0, 9);
+  const products = [...liveProducts].slice(0, 9);
 
   return (
     <div className="na-main-wrapper">

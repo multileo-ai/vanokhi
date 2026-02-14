@@ -91,85 +91,83 @@ const CollectionPage = () => {
 
             {/* Dynamic Product Grid */}
             <div className="cp-grid">
-              {expanded.productIds?.map((pid) => {
-                const item = liveProducts.find((p) => p.id === pid);
-                if (!item) return null;
+              {liveProducts
+                .filter((p) => expanded.productIds?.includes(p.id))
+                .map((item) => {
+                  const isOutOfStock = item.stock === 0;
+                  const isInWishlist = userData?.wishlist?.some(
+                    (w) => w.id === item.id,
+                  );
 
-                const isOutOfStock = item.stock === 0;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`cp-product-card ${isOutOfStock ? "out-of-stock" : ""
+                        }`}
+                    >
+                      <div className="cp-img-container">
+                        <Link to={`/product/${item.id}`}>
+                          <img
+                            src={item.img}
+                            alt={item.name}
+                            loading="lazy" // Adds native lazy loading
+                            decoding="async" // Helps prevent animation lag during decode
+                          />
+                        </Link>
 
-                const isInWishlist = userData?.wishlist?.some(
-                  (w) => w.id === item.id,
-                );
-
-                return (
-                  <div
-                    key={item.id}
-                    className={`cp-product-card ${isOutOfStock ? "out-of-stock" : ""
-                      }`}
-                  >
-                    <div className="cp-img-container">
-                      <Link to={`/product/${item.id}`}>
-                        <img
-                          src={item.img}
-                          alt={item.name}
-                          loading="lazy" // Adds native lazy loading
-                          decoding="async" // Helps prevent animation lag during decode
-                        />
-                      </Link>
-
-                      {/* <div className="cp-rating-tag">
+                        {/* <div className="cp-rating-tag">
                         <Star size={12} fill="#860204" color="#860204" />
                       </div> */}
-                      <AverageRating productId={item.id} />
+                        <AverageRating productId={item.id} />
 
-                      <div className="cp-product-actions">
-                        <button
-                          className={`action-btn wishlist ${isInWishlist ? "active" : ""
-                            }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addToWishlist(item);
-                          }}
-                        >
-                          <Heart
-                            size={18}
-                            fill={isInWishlist ? "#860204" : "none"}
-                            color={isInWishlist ? "#860204" : "currentColor"}
-                          />
-                        </button>
-                        <button
-                          className="action-btn cart"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addToCart(
-                              item,
-                              "M",
-                              item.colors ? item.colors[0] : null,
-                            );
-                          }}
-                        >
-                          <ShoppingBag size={18} /> Add to Bag
-                        </button>
+                        <div className="cp-product-actions">
+                          <button
+                            className={`action-btn wishlist ${isInWishlist ? "active" : ""
+                              }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToWishlist(item);
+                            }}
+                          >
+                            <Heart
+                              size={18}
+                              fill={isInWishlist ? "#860204" : "none"}
+                              color={isInWishlist ? "#860204" : "currentColor"}
+                            />
+                          </button>
+                          <button
+                            className="action-btn cart"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToCart(
+                                item,
+                                "M",
+                                item.colors ? item.colors[0] : null,
+                              );
+                            }}
+                          >
+                            <ShoppingBag size={18} /> Add to Bag
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="cp-product-info">
+                        <div className="cp-info-header">
+                          <h3 className="global-product-name">{item.name}</h3>
+                        </div>
+                        <div className="global-price-row">
+                          <span className="global-product-price">{item.price}</span>
+                          {item.originalPrice && (
+                            <span className="global-product-price-original">
+                              {item.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                        {/* <AverageRating productId={item.id} /> */}
                       </div>
                     </div>
-
-                    <div className="cp-product-info">
-                      <div className="cp-info-header">
-                        <h3 className="global-product-name">{item.name}</h3>
-                      </div>
-                      <div className="global-price-row">
-                        <span className="global-product-price">{item.price}</span>
-                        {item.originalPrice && (
-                          <span className="global-product-price-original">
-                            {item.originalPrice}
-                          </span>
-                        )}
-                      </div>
-                      {/* <AverageRating productId={item.id} /> */}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </motion.div>
         )}
