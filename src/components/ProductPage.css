@@ -14,10 +14,12 @@
 
 .pdWrapper {
   position: relative;
-  overflow: visible;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
   min-height: 100vh;
   padding: 0 0 40px 0;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .catName {
@@ -39,25 +41,20 @@
 
 .prodMainCont {
   display: grid;
-  grid-template-columns: 80px minmax(320px, 450px) minmax(320px, 1fr);
-  grid-template-areas: "sizes image info";
+  grid-template-columns: 80px minmax(320px, 420px) minmax(320px, 1fr);
   align-items: start;
-  gap: 4rem;
-  /* Replaces manual margins */
-  padding: 140px 4rem 0;
-  /* Reduced padding slightly for safety */
+  gap: 3rem;
+  /* Explicit gap between columns */
+  padding: 140px 5% 0;
+  /* % padding is safer for responsiveness */
+  /* Added top padding to clear navbar */
   min-height: calc(100vh - 120px);
   margin-top: 4rem;
   max-width: 1440px;
   /* Constrain width on large screens */
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .sizes {
-  grid-area: sizes;
   width: 80px;
   display: flex;
   flex-direction: column;
@@ -66,6 +63,8 @@
   margin: 0;
   padding: 0.5rem 0;
   align-self: center;
+  /* keep sizes centered vertically relative to image if desired */
+  /* Or align-self: start; if you want them at top */
 }
 
 .size {
@@ -163,19 +162,17 @@
   }
 }
 
-.descWrapper {
-  grid-area: info;
-}
-
 .gallery {
-  grid-area: image;
   display: grid !important;
+  /* flex-direction: row; */
   align-items: flex-start;
-  gap: 2px;
+  gap: 2rem;
+  /* Reduced gap */
+  /* grid-column: 2; REMOVED: Should be in 3rd column naturally */
   align-self: start;
   margin-top: 4rem;
   margin-left: 0;
-  /* Fixed overflow */
+  /* REMOVED 50px margin, let grid gap handle it */
   width: 100%;
 }
 
