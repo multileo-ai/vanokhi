@@ -80,17 +80,9 @@ const AllProducts = () => {
                 <div className="cp-product-info">
                   <h3>{item.name}</h3>
                   <div className="cp-price-row">
-                    <span className="cp-price">{item.price}</span>
+                    <span className="global-product-price">{item.price}</span>
                     {item.originalPrice && (
-                      <span
-                        className="cp-price original"
-                        style={{
-                          textDecoration: "line-through",
-                          color: "#999",
-                          fontSize: "0.9em",
-                          marginLeft: "8px",
-                        }}
-                      >
+                      <span className="global-product-price-original">
                         {item.originalPrice}
                       </span>
                     )}

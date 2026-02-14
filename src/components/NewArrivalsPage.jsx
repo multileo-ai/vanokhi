@@ -133,16 +133,9 @@ const NewArrivalsPage = () => {
                       alignItems: "center",
                     }}
                   >
-                    <p className="na-item-price">{item.price}</p>
+                    <p className="global-product-price">{item.price}</p>
                     {item.originalPrice && (
-                      <p
-                        className="na-item-price original"
-                        style={{
-                          textDecoration: "line-through",
-                          color: "#999",
-                          fontSize: "0.9em",
-                        }}
-                      >
+                      <p className="global-product-price-original">
                         {item.originalPrice}
                       </p>
                     )}
