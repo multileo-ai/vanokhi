@@ -975,9 +975,13 @@
   grid-column: 3;
 }
 
+.mainImage {
+  width: 20vw;
+}
+
 .mainImage img {
   height: 100vh;
-  object-fit: cover;
+  object-fit: contain !important;
   transform: translateY(-20%);
 }
 
