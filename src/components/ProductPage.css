@@ -43,13 +43,13 @@
   display: grid;
   grid-template-columns: 80px minmax(320px, 420px) minmax(320px, 1fr);
   align-items: start;
-  gap: 3rem;
+  gap: 40px;
   /* Explicit gap between columns */
-  padding: 140px 5% 0;
+  padding: 140px 5% 0 20px;
   /* % padding is safer for responsiveness */
   /* Added top padding to clear navbar */
   min-height: calc(100vh - 120px);
-  margin-top: 4rem;
+  margin-top: 2rem;
   max-width: 1440px;
   /* Constrain width on large screens */
 }
@@ -617,6 +617,10 @@
     /* Hide massive text to save space */
   }
 
+  .reviewList {
+    margin-left: 0;
+  }
+
   .prodMainCont {
     display: flex;
     flex-direction: column;
@@ -964,7 +968,7 @@
 }
 
 .prodDesc {
-  margin: 18rem 100px 0;
+  margin: 18rem -30px 40px;
   align-self: start;
 }
 
@@ -977,6 +981,7 @@
 
 .mainImage {
   width: 20vw;
+  height: 65vh;
 }
 
 .mainImage img {

@@ -44,6 +44,7 @@ export default function ProductPage() {
   const [submitting, setSubmitting] = useState(false);
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [localLoading, setLocalLoading] = useState(true); // Track local search status
+  const [measurementUnit, setMeasurementUnit] = useState("CM");
 
   const currentCollection = liveCollections.find(
     (col) => col.id === product?.collectionId,
@@ -545,15 +546,27 @@ Manufactured and Marketed by - VANOKHI, Kharadi Bypass, Pune, Maharashtra 411014
               &times;
             </button>
             <h3>Size Charts</h3>
-            <p style={{ textAlign: "center", margin: "10px 0", color: "#666" }}>
-              CM | INCHES
-            </p>
+            <div className="unitToggle" style={{ textAlign: "center", margin: "10px 0", color: "#666" }}>
+              <span
+                onClick={() => setMeasurementUnit("CM")}
+                style={{ cursor: "pointer", fontWeight: measurementUnit === "CM" ? "bold" : "normal", color: measurementUnit === "CM" ? "#000" : "#666" }}
+              >
+                CM
+              </span>
+              {" | "}
+              <span
+                onClick={() => setMeasurementUnit("INCHES")}
+                style={{ cursor: "pointer", fontWeight: measurementUnit === "INCHES" ? "bold" : "normal", color: measurementUnit === "INCHES" ? "#000" : "#666" }}
+              >
+                INCHES
+              </span>
+            </div>
             <div style={{ overflowX: "auto" }}>
               <table className="sizeTable">
                 <thead>
                   <tr>
                     <th>SIZE</th>
-                    <th>SHOULDER</th>
+                    {measurementUnit === "CM"}
                     <th>CHEST</th>
                     <th>WAIST</th>
                     <th>HIP</th>
@@ -561,62 +574,111 @@ Manufactured and Marketed by - VANOKHI, Kharadi Bypass, Pune, Maharashtra 411014
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>XXS</td>
-                    <td>33</td>
-                    <td>81.3</td>
-                    <td>66</td>
-                    <td>86.4</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>XS</td>
-                    <td>34.3</td>
-                    <td>86.4</td>
-                    <td>71.1</td>
-                    <td>91.4</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>S</td>
-                    <td>35.6</td>
-                    <td>91.4</td>
-                    <td>76.2</td>
-                    <td>96.5</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>M</td>
-                    <td>36.8</td>
-                    <td>96.5</td>
-                    <td>81.3</td>
-                    <td>102</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>L</td>
-                    <td>38.1</td>
-                    <td>102</td>
-                    <td>86.4</td>
-                    <td>107</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>XL</td>
-                    <td>39.4</td>
-                    <td>107</td>
-                    <td>91.4</td>
-                    <td>112</td>
-                    <td>142</td>
-                  </tr>
-                  <tr>
-                    <td>XXL</td>
-                    <td>40.6</td>
-                    <td>112</td>
-                    <td>96.5</td>
-                    <td>117</td>
-                    <td>142</td>
-                  </tr>
+                  {measurementUnit === "CM" ? (
+                    <>
+                      <tr>
+                        <td>XXS</td>
+                        <td>81.3</td>
+                        <td>71.1</td>
+                        <td>86.4</td>
+                        <td>63.5</td>
+                      </tr>
+                      <tr>
+                        <td>XS</td>
+                        <td>86.4</td>
+                        <td>76.2</td>
+                        <td>91.4</td>
+                        <td>63.5</td>
+                      </tr>
+                      <tr>
+                        <td>S</td>
+                        <td>91.4</td>
+                        <td>81.3</td>
+                        <td>96.5</td>
+                        <td>63.5</td>
+                      </tr>
+                      <tr>
+                        <td>M</td>
+                        <td>96.5</td>
+                        <td>86.4</td>
+                        <td>102</td>
+                        <td>66</td>
+                      </tr>
+                      <tr>
+                        <td>L</td>
+                        <td>102</td>
+                        <td>91.4</td>
+                        <td>107</td>
+                        <td>66</td>
+                      </tr>
+                      <tr>
+                        <td>XL</td>
+                        <td>107</td>
+                        <td>96.5</td>
+                        <td>112</td>
+                        <td>68.6</td>
+                      </tr>
+                      <tr>
+                        <td>XXL</td>
+                        <td>112</td>
+                        <td>102</td>
+                        <td>117</td>
+                        <td>68.6</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td>XXS</td>
+                        <td>32</td>
+                        <td>28</td>
+                        <td>34</td>
+                        <td>25</td>
+                      </tr>
+                      <tr>
+                        <td>XS</td>
+                        <td>34</td>
+                        <td>30</td>
+                        <td>36</td>
+                        <td>25</td>
+                      </tr>
+                      <tr>
+                        <td>S</td>
+                        <td>36</td>
+                        <td>32</td>
+                        <td>38</td>
+                        <td>25</td>
+                      </tr>
+                      <tr>
+                        <td>M</td>
+                        <td>38</td>
+                        <td>34</td>
+                        <td>40</td>
+                        <td>26</td>
+                      </tr>
+                      <tr>
+                        <td>L</td>
+                        <td>40</td>
+                        <td>36</td>
+                        <td>42</td>
+                        <td>26</td>
+                      </tr>
+                      <tr>
+                        <td>XL</td>
+                        <td>42</td>
+                        <td>38</td>
+                        <td>44</td>
+                        <td>27</td>
+                      </tr>
+                      <tr>
+                        <td>XXL</td>
+                        <td>44</td>
+                        <td>40</td>
+                        <td>46</td>
+                        <td>27</td>
+                      </tr>
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
