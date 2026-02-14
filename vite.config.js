@@ -62,8 +62,26 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,avif}"],
+        globPatterns: ["**/*.{js,css,html,ico,svg}"], // Only cache essential assets
+        globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js", "**/*.{png,jpg,jpeg,avif,webp}"], // Explicitly ignore heavy images
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB limit per file
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Splitting heavy node_modules into separate vendor chunks
+          if (id.includes("node_modules")) {
+            if (id.includes("firebase")) return "firebase";
+            if (id.includes("framer-motion")) return "framer-motion";
+            if (id.includes("gsap")) return "gsap";
+            return "vendor";
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+  },
 });

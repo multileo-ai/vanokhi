@@ -3,7 +3,6 @@
   src: url(/fonts/Carina.ttf);
 }
 
-
 .cp-viewport {
   width: 100vw;
   height: 100vh;
@@ -143,7 +142,7 @@
 }
 
 .cp-header-overlay h1 {
-  font-family: "Arya" !important;
+  font-family: "VanokhiSerif" !important;
   font-size: 5rem;
   color: white;
   text-transform: uppercase;

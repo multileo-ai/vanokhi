@@ -1,11 +1,12 @@
 @font-face {
   font-family: "VanokhiSerif";
-  src: url(/public/fonts/PlayfairDisplay-VariableFont_wght.ttf);
+  src: url("/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf");
 }
 
 .nav-logo-link {
   text-decoration: none !important;
-  color: inherit !important; /* Inherits the red/white you had */
+  color: inherit !important;
+  /* Inherits the red/white you had */
   display: block;
   pointer-events: auto;
 }
@@ -20,10 +21,12 @@
 
   top: 0;
   left: 0;
-  z-index: 9000 !important; /* Increased to stay above other elements */
+  z-index: 9000 !important;
+  /* Increased to stay above other elements */
   height: 76px;
   box-sizing: border-box;
-  background-color: transparent; /* Keep it transparent by default */
+  background-color: transparent;
+  /* Keep it transparent by default */
   pointer-events: none;
   /* Smooth transition for both sliding and color changes */
   transition:

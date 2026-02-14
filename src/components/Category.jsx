@@ -20,7 +20,7 @@ const Category = () => {
           {loopItems.map((product, idx) => (
             <article className="card" key={`${product.id}-${idx}`}>
               {/* Fetches 'img' and 'name' fields from Firestore */}
-              <img src={product.img} alt={product.name} className="card-img" />
+              <img src={product.img} alt={product.name} className="card-img" loading="lazy" />
               <div className="overlay">
                 <p className="product-name">{product.name}</p>
                 <button

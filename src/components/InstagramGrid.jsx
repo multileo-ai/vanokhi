@@ -3,7 +3,7 @@ import { db } from "../firebase"; // Ensure this points to your firebase.js
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import "./InstagramGrid.css";
 
-export default function InstagramGrid() {
+const InstagramGrid = React.memo(() => {
   const [galleryItems, setGalleryItems] = useState([]);
 
   useEffect(() => {
@@ -43,14 +43,14 @@ export default function InstagramGrid() {
                     src={item.img}
                     className="gallery-image"
                     alt="Instagram Post"
+                    loading="lazy"
                   />
 
                   {item.type && (
                     <div className="gallery-item-type">
                       <i
-                        className={`fas fa-${
-                          item.type === "video" ? "video" : "clone"
-                        }`}
+                        className={`fas fa-${item.type === "video" ? "video" : "clone"
+                          }`}
                       ></i>
                     </div>
                   )}
@@ -73,4 +73,6 @@ export default function InstagramGrid() {
       </main>
     </section>
   );
-}
+});
+
+export default InstagramGrid;

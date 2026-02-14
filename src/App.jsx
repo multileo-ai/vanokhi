@@ -16,11 +16,9 @@ import Navbar from "./components/Navbar";
 import MiniNav from "./components/MiniNav";
 import BrandImage from "./components/BrandImage";
 import BrandStory from "./components/BrandStory";
-import BrandStoryPage from "./components/BrandStoryPage";
-import Category from "./components/Category";
+// import Category from "./components/Category";
 import NewArivals from "./components/NewArivals";
-import InstagramGrid from "./components/InstagramGrid";
-import TestimonialsGrid from "./components/TestimonialsGrid";
+// import InstagramGrid from "./components/InstagramGrid";
 // import CollectionPage from "./components/CollectionPage";
 import { Toaster } from "react-hot-toast";
 import WishlistPage from "./components/WishlistPage";
@@ -34,14 +32,18 @@ import ScrollToTop from "./components/ScrollToTop";
 import NewArrivalsPage from "./components/NewArrivalsPage";
 import MostWantedPage from "./components/MostWantedPage";
 import ContactUs from "./components/ContactUs";
-import ReturnPortal from "./components/ReturnPortal";
-import SearchResults from "./components/SearchResults";
+// import ReturnPortal from "./components/ReturnPortal";
+// import SearchResults from "./components/SearchResults";
 
 const AdminPanel = lazy(() => import("./components/AdminPanel"));
 const ProductPage = lazy(() => import("./components/ProductPage"));
 const CollectionPage = lazy(() => import("./components/CollectionPage"));
 const AllProducts = lazy(() => import("./components/AllProducts"));
 const OrdersPage = lazy(() => import("./components/OrdersPage"));
+const InstagramGrid = lazy(() => import("./components/InstagramGrid"));
+const ReturnPortal = lazy(() => import("./components/ReturnPortal"));
+const SearchResults = lazy(() => import("./components/SearchResults"));
+const Category = lazy(() => import("./components/Category"));
 
 const HomePage = ({
   whiteSectionRef,
@@ -98,10 +100,12 @@ function AppContent() {
   const location = useLocation();
   const isCollectionPage = location.pathname === "/collections";
 
-  const whiteSectionRef = useRef(null);
+  /* Switched to callback refs (useState) so Navbar gets re-rendered when nodes are mounted */
+  const [whiteSectionEl, setWhiteSectionEl] = useState(null);
+  const [hideSectionEl, setHideSectionEl] = useState(null);
+  const [newArrivalsEl, setNewArrivalsEl] = useState(null);
+
   const categoryRef = useRef(null);
-  const hideSectionRef = useRef(null);
-  const newArrivalsRef = useRef(null);
 
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -131,48 +135,8 @@ function AppContent() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Calculate rectangles safely (may be undefined)
-      const hideRect = hideSectionRef.current?.getBoundingClientRect();
-      const hasReachedInstagram = !!hideRect && hideRect.top <= 80;
+  // Removed scroll event listener to fix layout thrashing based on IntersectionObserver plan
 
-      const naRect = newArrivalsRef.current?.getBoundingClientRect();
-      const passedNewArrivals = !!naRect && naRect.bottom <= 0; // we scrolled past it
-
-      const whiteRect = whiteSectionRef.current?.getBoundingClientRect();
-      const isHeaderInWhiteSection =
-        !!whiteRect && whiteRect.top <= 80 && whiteRect.bottom >= 0;
-
-      // Scope the brand-title lookup to the BrandStoryPage container to avoid other pages' elements
-      const titleEl = whiteSectionRef.current?.querySelector(".brand-title");
-      const titleRect = titleEl?.getBoundingClientRect();
-      const nearTitle =
-        !!titleRect && titleRect.top <= 160 && titleRect.bottom >= 0;
-
-      const shouldHide = hasReachedInstagram || passedNewArrivals;
-
-      // Debug logs to help diagnose why behavior may not be triggering
-      // console.log("NAV SCROLL DEBUG", {
-      //   hasReachedInstagram,
-      //   passedNewArrivals,
-      //   isHeaderInWhiteSection,
-      //   nearTitle,
-      //   hideRect,
-      //   naRect,
-      //   whiteRect,
-      //   titleRect,
-      // });
-
-      setNavHidden(shouldHide);
-      setNavWhite(isHeaderInWhiteSection);
-      setNavRed(nearTitle);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initialize on load
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
@@ -188,7 +152,11 @@ function AppContent() {
 
       {!isCollectionPage && (
         <>
-          <Navbar isWhite={navWhite} isHidden={navHidden} isRed={navRed} />
+          <Navbar
+            whiteSectionEl={whiteSectionEl}
+            hideSectionEl={hideSectionEl}
+            newArrivalsEl={newArrivalsEl}
+          />
           <MiniNav />
         </>
       )}
@@ -198,10 +166,10 @@ function AppContent() {
             path="/"
             element={
               <HomePage
-                whiteSectionRef={whiteSectionRef}
+                whiteSectionRef={setWhiteSectionEl}
                 categoryRef={categoryRef}
-                hideSectionRef={hideSectionRef}
-                newArrivalsRef={newArrivalsRef}
+                hideSectionRef={setHideSectionEl}
+                newArrivalsRef={setNewArrivalsEl}
                 scrollToCategory={scrollToCategory}
                 bannerUrl={bannerUrl}
                 mobileBannerUrl={mobileBannerUrl}
