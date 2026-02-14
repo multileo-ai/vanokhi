@@ -10,8 +10,10 @@
   /* This area overlays the site background (banner) */
   min-height: 100vh;
   /* adjust to taste (was 100vh previously) */
+  height: 100dvh;
+  /* Force full viewport height, preventing collapse/shift */
   width: 100%;
-  aspect-ratio: 16/9;
+  /* aspect-ratio: 16/9; REMOVED: Causing layout shift heavily on mobile portrait */
   /* Enforce aspect ratio to reserve space */
   display: flex;
   align-items: center;

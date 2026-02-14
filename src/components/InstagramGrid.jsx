@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase"; // Ensure this points to your firebase.js
+import { db } from "../firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import Skeleton from "./common/Skeleton";
 import "./InstagramGrid.css";
 
 const InstagramGrid = React.memo(() => {
   const [galleryItems, setGalleryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Reference the 'instagramPosts' collection
@@ -21,9 +23,11 @@ const InstagramGrid = React.memo(() => {
           ...doc.data(),
         }));
         setGalleryItems(posts);
+        setLoading(false);
       },
       (error) => {
         console.warn("InstagramGrid Listener Warning:", error.message);
+        setLoading(false);
       }
     );
 
@@ -36,44 +40,53 @@ const InstagramGrid = React.memo(() => {
       <main>
         <div className="gallery-full-width">
           <div className="gallery">
-            {galleryItems.map((item) => (
-              <a
-                href={item.instalink}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={item.id}
-                className="gallery-item-link"
-              >
-                <div className="gallery-item" tabIndex="0">
-                  <img
-                    src={item.img}
-                    className="gallery-image"
-                    alt="Instagram Post"
-                    loading="lazy"
-                  />
-
-                  {item.type && (
-                    <div className="gallery-item-type">
-                      <i
-                        className={`fas fa-${item.type === "video" ? "video" : "clone"
-                          }`}
-                      ></i>
-                    </div>
-                  )}
-
-                  <div className="gallery-item-info">
-                    <ul>
-                      <li className="gallery-item-likes">
-                        <i className="fas fa-heart"></i> {item.likes || 0}
-                      </li>
-                      <li className="gallery-item-comments">
-                        <i className="fas fa-comment"></i> {item.comments || 0}
-                      </li>
-                    </ul>
+            {loading
+              ? [...Array(6)].map((_, i) => (
+                <div key={i} className="gallery-item-link"> {/* Use same class as real items for consistency */}
+                  <div className="gallery-item">
+                    <Skeleton type="block" style={{ width: "100%", height: "100%" }} />
                   </div>
                 </div>
-              </a>
-            ))}
+              ))
+              : galleryItems.map((item) => (
+                <a
+                  href={item.instalink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={item.id}
+                  className="gallery-item-link"
+                >
+                  <div className="gallery-item" tabIndex="0">
+                    <img
+                      src={item.img}
+                      className="gallery-image"
+                      alt="Instagram Post"
+                      loading="lazy"
+                    />
+
+                    {item.type && (
+                      <div className="gallery-item-type">
+                        <i
+                          className={`fas fa-${item.type === "video" ? "video" : "clone"
+                            }`}
+                        ></i>
+                      </div>
+                    )}
+
+                    <div className="gallery-item-info">
+                      <ul>
+                        <li className="gallery-item-likes">
+                          <i className="fas fa-heart"></i> {item.likes || 0}
+                        </li>
+                        <li className="gallery-item-comments">
+                          <i className="fas fa-comment"></i>{" "}
+                          {item.comments || 0}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </a>
+              ))}
           </div>
         </div>
       </main>

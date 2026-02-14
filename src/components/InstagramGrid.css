@@ -50,86 +50,92 @@ img {
 /* --- FULL WIDTH GALLERY STYLES --- */
 
 .gallery-full-width {
-  width: 100% !important;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  /* display: grid;  */
-  /* Changed from default block to grid */
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(-50vw + 50%);
+  /* Force breakout from any parent container */
+  margin-right: calc(-50vw + 50%);
+  padding: 0 !important;
+  position: relative;
+  left: 0;
 }
 
 .gallery {
   display: grid !important;
-  /* Force grid display */
-  grid-template-columns: repeat(3,
-      1fr) !important;
-  /* Applied 4 columns as requested */
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: 0 !important;
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
-.grid-section main {
-  display: grid;
-  width: 100%;
-}
-
 .gallery-item-link {
   display: block;
   width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  aspect-ratio: 1 / 1;
+  /* Enforce square shape on the container */
+  position: relative;
+  overflow: hidden;
 }
 
 .gallery-item {
-  position: relative;
-  aspect-ratio: 1 / 1;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  cursor: pointer;
+  height: 100%;
+  position: relative;
+  /* aspect-ratio: 1 / 1; Remove this from inner if outer has it */
   display: block;
-  /* Ensure block */
-  line-height: 0;
-  /* Kill descender whitespace */
 }
 
 /* Hover overlay */
-.gallery-item:hover .gallery-item-info,
-.gallery-item:focus .gallery-item-info {
+/* Hover overlay */
+.gallery-item-info {
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Slightly darker for better contrast */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #ffffff !important;
+  z-index: 10;
 }
 
-.gallery-item-info {
-  display: none;
+.gallery-item:hover .gallery-item-info,
+.gallery-item:focus .gallery-item-info {
+  opacity: 1;
 }
 
 .gallery-item-info li {
   display: inline-block;
   font-size: 1.7rem;
   font-weight: 600;
+  color: #ffffff !important;
 }
 
-.gallery-item-likes {
-  margin-right: 2.2rem;
+.gallery-item-info i {
+  color: #ffffff !important;
 }
 
 .gallery-item-type {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  font-size: 2.5rem;
-  text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.gallery-item:hover .gallery-item-type {
+  opacity: 1;
 }
 
 .gallery-image {

@@ -15,7 +15,8 @@
 
   /* Providing substantial height as requested */
   /* padding: 60px 0; */
-  min-height: 150px;
+  /* Increasing min-height to accommodate 2-line wrap without shift */
+  min-height: 200px;
 
   display: flex;
   align-items: center;
@@ -53,7 +54,7 @@
 @media (max-width: 768px) {
   .brand-story-box {
     padding: 0px 15px;
-    min-height: 80px;
+    min-height: 120px;
   }
 
   .typing-container {

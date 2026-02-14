@@ -294,23 +294,95 @@
 /* Responsive */
 @media (max-width: 768px) {
   .wide-item-row {
-    flex-direction: column;
+    flex-direction: row;
+    /* Keep side-by-side */
     height: auto;
+    padding: 15px 0;
+    align-items: flex-start;
   }
 
   .item-visual {
-    width: 100%;
-    height: 250px;
+    width: 80px;
+    height: 100px;
+    /* Fixed smaller size */
+    flex-shrink: 0;
+    border-radius: 4px;
+    /* Optional: slightly rounded corners for mobile */
   }
 
+  .item-content {
+    padding: 0 0 0 15px;
+    /* Left padding only */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .item-brand-name {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .item-price-tag {
+    font-size: 0.95rem;
+  }
+
+  .item-details-grid {
+    gap: 20px;
+  }
+
+  .detail-box label {
+    font-size: 0.6rem;
+  }
+
+  .detail-box span {
+    font-size: 0.85rem;
+  }
+
+  /* Compact Action Area */
   .card-action-area {
+    padding: 20px;
+    gap: 30px;
     grid-template-columns: 1fr;
+  }
+
+  .tracking-status-label {
+    margin-bottom: 15px;
+  }
+
+  /* Compact Tracker */
+  .modern-tracker {
+    gap: 5px;
+  }
+
+  .step-text {
+    font-size: 0.55rem;
+    letter-spacing: 0;
   }
 
   .order-summary {
     text-align: left;
     padding-left: 0;
     border-left: none;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cancel-order-btn {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 6px 12px;
+    font-size: 0.75rem;
   }
 }
 
