@@ -39,20 +39,25 @@
 
 .prodMainCont {
   display: grid;
-  grid-template-columns: 80px minmax(320px, 420px) minmax(320px, 1fr);
+  grid-template-columns: 80px minmax(320px, 450px) minmax(320px, 1fr);
+  grid-template-areas: "sizes image info";
   align-items: start;
-  /* gap: 0rem; */
-  padding: 140px 6rem 0;
-  /* Added top padding to clear navbar */
+  gap: 4rem;
+  /* Replaces manual margins */
+  padding: 140px 4rem 0;
+  /* Reduced padding slightly for safety */
   min-height: calc(100vh - 120px);
   margin-top: 4rem;
   max-width: 1440px;
   /* Constrain width on large screens */
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sizes {
+  grid-area: sizes;
   width: 80px;
   display: flex;
   flex-direction: column;
@@ -61,8 +66,6 @@
   margin: 0;
   padding: 0.5rem 0;
   align-self: center;
-  /* keep sizes centered vertically relative to image if desired */
-  /* Or align-self: start; if you want them at top */
 }
 
 .size {
@@ -160,16 +163,20 @@
   }
 }
 
+.descWrapper {
+  grid-area: info;
+}
+
 .gallery {
+  grid-area: image;
   display: grid !important;
-  /* flex-direction: row; */
   align-items: flex-start;
   gap: 2px;
-  /* Reduced gap */
-  grid-column: 2;
   align-self: start;
   margin-top: 4rem;
-  margin-left: 50px;
+  margin-left: 0;
+  /* Fixed overflow */
+  width: 100%;
 }
 
 .mainImage {
