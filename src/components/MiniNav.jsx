@@ -49,6 +49,17 @@ const MiniNav = () => {
     }
   };
 
+  // Handle Search Icon Click
+  const handleSearchClick = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery(""); // Clear after search
+    } else {
+      setSearchOpen(!searchOpen);
+    }
+  };
+
   // Lock/unlock body scroll when hamburger menu is open
   useEffect(() => {
     const html = document.documentElement;
@@ -140,7 +151,7 @@ const MiniNav = () => {
                 />
                 <button
                   className="icon-btn"
-                  onClick={() => setSearchOpen(!searchOpen)}
+                  onClick={handleSearchClick}
                 >
                   <Search className="mini-icon" strokeWidth={1.3} />
                 </button>

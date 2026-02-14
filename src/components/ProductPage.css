@@ -1220,16 +1220,19 @@
   /* Ensure detail sections below fold look good on mobile */
   .productInfoSplit {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    margin: 0rem 1rem 2rem;
+    gap: 1rem;
+    margin: 0 1rem 2rem;
+    padding: 0;
   }
 
   .detailsSection,
   .reviewsSection {
-    padding: 1.5rem;
+    padding: 1.2rem 1rem;
     border-top: 1px solid #f0f0f0;
     /* Separator */
     border-radius: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* Make close button larger on mobile */
