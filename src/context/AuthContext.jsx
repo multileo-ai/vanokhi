@@ -52,15 +52,22 @@ export function AuthProvider({ children }) {
       unsubProds();
       unsubColls();
 
+      // User is logged in
       if (user) {
-        // User is logged in
         const userDocRef = doc(db, "users", user.uid);
 
         unsubUserDoc = onSnapshot(
           userDocRef,
           (docSnap) => {
             if (docSnap.exists()) {
-              setUserData(docSnap.data());
+              const data = docSnap.data();
+              setUserData({
+                cart: data.cart || [],
+                wishlist: data.wishlist || [],
+                profile: data.profile || {},
+                isAdmin: data.isAdmin || false,
+                ...data
+              });
             } else {
               const initialData = {
                 cart: [],
@@ -79,42 +86,41 @@ export function AuthProvider({ children }) {
             );
           }
         );
-
-        // Fetch Products (Only if logged in to avoid permission errors)
-        unsubProds = onSnapshot(
-          collection(db, "products"),
-          (snapshot) => {
-            const prods = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setLiveProducts(prods);
-          },
-          (error) => {
-            console.error("Error fetching products:", error);
-          }
-        );
-
-        // Fetch Collections (Only if logged in)
-        unsubColls = onSnapshot(
-          collection(db, "collections"),
-          (snapshot) => {
-            const colls = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setLiveCollections(colls);
-          },
-          (error) => {
-            console.error("Error fetching collections:", error);
-          }
-        );
       } else {
         // User is logged out
         setUserData({ cart: [], wishlist: [], profile: {}, isAdmin: false });
-        setLiveProducts([]);
-        setLiveCollections([]);
       }
+
+      // Fetch Products (Public Access)
+      unsubProds = onSnapshot(
+        collection(db, "products"),
+        (snapshot) => {
+          const prods = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setLiveProducts(prods);
+        },
+        (error) => {
+          console.error("Error fetching products:", error);
+        }
+      );
+
+      // Fetch Collections (Public Access)
+      unsubColls = onSnapshot(
+        collection(db, "collections"),
+        (snapshot) => {
+          const colls = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setLiveCollections(colls);
+        },
+        (error) => {
+          console.error("Error fetching collections:", error);
+        }
+      );
+
       setLoading(false);
     });
 
@@ -332,6 +338,7 @@ export function AuthProvider({ children }) {
     moveToWishlistFromCart,
     createOrder,
     updateFirebase,
+    loading, // Export loading state
   };
 
   return (

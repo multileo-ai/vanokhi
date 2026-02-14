@@ -65,6 +65,7 @@
 .cp-img-container {
   position: relative;
   aspect-ratio: 3/4;
+  /* Critical for CLS */
   border-radius: 15px;
   overflow: hidden;
   background: #f9f9f9;
@@ -141,15 +142,9 @@
   text-align: left;
 }
 
-.cp-product-info h3 {
-  font-family: "LibreFranklin", sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  margin: 0 0 5px 0;
-  text-transform: uppercase;
-  color: #1a1a1a;
-}
 
+
+/* 
 .cp-price {
   font-family: "LibreFranklin", sans-serif;
   font-size: 1.3rem;
@@ -162,7 +157,8 @@
   font-weight: 400;
   font-size: 1rem;
   margin-left: 8px;
-}
+} 
+*/
 
 .cp-product-card.out-of-stock {
   filter: grayscale(100%);

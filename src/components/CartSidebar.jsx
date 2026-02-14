@@ -71,7 +71,7 @@ export default function CartSidebar({ isOpen, onClose }) {
     try {
       await createOrder(orderData);
       toast.success("Order Placed Successfully!");
-      navigate("/orders");
+      navigate("/thank-you", { state: { orderId: paymentId !== "COD" ? paymentId : "PENDING" } });
       onClose();
       setShowPaymentSelection(false);
     } catch (err) {

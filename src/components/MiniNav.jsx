@@ -28,7 +28,7 @@ const MiniNav = () => {
 
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
-  const cartItemCount = userData.cart.reduce((acc, item) => acc + item.qty, 0);
+  const cartItemCount = (userData?.cart || []).reduce((acc, item) => acc + item.qty, 0);
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) searchInputRef.current.focus();

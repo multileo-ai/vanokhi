@@ -57,8 +57,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   /* Force 3 items */
-  gap: 30px;
-  padding: 0 5%;
+  /* Force 3 items */
+  gap: 40px;
+  padding: 60px 8%;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -67,9 +68,8 @@
 .na-glass-card {
   display: flex;
   flex-direction: column;
-  border-radius: 25px;
-  /* Significant border radius */
-  overflow: hidden;
+  /* border-radius: 15px; Removed to match AllProducts */
+  /* overflow: hidden; Removed */
   transition: transform 0.3s ease;
 }
 
@@ -77,8 +77,9 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
-  background: #f8f8f8;
-  border-radius: 25px;
+  /* Already there, but good to double check it's applied correctly to container */
+  background: #f9f9f9;
+  border-radius: 15px;
   /* Rounded card top */
   overflow: hidden;
 }
@@ -91,7 +92,7 @@
 }
 
 .na-glass-card:hover .na-main-img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 /* Glass Actions */
@@ -165,18 +166,13 @@
 
 /* Info Section */
 .na-card-bottom {
-  padding: 15px 10px;
+  padding-top: 15px;
   text-align: left;
 }
 
-.na-item-title {
-  font-family: "LibreFranklin", sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 5px;
-  color: #151312;
-}
 
+
+/* 
 .na-item-price {
   font-family: "LibreFranklin", sans-serif;
   font-weight: 700;
@@ -188,7 +184,8 @@
   text-decoration: line-through;
   font-weight: 400;
   margin-left: 8px;
-}
+} 
+*/
 
 .na-rating-tag {
   position: absolute;
@@ -228,8 +225,9 @@
     grid-template-columns: repeat(2,
         1fr);
     /* 2 items on mobile for better visibility */
+    /* 2 items on mobile for better visibility */
     gap: 15px;
-    padding: 0 15px;
+    padding: 20px 4%;
   }
 
   .na-glass-actions {

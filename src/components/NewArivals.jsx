@@ -11,15 +11,21 @@ export default function NewArivals() {
 
   useEffect(() => {
     // UPDATED: Path changed to "sitesettings" to match your DB exactly
-    const unsub = onSnapshot(doc(db, "sitesettings", "posters"), (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        // Check for the exact field name used in AdminPanel.jsx
-        if (data.newArrivalsUrl) {
-          setPosterUrl(data.newArrivalsUrl);
+    const unsub = onSnapshot(
+      doc(db, "siteSettings", "posters"),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          // Check for the exact field name used in AdminPanel.jsx
+          if (data.newArrivalsUrl) {
+            setPosterUrl(data.newArrivalsUrl);
+          }
         }
+      },
+      (error) => {
+        console.warn("NewArivals Listener Warning:", error.message);
       }
-    });
+    );
     return () => unsub();
   }, []);
 

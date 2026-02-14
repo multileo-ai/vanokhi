@@ -11,6 +11,8 @@
   min-height: 100vh;
   /* adjust to taste (was 100vh previously) */
   width: 100%;
+  aspect-ratio: 16/9;
+  /* Enforce aspect ratio to reserve space */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +39,8 @@
 .hero-center-badge2 {
   position: absolute;
   bottom: 20%;
-  left: calc(50% - 50px);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   display: inline-flex;
   align-items: center;

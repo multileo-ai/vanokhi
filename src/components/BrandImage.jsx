@@ -40,7 +40,7 @@ export default function BrandImage({ scrollToCategory }) {
     return (
       <section className="brand-image-outer2" style={{ background: "#f0f0f0" }}>
         <div className="brand-image-viewport2">
-          <Skeleton type="block" style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }} />
+          <Skeleton type="block" style={{ width: "100%", aspectRatio: "16/9", position: "absolute", top: 0, left: 0 }} />
           <div style={{
             position: "absolute",
             top: "50%",

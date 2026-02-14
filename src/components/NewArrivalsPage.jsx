@@ -40,7 +40,7 @@ const NewArrivalsPage = () => {
           }}
         >
           {/* Full Page Skeleton Overlay */}
-          <div className="na-header-section na-mobile-16-9">
+          <div className="na-header-section na-mobile-16-9" style={{ aspectRatio: "16/9" }}>
             <Skeleton type="block" style={{ width: "100%", height: "100%" }} />
           </div>
           <div className="na-product-grid">
@@ -48,7 +48,7 @@ const NewArrivalsPage = () => {
               <div key={i} className="na-glass-card" style={{ padding: "0" }}>
                 <Skeleton
                   type="block"
-                  style={{ height: "350px", width: "100%" }}
+                  style={{ width: "100%", aspectRatio: "3/4" }}
                 />
                 <div style={{ padding: "15px" }}>
                   <Skeleton type="text" style={{ marginBottom: "10px" }} />
@@ -125,19 +125,13 @@ const NewArrivalsPage = () => {
                 </div>
 
                 <div className="na-card-bottom">
-                  <h3 className="na-item-title">{item.name}</h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "8px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <p className="global-product-price">{item.price}</p>
+                  <h3 className="global-product-name">{item.name}</h3>
+                  <div className="global-price-row">
+                    <span className="global-product-price">{item.price}</span>
                     {item.originalPrice && (
-                      <p className="global-product-price-original">
+                      <span className="global-product-price-original">
                         {item.originalPrice}
-                      </p>
+                      </span>
                     )}
                   </div>
                 </div>

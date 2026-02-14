@@ -21,13 +21,14 @@ import "./ProductPage.css";
 export default function ProductPage() {
   const { id } = useParams();
   const {
-    addToCart,
-    addToWishlist,
+    loading, // Get loading state from context
     user,
     currentUser,
+    addToCart,
+    addToWishlist,
+    userData,
     liveProducts,
     liveCollections,
-    userData,
   } = useAuth();
   const activeUser = user || currentUser;
 
@@ -42,6 +43,8 @@ export default function ProductPage() {
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showSizeChart, setShowSizeChart] = useState(false);
+  const [localLoading, setLocalLoading] = useState(true); // Track local search status
+
   const currentCollection = liveCollections.find(
     (col) => col.id === product?.collectionId,
   );
@@ -50,26 +53,83 @@ export default function ProductPage() {
     : "Collection";
 
   useEffect(() => {
-    if (liveProducts.length > 0) {
-      const found = liveProducts.find((p) => p.id === id);
-      if (found) {
-        setProduct(found);
-        setSelectedImage(found.galleryNormal?.[0] || found.img);
+    // If global loading is done, we can search for the product
+    if (loading === false) {
+      if (liveProducts.length > 0) {
+        const found = liveProducts.find((p) => p.id === id);
+        if (found) {
+          setProduct(found);
+          setSelectedImage(found.galleryNormal?.[0] || found.img);
 
-        // Fetch Reviews from Database
-        const q = query(
-          collection(db, `products/${id}/reviews`),
-          orderBy("createdAt", "desc"),
-        );
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-          setReviews(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+          // Fetch Reviews from Database
+          const q = query(
+            collection(db, `products/${id}/reviews`),
+            orderBy("createdAt", "desc"),
           );
-        });
-        return () => unsubscribe();
+          const unsubscribe = onSnapshot(q, (snapshot) => {
+            setReviews(
+              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
+            );
+          });
+          setLocalLoading(false); // Found
+          return () => unsubscribe();
+        } else {
+          setLocalLoading(false); // Not found
+        }
+      } else {
+        setLocalLoading(false); // No products to search
       }
     }
-  }, [id, liveProducts]);
+  }, [id, liveProducts, loading]);
+
+  // If AuthContext is still loading or search is in progress, show Skeleton
+  if (loading || (localLoading && !product))
+    return (
+      <div className="pdWrapper">
+        <div className="prodMainCont desktopOnlyView" style={{ padding: "40px" }}>
+          <div style={{ flex: 1 }}>
+            <Skeleton type="block" style={{ height: "500px" }} />
+          </div>
+          <div style={{ flex: 1, paddingLeft: "40px" }}>
+            <Skeleton type="title" style={{ width: "80%", marginBottom: "20px" }} />
+            <Skeleton type="text" style={{ marginBottom: "10px" }} />
+            <Skeleton type="text" style={{ marginBottom: "10px" }} />
+            <Skeleton type="text" style={{ width: "60%", marginBottom: "30px" }} />
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Skeleton type="rect" style={{ width: "150px", height: "50px" }} />
+              <Skeleton type="rect" style={{ width: "150px", height: "50px" }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Skeleton */}
+        <div className="mobileHeroContainer">
+          <Skeleton
+            type="block"
+            style={{ width: "100%", height: "450px", marginBottom: "20px" }}
+          />
+          <div style={{ padding: "0 20px" }}>
+            <Skeleton
+              type="title"
+              style={{ width: "70%", marginBottom: "15px" }}
+            />
+            <Skeleton type="text" style={{ width: "40%", marginBottom: "20px" }} />
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Skeleton
+                type="rect"
+                style={{ flex: 1, height: "45px", borderRadius: "30px" }}
+              />
+              <Skeleton
+                type="rect"
+                style={{ flex: 1, height: "45px", borderRadius: "30px" }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+  if (!product) return <div style={{ textAlign: "center", padding: "50px", fontSize: "2rem" }}>Product not found</div>;
 
   const handlePostReview = async (e) => {
     e.preventDefault();
@@ -108,7 +168,7 @@ export default function ProductPage() {
       <div className="pdWrapper">
         <div className="prodMainCont desktopOnlyView" style={{ padding: "40px" }}>
           <div style={{ flex: 1 }}>
-            <Skeleton type="block" style={{ height: "500px" }} />
+            <Skeleton type="block" style={{ width: "100%", aspectRatio: "3/4" }} />
           </div>
           <div style={{ flex: 1, paddingLeft: "40px" }}>
             <Skeleton type="title" style={{ width: "80%", marginBottom: "20px" }} />
@@ -126,7 +186,7 @@ export default function ProductPage() {
         <div className="mobileHeroContainer">
           <Skeleton
             type="block"
-            style={{ width: "100%", height: "450px", marginBottom: "20px" }}
+            style={{ width: "100%", aspectRatio: "3/4", marginBottom: "20px" }}
           />
           <div style={{ padding: "0 20px" }}>
             <Skeleton
@@ -175,18 +235,11 @@ export default function ProductPage() {
         </div>
 
         <div className="mobileActionPanel">
-          <h2 className="mobTitle">{product.name}</h2>
-          <div className="mobPrice" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <span>{product.price} </span>
+          <h2 className="mobTitle pp-title">{product.name}</h2>
+          <div className="global-price-row">
+            <span className="global-product-price">{product.price} </span>
             {product.originalPrice && (
-              <span
-                style={{
-                  textDecoration: "line-through",
-                  color: "#999",
-                  fontSize: "0.9em",
-                  fontWeight: "normal"
-                }}
-              >
+              <span className="global-product-price-original">
                 {product.originalPrice}
               </span>
             )}
@@ -272,38 +325,18 @@ export default function ProductPage() {
 
         <div className="descWrapper">
           <div className="prodDesc">
-            <h2 className="descTitle">{product.name}</h2>
-            <div className="price">
-              <b>
+            <h2 className="pp-title">{product.name}</h2>
+            <div className="global-price-row">
+              <span className="global-product-price">
                 {product.price}
-              </b>
+              </span>
               {product.originalPrice && (
-                <p style={{ textDecoration: "line-through", color: "gray" }}>
+                <span className="global-product-price-original">
                   {product.originalPrice}
-                </p>
+                </span>
               )}
             </div>
 
-            {/* <div className="productActions">
-              <button
-                className={`action-btn1 wishlist ${
-                  isInWishlist ? "active" : ""
-                }`}
-                onClick={() => addToWishlist(product)}
-              >
-                <Heart
-                  size={18}
-                  fill={isInWishlist ? "#860204" : "none"}
-                  color={isInWishlist ? "#860204" : "currentColor"}
-                />
-              </button>
-              <button
-                className="action-btn1 cart"
-                onClick={() => addToCart(product, selectedSize)}
-              >
-                <ShoppingBag size={18} /> Add to Bag
-              </button>
-            </div> */}
 
             <div className="productActions">
               <button

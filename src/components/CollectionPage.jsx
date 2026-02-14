@@ -10,7 +10,7 @@ import Skeleton from "./common/Skeleton";
 
 const CollectionPage = () => {
   const [expanded, setExpanded] = useState(null);
-  const { addToCart, addToWishlist, userData, liveCollections, liveProducts } =
+  const { addToCart, addToWishlist, userData, liveCollections, liveProducts, loading } =
     useAuth();
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const CollectionPage = () => {
 
       {/* 2. Main Vertical Snap Scroll Container */}
       <div className="cp-snap-container">
-        {liveCollections.length === 0
+        {loading
           ? [...Array(3)].map((_, i) => (
             <div key={i} className="cp-section">
               <Skeleton
@@ -155,14 +155,9 @@ const CollectionPage = () => {
 
                     <div className="cp-product-info">
                       <div className="cp-info-header">
-                        <Link
-                          to={`/product/${item.id}`}
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <h3>{item.name}</h3>
-                        </Link>
+                        <h3 className="global-product-name">{item.name}</h3>
                       </div>
-                      <div className="cp-price-row">
+                      <div className="global-price-row">
                         <span className="global-product-price">{item.price}</span>
                         {item.originalPrice && (
                           <span className="global-product-price-original">

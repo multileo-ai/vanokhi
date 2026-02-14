@@ -45,6 +45,7 @@ const InstagramGrid = lazy(() => import("./components/InstagramGrid"));
 const ReturnPortal = lazy(() => import("./components/ReturnPortal"));
 const SearchResults = lazy(() => import("./components/SearchResults"));
 const Category = lazy(() => import("./components/Category"));
+const ThankYouPage = lazy(() => import("./components/ThankYouPage"));
 
 const HomePage = ({
   whiteSectionRef,
@@ -187,6 +188,7 @@ function AppContent() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/return-portal" element={<ReturnPortal />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
         </Routes>
       </Suspense>
 
@@ -309,13 +311,17 @@ function AppContent() {
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
+import ErrorBoundary from "./components/ErrorBoundary";
+
 function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <AppContent />
-      <Analytics />
-      <SpeedInsights />
+      <ErrorBoundary>
+        <ScrollToTop />
+        <AppContent />
+        <Analytics />
+        <SpeedInsights />
+      </ErrorBoundary>
     </Router>
   );
 }

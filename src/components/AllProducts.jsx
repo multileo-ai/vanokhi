@@ -78,8 +78,8 @@ const AllProducts = () => {
                 </div>
 
                 <div className="cp-product-info">
-                  <h3>{item.name}</h3>
-                  <div className="cp-price-row">
+                  <h3 className="global-product-name">{item.name}</h3>
+                  <div className="global-price-row">
                     <span className="global-product-price">{item.price}</span>
                     {item.originalPrice && (
                       <span className="global-product-price-original">

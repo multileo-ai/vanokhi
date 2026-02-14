@@ -13,13 +13,19 @@ const InstagramGrid = React.memo(() => {
       orderBy("createdAt", "desc")
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const posts = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setGalleryItems(posts);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const posts = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setGalleryItems(posts);
+      },
+      (error) => {
+        console.warn("InstagramGrid Listener Warning:", error.message);
+      }
+    );
 
     return () => unsubscribe();
   }, []);

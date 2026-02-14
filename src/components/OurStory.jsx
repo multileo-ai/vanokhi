@@ -8,14 +8,20 @@ export default function OurStory() {
 
   useEffect(() => {
     const heroDocRef = doc(db, "siteSettings", "hero");
-    const unsubscribe = onSnapshot(heroDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data.bannerUrl) {
-          setBannerUrl(data.bannerUrl);
+    const unsubscribe = onSnapshot(
+      heroDocRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.bannerUrl) {
+            setBannerUrl(data.bannerUrl);
+          }
         }
+      },
+      (error) => {
+        console.warn("OurStory Listener Warning:", error.message);
       }
-    });
+    );
     return () => unsubscribe();
   }, []);
   return (

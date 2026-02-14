@@ -33,7 +33,11 @@
     user-select: none;
 }
 
-html,
+html {
+    font-size: 10px;
+    /* Restoring user's preferred scaling (1rem = 10px) */
+}
+
 body {
     width: 100%;
     min-height: 100%;
@@ -116,8 +120,44 @@ html::-webkit-scrollbar-thumb:hover {
         --navbar-reserve: 64px;
     }
 
-    html {
-        font-size: 14px;
-        /* Move this logic here to specific responsive block */
-    }
+    /* font-size: 14px; removed to fix scale */
+}
+
+
+/* Global Product Price Styling */
+.global-product-price {
+    color: #9a0002;
+    font-weight: 700;
+    font-family: "LibreFranklin", sans-serif;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    /* Enforce uppercase */
+    letter-spacing: 0.5px;
+    /* Optional: add slight spacing for better read */
+}
+
+.global-product-price-original {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 1.2rem;
+    margin-left: 8px;
+    /* Fallback gap */
+    font-weight: 400;
+    /* Ensure it's not too bold */
+    text-transform: uppercase;
+    font-family: "LibreFranklin", sans-serif;
+}
+
+/* Global Product Name Styling */
+.global-product-name {
+    font-family: "LibreFranklin", sans-serif !important;
+    font-weight: 700 !important;
+    /* Bold as requested */
+    font-size: 1rem;
+    text-transform: uppercase !important;
+    /* Uppercase as requested */
+    color: #1a1a1a !important;
+    margin: 5px 0;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
 }
