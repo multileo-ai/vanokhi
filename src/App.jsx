@@ -112,7 +112,6 @@ function AppContent() {
   const scrollToCategory = () =>
     categoryRef.current?.scrollIntoView({ behavior: "smooth" });
 
-
   useEffect(() => {
     const heroDocRef = doc(db, "siteSettings", "hero");
 
@@ -129,13 +128,11 @@ function AppContent() {
       (error) => {
         // Log the error instead of letting it bubble up and trigger an assertion failure
         console.error("Firestore Hero Listener failed:", error.message);
-      }
+      },
     );
 
     return () => unsubscribe();
   }, []);
-
-
 
   return (
     <div className={`app ${isCollectionPage ? "no-scroll" : ""}`}>
@@ -210,7 +207,7 @@ function AppContent() {
               <h3>CONTACT US</h3>
               <ul>
                 <li>Corporate Office Address: Kharadi Bypass, Pune</li>
-                <li>Email: Vanokhi.in@gmail.com</li>
+                <li>Email: vanokhi.co@gmail.com</li>
                 <li>
                   <a
                     href="https://www.instagram.com/vanokhi.in/"

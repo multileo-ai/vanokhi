@@ -374,7 +374,7 @@
 
 /* ... (Pre-existing @font-face and base styles) ... */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* MOBILE OVERRIDES */
 
   .cp-product-card.out-of-stock::after {

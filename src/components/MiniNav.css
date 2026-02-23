@@ -18,16 +18,24 @@
   justify-content: space-between;
 }
 
+/* Hide hamburger on tablet and desktop by default */
+.hamburger-btn {
+  display: none;
+}
+
 /* Page Theme Colors */
 .mini-nav.landing-mini {
   color: #faecd9;
 }
+
 .mini-nav.landing-mini .mini-icon {
   color: #ffffff;
 }
+
 .mini-nav.other-mini {
   color: #9a0002;
 }
+
 .mini-nav.other-mini .mini-icon {
   color: #9a0002;
 }
@@ -70,6 +78,8 @@
   align-items: center;
   justify-content: flex-end;
   z-index: 1001;
+  margin-left: auto;
+  /* Push to the right edge */
 }
 
 .nav-action-group {
@@ -86,7 +96,8 @@
   align-items: center;
   border-radius: 20px;
   transition: all 0.4s ease;
-  background: transparent; /* Default state is just the icon */
+  background: transparent;
+  /* Default state is just the icon */
 }
 
 .search-wrapper.active {
@@ -107,7 +118,8 @@
   font-size: 0.9rem;
   color: inherit;
   transition: all 0.4s ease;
-  pointer-events: auto !important; /* Ensure input is always interactable */
+  pointer-events: auto !important;
+  /* Ensure input is always interactable */
   min-width: 150px;
 }
 
@@ -140,10 +152,22 @@
   }
 
   .search-wrapper.active .search-input {
-    width: 200px; /* Specific width for desktop expansion */
+    width: 200px;
+    /* Specific width for desktop expansion */
     opacity: 1;
     padding: 5px;
     margin-right: 5px;
+  }
+}
+
+/* Tablet adjustments for desktop links to prevent overlap */
+@media (max-width: 1024px) {
+  .desktop-links {
+    gap: 1.2rem;
+  }
+
+  .mini-link-item {
+    font-size: 1.35rem;
   }
 }
 
@@ -179,14 +203,16 @@
     border: none;
     z-index: 10001;
     margin-left: 10px;
-    color: inherit; /* Dynamic inherit from landing-mini or other-mini */
+    color: inherit;
+    /* Dynamic inherit from landing-mini or other-mini */
   }
 
   .hamburger-lines {
     width: 22px;
     height: 2px;
     position: relative;
-    background: currentColor; /* Matches icon/logo text color */
+    background: currentColor;
+    /* Matches icon/logo text color */
   }
 
   .hamburger-lines::before,
@@ -198,9 +224,11 @@
     height: 2px;
     background: inherit;
   }
+
   .hamburger-lines::before {
     top: 9.5px;
   }
+
   .hamburger-lines::after {
     top: 19px;
   }
@@ -275,7 +303,8 @@
   }
 
   .hamburger-icon-svg {
-    color: currentColor; /* Follows theme red or cream */
+    color: currentColor;
+    /* Follows theme red or cream */
   }
 
   .mob-icons {

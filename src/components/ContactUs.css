@@ -1,6 +1,7 @@
 /* src/components/ContactUs.css */
 .contact-luxury-wrapper {
-  background-color: #ffffff; /* Clean white background as requested */
+  background-color: #ffffff;
+  /* Clean white background as requested */
   min-height: 100vh;
   width: 100%;
   position: relative;
@@ -20,9 +21,11 @@
 }
 
 .parallax-bg-text {
-  font-family: "Arya", serif; /* */
+  font-family: "Arya", serif;
+  /* */
   font-size: 15vw;
-  color: rgba(134, 2, 4, 0.03); /* Extremely faint Vanokhi Red */
+  color: rgba(134, 2, 4, 0.03);
+  /* Extremely faint Vanokhi Red */
   text-transform: uppercase;
   letter-spacing: -2px;
 }
@@ -37,7 +40,8 @@
 
 /* Typography & Content */
 .section-tag {
-  font-family: "LibreFranklin", sans-serif; /* */
+  font-family: "LibreFranklin", sans-serif;
+  /* */
   font-size: 0.75rem;
   letter-spacing: 5px;
   color: #860204;
@@ -47,7 +51,8 @@
 }
 
 .contact-hero-title {
-  font-family: "Arya", serif; /* */
+  font-family: "Arya", serif;
+  /* */
   font-size: clamp(3.5rem, 8vw, 6rem);
   line-height: 0.95;
   color: #111;
@@ -116,7 +121,7 @@
 /* Magnetic Button Animation */
 .magnetic-submit-btn {
   position: relative;
-  background: #860204; 
+  background: #860204;
   border: none;
   height: 50px;
   width: 160px;
@@ -125,7 +130,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   /* box-shadow: 0 20px 40px rgba(134, 2, 4, 0.15); */
   border-radius: 50px;
   background: rgba(154, 0, 2, 0.7);
@@ -134,7 +139,7 @@
   color: white;
 }
 
-.magnetic-submit-btn:hover{
+.magnetic-submit-btn:hover {
   background: rgba(154, 0, 2, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -147,7 +152,8 @@
 .btn-text {
   position: relative;
   z-index: 2;
-  color: #ffffff; /* Vanokhi Cream */
+  color: #ffffff;
+  /* Vanokhi Cream */
   font-family: "LibreFranklin", sans-serif;
   font-weight: 600;
   letter-spacing: 3px;
@@ -168,17 +174,56 @@
   transform: translateY(-100%);
 } */
 
-/* Responsive Scaling */
-@media (max-width: 1024px) {
+/* Tablet-specific styling to fit perfectly side-by-side */
+@media (max-width: 1024px) and (min-width: 769px) {
   .contact-main-grid {
-    grid-template-columns: 1fr;
-    gap: 50px;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
   }
+
+  .contact-hero-title {
+    font-size: 4rem;
+  }
+
   .contact-luxury-wrapper {
     padding-top: 50px;
   }
 
-  .modern-editorial-form{
-    gap:20px;
+  .modern-editorial-form {
+    gap: 40px;
+  }
+
+  .input-field-wrapper label {
+    font-size: 0.75rem;
+  }
+
+  .input-field-wrapper input,
+  .input-field-wrapper textarea {
+    font-size: 1.25rem;
+  }
+
+  .magnetic-submit-btn {
+    width: 200px;
+    height: 55px;
+  }
+
+  .btn-text {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile (stacking) styling */
+@media (max-width: 768px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .contact-luxury-wrapper {
+    padding-top: 50px;
+  }
+
+  .modern-editorial-form {
+    gap: 20px;
   }
 }

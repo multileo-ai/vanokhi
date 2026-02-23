@@ -17,12 +17,14 @@
   align-items: center;
   justify-content: center;
 }
+
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.06));
   pointer-events: none;
 }
+
 .hero-center-badge {
   position: relative;
   z-index: 2;
@@ -35,6 +37,7 @@
   box-shadow: 0 12px 30px rgba(12, 12, 12, 0.12);
   transform: translateY(6px);
 }
+
 .badge-text {
   font-size: 2.6rem;
   color: #9a0002;
@@ -46,13 +49,15 @@
 /* Red band immediately below hero */
 .brand-story-box {
   width: 100%;
-  background: #9a0002; /* accent */
+  background: #9a0002;
+  /* accent */
   color: #faecd9;
   padding: 48px 12px;
   box-sizing: border-box;
   border-top: 6px solid rgba(217, 197, 170, 0.12);
   transform: translateZ(0);
 }
+
 .brand-story-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -68,7 +73,8 @@
   overflow: hidden;
   display: block;
   min-height: 3.2rem;
-  height: 3.2rem; /* ensures container keeps consistent height */
+  height: 3.2rem;
+  /* ensures container keeps consistent height */
 }
 
 /* center each paragraph horizontally and vertically inside the typing-slider */
@@ -78,7 +84,8 @@
   top: 50%;
   transform: translate(-50%, -50%);
   display: inline-block;
-  font-size: 0; /* animated in via @keyframes 'slide' */
+  font-size: 0;
+  /* animated in via @keyframes 'slide' */
   text-transform: none;
   letter-spacing: 0;
   margin: 0;
@@ -95,8 +102,10 @@
   right: 0;
   bottom: 0;
   width: 100%;
-  border-left: 3px solid #d9c5aa; /* cursor color */
-  background-color: #9a0002; /* same as red band so mask blends */
+  border-left: 3px solid #d9c5aa;
+  /* cursor color */
+  background-color: #9a0002;
+  /* same as red band so mask blends */
   animation: typing 5s infinite, cursor 1s infinite;
   box-sizing: border-box;
 }
@@ -105,6 +114,7 @@
 .typing-slider p:nth-child(1) {
   animation-delay: 0s;
 }
+
 .typing-slider p:nth-child(1)::after {
   animation-delay: 0s;
   animation-timing-function: steps(16, end);
@@ -113,6 +123,7 @@
 .typing-slider p:nth-child(2) {
   animation-delay: 5s;
 }
+
 .typing-slider p:nth-child(2)::after {
   animation-delay: 5s;
   animation-timing-function: steps(23, end);
@@ -121,6 +132,7 @@
 .typing-slider p:nth-child(3) {
   animation-delay: 10s;
 }
+
 .typing-slider p:nth-child(3)::after {
   animation-delay: 10s;
   animation-timing-function: steps(12, end);
@@ -132,6 +144,7 @@
     font-size: 1.35rem;
     letter-spacing: 3px;
   }
+
   to {
     font-size: 0;
     letter-spacing: 0;
@@ -143,6 +156,7 @@
   from {
     width: 100%;
   }
+
   90%,
   to {
     width: 0;
@@ -151,10 +165,12 @@
 
 /* blinking cursor */
 @keyframes cursor {
+
   from,
   to {
     border-color: transparent;
   }
+
   50% {
     border-color: #d9c5aa;
   }
@@ -165,12 +181,14 @@
   .typing-slider p {
     font-size: 0;
   }
+
   .typing-slider p:nth-child(1),
   .typing-slider p:nth-child(2),
   .typing-slider p:nth-child(3) {
     /* allow keyframe to scale on mobile */
     animation-duration: 15s;
   }
+
   .brand-story-box {
     padding: 32px 12px;
   }
@@ -178,20 +196,25 @@
 
 /* FIX 4: "The Vah Moment" visibility */
 @media (max-width: 768px) {
+
   .brand-hero-section,
   .vah-moment-container {
     /* Ensure height is not fixed to 0 or hidden */
     height: auto !important;
-    min-height: 400px; /* Give it space */
+    min-height: 400px;
+    /* Give it space */
     overflow: visible !important;
   }
 
   .vah-moment-btn,
   .hero-cta {
-    display: block !important; /* Force visibility */
+    display: block !important;
+    /* Force visibility */
     opacity: 1 !important;
     visibility: visible !important;
-    margin-top: 20px; /* Add spacing if it was overlapping */
-    z-index: 10; /* Bring to front */
+    margin-top: 20px;
+    /* Add spacing if it was overlapping */
+    z-index: 10;
+    /* Bring to front */
   }
 }

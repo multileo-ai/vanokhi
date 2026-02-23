@@ -115,6 +115,14 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 /* Responsive Defaults */
+
+/* --- Tablet: gentle font-size reduction, NO zoom (zoom breaks vw/vh units) --- */
+@media (max-width: 1024px) and (min-width: 769px) {
+    html {
+        font-size: 9px;
+    }
+}
+
 @media (max-width: 480px) {
     :root {
         --navbar-reserve: 64px;

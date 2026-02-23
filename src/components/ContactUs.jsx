@@ -61,7 +61,7 @@ const ContactUs = () => {
           <div className="floating-contact-details">
             <div className="detail-item">
               <h4>INQUIRIES</h4>
-              <p>Vanokhi.in@gmail.com</p>
+              <p>vanokhi.co@gmail.com</p>
             </div>
             <div className="detail-item">
               <h4>LOCATION</h4>

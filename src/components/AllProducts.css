@@ -185,7 +185,7 @@
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .cp-product-card.out-of-stock::after {
     top: 35%;
   }

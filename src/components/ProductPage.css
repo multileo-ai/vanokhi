@@ -575,7 +575,7 @@
   font-weight: 700;
 }
 
-/* Tablets (1024px and below) */
+/* Tablets & Mobile (1024px and below) — use stacked layout */
 @media (max-width: 1024px) {
   .catName {
     font-size: 7rem;
@@ -827,7 +827,7 @@
   transition: transform 0.3s ease;
 }
 
-/* Responsive Fix for Mobile */
+/* Responsive Fix for Tablet & Mobile */
 @media (max-width: 1024px) {
   .productInfoSplit {
     grid-template-columns: 1fr;
@@ -1015,7 +1015,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktopOnlyView {
     display: none !important;
   }

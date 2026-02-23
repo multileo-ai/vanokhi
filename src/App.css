@@ -322,19 +322,21 @@ hr,
   }
 }
 
-@media (max-width: 768px) {
-  .footer-sections {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem 2rem;
-    padding: 0 1.5rem;
-  }
-
+@media (max-width: 1024px) {
   .bgbanner {
     opacity: 0;
   }
 
   .bgbanner1 {
     opacity: 100;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-sections {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2rem;
+    padding: 0 1.5rem;
   }
 
   .footer-column {

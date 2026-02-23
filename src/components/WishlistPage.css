@@ -187,7 +187,7 @@
 .cp-price {
   font-family: "LibreFranklin", sans-serif;
   font-size: 1.3rem;
-  color: #860204;
+  color: #860204 !important;
 }
 
 .cp-price.original {
@@ -197,7 +197,7 @@
   margin-left: 8px;
   font-size: 1rem;
 }
-
+  
 /* 7. Empty State (Luxury Design) */
 .no-orders-luxury {
   text-align: center;
