@@ -179,59 +179,46 @@
 }
 
 /* --- Responsive --- */
-/* Tablet range */
-@media (max-width: 1024px) and (min-width: 769px) {
+@media (max-width: 1200px) {
   :root {
-    --card-w: 220px;
-    --card-gap: 40px;
+    --card-w: 260px;
+    --card-gap: 50px;
     --scroll-speed: 13s;
   }
 
   .category-section {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 150px;
+    padding-bottom: 150px;
   }
 
   .category-wrapper {
-    height: 380px;
+    height: 490px;
+  }
+}
+
+/* Tablet range (iPad Pro 1024px, iPad Air 820px) */
+@media (max-width: 1024px) {
+  :root {
+    --card-w: 250px;
+    --card-gap: 40px;
+    --scroll-speed: 12s;
+  }
+
+  .category-section {
+    padding-top: 100px;
+    padding-bottom: 80px;
+  }
+
+  .category-wrapper {
+    height: 470px;
   }
 
   .category-heading {
     font-size: 1.8rem;
   }
-}
 
-@media (max-width: 1200px) {
-  :root {
-    --card-w: 240px;
-    --card-gap: 50px;
-    --scroll-speed: 13s;
-  }
-
-  .category-wrapper {
-    height: 400px;
-  }
-}
-
-@media (max-width: 992px) {
-  :root {
-    --card-w: 200px;
-    --card-gap: 40px;
-    --scroll-speed: 12s;
-  }
-
-  .category-wrapper {
-    height: 360px;
-  }
-
-  .card {
-    border-radius: 45px;
-  }
-
-  .overlay {
-    border-radius: 45px;
-  }
-
+  .card,
+  .overlay,
   .card-img {
     border-radius: 45px;
   }

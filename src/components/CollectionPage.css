@@ -528,3 +528,26 @@
     height: 36px !important;
   }
 }
+
+/* Tablet specific rules to restore full image height instead of 16/9 mobile ratio */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cp-section {
+    height: 100vh !important;
+    aspect-ratio: auto !important;
+    margin-bottom: 0 !important;
+  }
+
+  .cp-shrunk-header.mobile-16-9 {
+    height: 45vh !important;
+    aspect-ratio: auto !important;
+  }
+
+  .cp-snap-container {
+    scroll-snap-type: y mandatory !important;
+    overflow-y: scroll !important;
+  }
+
+  .cp-content h2 {
+    font-size: 6vw !important;
+  }
+}

@@ -117,7 +117,7 @@ const CollectionPage = () => {
 
                         {/* <div className="cp-rating-tag">
                         <Star size={12} fill="#860204" color="#860204" />
-                      </div> */}
+                        </div> */}
                         <AverageRating productId={item.id} />
 
                         <div className="cp-product-actions">
