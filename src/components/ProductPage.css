@@ -944,7 +944,7 @@
 
 .prodMainCont {
   display: grid;
-  grid-template-columns: 80px minmax(320px, 320px) minmax(320px, 0.5fr);
+  grid-template-columns: 80px minmax(360px, 320px) minmax(320px, 1fr);
   padding: 0 6rem;
 }
 
@@ -976,15 +976,24 @@
 }
 
 .gallery {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 8rem;
+  display: grid !important;
+  /* Column 1 (Image) takes remaining space, Column 2 (Thumbs) takes exact width */
+  grid-template-columns: 1fr max-content;
+  /* Standard grid gap */
+  column-gap: 10.125% !important;
+  align-items: start;
+  align-self: start;
   grid-column: 3;
+  width: 100%;
+  /* Added padding to the container to ensure content doesn't touch */
+  box-sizing: border-box;
+  margin-top: 8%;
 }
 
 .mainImage {
   width: 20vw;
-  height: 65vh;
+  height: 62vh;
+
 }
 
 .mainImage img {
@@ -995,13 +1004,22 @@
 
 .thumbs {
   display: grid;
-  grid-template-columns: 1fr 10px;
-  margin-left: 200px;
+  /* Forces exactly 2 columns */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  /* Removed the 200px margin that was pushing it away */
+  margin-left: 0;
+  width: fit-content;
 }
 
 .thumb {
   width: 150px;
+  /* Adjust this size as needed */
   height: 200px;
+  /* Maintains roughly a 3:4 aspect ratio */
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .productInfoSplit {
